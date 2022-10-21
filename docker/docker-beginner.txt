@@ -1,0 +1,291 @@
+
+Basic docker commands
+
+docker run <image>
+
+docker ps (list all running containers)
+docker ps -a (even stopped containers)
+
+docker stop <container-name/id> (to stop running container)
+docker rm <container-id> (to delete stopped container)
+
+docker images (list images)
+docker rmi <image> (to remove image permanently, no containers should use it, so stop, rm container first)
+
+docker pull <image> (to download image)
+
+
+docker run ubuntu (runs and stops immediately, container only lives as long as process inside it)
+
+append a command 
+docker run ubuntu <process>
+docker run ubuntu sleep 10
+
+exec command to a command on running container 
+docker exec <container-id>  cat etc/hosts
+
+run - attach and detach
+docker run kodekloud/simple-webapp (runs in foreground)
+docker run -d kodekloud/simple-webapp (run container in background)
+docker attach <container-id> (to run background container in foreground)
+
+
+
+docker run -it centos bash
+[root@5cbfb26e8a0f /]#
+CTRL+PQ to come out of it without stopping, exit(stop)
+
+echo "alias docker='winpty docker'" >> ~/.bashrc
+
+docker stop $(docker ps -q)
+docker 
+
+to create container with name
+docker run -d --name webapp nginx:1.14-alpine 
+docker rmi $(docker images -q)
+
+
+
+Docker run
+to read stdin - use interactive(i)
+if we want to print what container console/stdout is printing -use pseudo-terminal(-t)
+port publish/mapping, use -p 
+docker run -p 80(host-port):5000(container-port) kodekloud/simple-webapp
+
+run - volume mapping
+docker run -v /opt/datadir(in our host):/var/lib/mysql(in container) -p 3306:3306 mysql
+
+inspect container
+docker inspect <container-name/id>
+
+docker logs (if we run container in background detached mode)
+docker logs <container-name/id>
+
+
+build own docker images
+``` file Dockerfile(INSRUCTION ARG format, layered architecture)
+FROM Ubuntu
+RUN apt-get update && apt-get -y install python
+RUN pip install flask flask-mysql
+COPY ./app.py /opt/source-code
+ENV COLOR blue 
+ENTRYPOINT FLASK_APP=/opt/source-code/app.py flask run
+```
+docker build . -f Dockerfile -t mmumshad/my-custom-app (tag with mmumshad which is account name) so that we can push to our account, docker login
+
+The history of sizes is 
+docker history mmumshad/my-custom-app
+
+
+ENVIRONMENT VARIABLES(see env vars in docker inspect Env)
+docker run -e APP_COLOR=blue simple-webapp
+
+docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=db_pass123 --name mysqldb mysql
+
+command vs entrypoint
+in dockerfile
+CMD COMMAND PARAM1
+CMD ["COMMAND", "PARAM1"] where command(1st param) should be executable 
+```
+FROM Ubuntu
+CMD sleep 10
+```to override docker run ubuntu-sleeper sleep 10
+
+```
+FROM Ubuntu
+ENTRYPOINT ["sleep"]
+CMD ["5"]
+``` docker run ubuntu-sleeper 10
+To override entrypoint
+docker run --entrypoint sleep2.0 ubuntu-sleeper 15
+```
+
+
+```docker-compose.yml
+
+```
+and run docker-compose up
+
+docker run -d --name redis redis
+docker run -d --name db postgres
+docker run -d --name=vote -p 5000:80 --link redis:redis(host looking for) voting-app (link option to make voting-app aware of redis, will add a entry in /etc/hosts)
+docker run -d --name=result -p 5001:80 --link db:db result-app 
+docker run -d --name=worker --link redis:redis --link db:db worker 
+-- link/links is deprecated
+
+```
+redis:
+  image: redis
+db:
+  image: postgres:9.4
+vote:
+  image: voting-app
+  ports:
+    - 5000:80
+  links:
+    - redis 
+result:
+  image: result-app
+  ports:
+    - 5001:80
+  links:
+    - db (equal to db:db)
+worker:
+  image: worker
+  links:
+    - db
+	- redis
+```
+if images are not available at start, use build instead of image
+```
+redis:
+  image: redis
+db:
+  image: postgres:9.4
+vote:
+  build: ./vote
+  ports:
+    - 5000:80
+  links:
+    - redis 
+result:
+  build: ./result
+  ports:
+    - 5001:80
+  links:
+    - db (equal to db:db)
+worker:
+  build: ./worker
+  links:
+    - db
+	- redis
+```
+
+
+in version 1, no dependencies auto resolve(order to be followed), no networking, no need to use links
+```version2
+version: "2"
+services:
+	redis:
+	  image: redis
+	db:
+	  image: postgres:9.4
+	vote:
+	  build: ./vote
+	  ports:
+		- 5000:80
+	  depends_on:
+	    - redis
+	result:
+	  build: ./result
+	  ports:
+		- 5001:80
+	  depends_on:
+	    - db
+	worker:
+	  build: ./worker
+	  depends_on:
+	    - redis
+		- db
+```
+
+in version-3, support for docker swarm 
+
+for networking, using backend, frontend
+```version2
+version: "2"
+services:
+	redis:
+	  image: redis
+	  networks:
+	    - backend
+	db:
+	  image: postgres:9.4
+	  networks:
+	    - backend
+	vote:
+	  build: ./vote
+	  ports:
+		- 5000:80
+	  networks:
+	    - backend
+		- frontend
+	result:
+	  build: ./result
+	  ports:
+		- 5001:80
+	  networks:
+	    - frontend
+		- backend
+	worker:
+	  build: ./worker
+	  networks:
+	    - backend
+networks:
+  frontend:
+  backend:
+```
+
+docker-compose down 
+docker-compose up -d 
+
+
+docker image tag nginx:latest localhost:5000/nginx:latest
+docker push localhost:5000/nginx:latest
+
+docker image prune -a #prune dangling images
+
+
+Docker Engine
+if docker daemon & rest-api is on remote and docker client is on laptop
+docker -H=remote-docker-engine:2375 run nginx
+
+by default, no restrictions on docker, can use all resources on host
+cgroups(control groups) to restrict 
+docker run --cpus=0.5 ubuntu
+docker run --memory=100m ubuntu (100MB restriction)
+
+ps -aef #list all processes
+
+image layer(read-only) and container layer(write) on top of image layer
+if we modify some app.py(used in image), then COPY-ON-WRITE app.py in container layer 
+
+docker volume create data_volume 
+docker run -v data_volume:/var/lib/mysql mysql ... (docker will create in /var/lib/docker/volumes data_volume doesn't exist in ) (volume mounting)
+
+docker run -v /data/external:/var/lib/mysql mysql (bind mounting)
+
+--mount (new way) -v (old way)
+docker run --mount \
+type=bind,source=/data/mysql,target=/var/lib/mysql mysql 
+
+docker info | commands
+gives details about installed docker
+
+aufs - ubuntu storage driver
+
+docker history <container-name/id>
+
+
+docker system df (storage, size etc)
+docker system df -v (verbose)
+docker exec mysql-db mysql -pdb_pass123 -e 'use foo; select * from myTable'
+
+
+docker networking(bridge, none, host)
+docker run ubuntu (bridge) 
+docker run ubuntu --network=none  (no network access)
+docker run ubuntu --network=host (run webapp on port, accessible on same port on host, no network isolation)
+
+docker has built-in embedded server(127.0.0.11) and we can use container-names so they can connect to each other
+docker network ls
+docker network create --driver=bridge --subnet=182.18.0.1/24 --gateway=182.18.0.1 wp-mysql-network
+
+
+
+Docker swarm(container orchestration)
+docker service create --replicas=100 nodejs (runs instances across swarm )
+
+docker swarm init (master )
+docker swarm join --token <token> (displayed after init)
+
