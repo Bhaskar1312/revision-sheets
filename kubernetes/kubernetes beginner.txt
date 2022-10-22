@@ -1,0 +1,222 @@
+
+
+Architecture
+
+API server: acts as frontend for users. Users, mgmt devices, CLIs all talk to it to interact withk8s cluster
+etcd:  distributed key-value store to store all data used to manage the cluster. Responsible for implementing locks within cluster to ensure no conflicts between the masters
+Scheduler: Responsible for distributing work or container across muliple nodes. Looks for newly created containers and assigns them to nodes 
+Controller: Brain behind orchestration. Responsible for noticing and responding when nodes, containers or endpoints go down. Makes decisions to bring up containers.
+Container Runtime(worker node): Docker, crio
+kubelet(worker node): kubelet is the agent that runs on each node. The agent is responsible for making sure the containers are running as expected 
+
+
+kubectl cluster-info
+kubectl get nodes
+
+Pods
+kubectl run nginx --image nginx 
+kubectl get pods 
+kubectl get pods -o wide (node info)
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  labels: 
+    app: my-app 
+	type: frontend
+spec:
+  containers: 
+    - name: nginx-container
+	  image: nginx
+  
+```kubectl create -f pod-definition.yml
+
+kubectl run nginx --image=nginx --dry-run=client -o yaml > pod-nginx.yaml
+
+kubectl describe po nginx-pod 
+kubectl delete pod nginx-pod 
+
+alias k=kubectl
+k edit pod redis
+
+ReplicationController (older)
+```rc
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: myapp-rc
+  labels: frontend
+spec:
+  replicas: 3
+  template:
+    metadata:
+	  name: myapp-pod
+	  type: frontend
+	spec: 
+	  containers: 
+	    - name: nginx-container
+		  image: nginx
+```
+k get replicacontroller
+
+
+
+ReplicaSet (newer) selector(compulsory) is the main difference, it also takes older created exsiting pods into consideration
+```rs.yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: myapp-rs
+  labels: 
+    type: frontend
+spec:
+  replicas: 3
+  selector: 
+    matchLabels:
+	  type: frontend-label
+  template:
+    metadata:
+	  name: myapp-pod
+	  type: frontend-label (--- match matchLabels section)
+	spec: 
+	  containers: 
+	    - name: nginx-container
+		  image: nginx
+```
+To scale change replicas: 6 in definition file, and run
+k replace -f rs.yaml
+kubectl scale --replicas=3  -f rs.yaml
+kubectl scale --replicas=6 replicaset myapp-rs 
+
+kubectl explain replicaset
+
+
+Deployments - to undo rolling changes, pause ...
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+  labels:
+    type: frontend
+spec:
+  replicas: 3
+  selector: 
+    matchLabels:
+	  type: frontend (match  metadata label)
+  template:
+    metadata:
+	  name: myapp-pod
+	  type: frontend (--- match matchLabels section)
+	spec: 
+	  containers: 
+	    - name: nginx-container
+		  image: nginx
+		  ports:
+		    - containerPort: 80
+```
+ kubectl create deploy  httpd-frontend --image=httpd:2.4-alpine --replicas=3
+ kubectl create deployment --help
+ 
+ 
+ Update and Rollback
+ kubectl rollout status deployment/myapp-deployment
+ kubectl rollout undo deployment/myapp-deployment
+ kubectl rollout history deployment/myapp-deployment
+  
+ Recreate, RollingUpdate(default)
+ 
+ kubectl set image deployment/myapp-deployment nginx=nginx:1.9.1
+ kubectl create -f deployment.yaml --record  (to record history)
+ 
+ 
+kubectl get all
+
+
+
+Services
+NodePort (listens to a port on a node and forwards to pod)
+ClusterIP (creates a virtual IP inside the cluster to enable communication between different svc)
+LoadBalancer
+
+
+NodePort TargetPort(pod), NodePort(node, 30000+), port(svc)
+
+```svc
+apiVersion: v1
+kind: Service
+metadata:
+  name: myapp-service
+  labels:
+    app: my-service
+spec:
+  type: NodePort
+  ports:
+    - targetPort: 80 (if not provided, assumed to be same as port)
+	  port: 80 (only mandatory)
+	  nodePort: 30008
+  selector: 
+    app: myapp
+	type: frontend
+```it acts as inbuilt load balancer across nodes, ports 
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  labels:
+    app: my-service
+spec:
+  type: ClusterIP (default)
+  ports:
+    - targetPort: 80 
+	  port: 80 
+  selector: 
+    app: myapp
+	type: backend
+```	
+
+```
+apiVersion: v1
+kind: Service (on supported cloud plaforms)
+metadata:
+  name: frontend-service
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+	  targetPort: 80
+	  nodePort: 30008
+```
+
+kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml (cant provide selectors)
+kubectl expose pod nginx --type=NodePort --port=80 --name=nginx-service --dry-run=client -o yaml (will use pod labels as selectors, cant provide NodePort)
+kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
+
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: postgres-pod
+  labels:
+    name: postgres-pod
+	app: demo-voting-app
+spec:
+  containers:
+    - name: postgres
+	  image: postgres
+	  ports:
+	  - containerPort: 5432
+	  env:
+	  - name: POSTGRES_USER
+	    value: "postgres"
+	  - name: POSTGRES_PASSWORD
+	    value: "postgres"
+```
+
+https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands
