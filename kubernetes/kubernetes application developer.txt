@@ -1,0 +1,1562 @@
+
+core concepts
+
+k create deploy nginx --image=1
+k scale deploy nginx --replicas=3
+k expose deploy nginx --port=80 (service)
+SVC_IP=$(kubectl describe svc nginx | grep '^IP' | awk '{ print $2 }'
+curl ${SVC_IP}:80
+
+kubectl get endpoints 
+
+k set env deploy mydb MYSQL_ROOT_PASSWORD=secretpw
+
+k create cm mydbvar --from-literal=MYSQL_ROOT_PASSWORD=secret
+k set env deploy mydb --from=configmap/mydbvar 
+
+k get svc canary -o=jsonpath={.spec.ports[].nodePort} 
+
+echo Greetings from the Canary > index.html
+ k create cm canary --from-file=index.html
+ ```
+ apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: new-nginx
+    type: canary
+  name: new-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: new-nginx
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: new-nginx
+        type: canary
+    spec:
+      containers:
+      - image: nginx:latest
+        name: nginx
+        resources: {}
+        volumeMounts:
+        - name: configfile
+          mountPath: /usr/share/nginx/html/
+      volumes:
+      - name: configfile
+        configMap:
+          name: canary
+status: {}
+ ```
+ 
+```
+      spec:
+        containers:
+        - env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              configMapKeyRef:
+                key: MYSQL_ROOT_PASSWORD
+                name: mydbvar
+          image: mariadb
+          imagePullPolicy: Always
+          name: mariadb
+```
+
+k expose deploy old-nginx --name --type=NodePort --port=80 --selector type=canary 
+
+
+Namespaces
+mysql.connect("db-service")
+
+mysql.connect("db-service.dev-ns.svc.cluster.local") #dev-ns namespace
+svc = service
+cluster.local = domain
+
+kubectl create -f pod-def.yaml -n dev-ns // mention while running or in metadata
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myapp-pod
+  namespace: dev-ns
+  labels: 
+    app: my-app 
+	type: frontend
+spec:
+  containers: 
+    - name: nginx-container
+	  image: nginx
+```
+k get all -A #to get all resources(po,svc,deploy) in A-> All namespaces
+
+k run loop --image=busybox -n team-red -o yaml --dry-run=client --restartPolicy=Never -- /bin/sh -c 'for i in 1 2 3 4 5 6 7 8 9 10; do echo "Welcome $i times"; done' > pod.yaml
+k logs loop -n team-red
+
+To set namespace permanently
+kubectl config set-context --current --namespace=<insert-namespace-name-here>
+kubectl config view --minify | grep namespace:
+
+k exec nginx -- env  // to list env vars 
+
+
+To create namespace
+```
+apiVersion: v1
+kind: Namespace
+metadata: 
+  name: dev-ns
+```
+or kubectl create ns dev-ns
+
+To move to another namespace
+kubectl config set-context $(kubectl config current-context) --namespace=dev 
+
+
+k run busybox --image=busybox --rm -it --restart=Never -n ckad -- wget 10.244.1.2:80 (ip by nginx pod)
+
+
+ResourceQuota
+```
+apiVersion: v1
+kind: ResourceQuota
+metadata: 
+  name: compute-quota
+  namespace: dev
+spec:
+  hard: 
+    pods: "10"
+	requests.cpu" "4"
+	requests.memory: 5Gi
+	limits.cpu: "10"
+	limits.memory: 10Gi
+```
+
+
+Imperative commands
+
+Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
+kubectl expose pod redis-pod --port 6379 --name redis-service --dry-run=client -o yaml 
+
+kubectl create service clusterip redis --tcp 6379:6379 --dry-run=client -o yaml
+will not use the pods labels as selectors, instead it will assume selectors as app=redis. 
+
+kubectl expose po nginx --port=80 --name nginx-service --type NodePort --dry-run=client -o yaml
+This will automatically use the pod's labels as selectors, but you cannot specify the node port.
+
+ k run custom-nginx --image=nginx --port=8080
+ kubectl run --help
+ 
+ 
+ Commands Arguments
+ ```
+ FROM Ubuntu
+ ENTRYPOINT ["sleep"]
+ CMD ["5"]
+ ```
+ docker run --entrypoint sleep2.0 ubuntu 15
+ entrypoint 
+ arguments - CMD 
+ 
+ docker run --name ubuntu-sleeper ubuntu-sleeper:1.0 100
+ 
+``` entrypoint=command, CMD=args
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: ubuntu-sleeper-pod 
+spec: 
+  containers: 
+    - name: ubuntu-sleeper
+	  image: ubuntu-sleeper:1.0
+	  command: ["sleep2.0"] //array or command: ["sleep2.0", "5000"]
+	  args: ["10"] 
+	  both should be defined as string
+```
+kubectl run webapp-green --image=kodekloud/webapp-color -- --color green
+
+
+
+Environment variables
+docker run -e APP_COLOR=pink simple-webapp-color
+
+```
+Plain key value
+env:
+  - name: APP_COLOR
+    value: pink
+	
+from configmap
+env:                    (single-env)
+  - name: APP_COLOR
+    valueFrom: 
+	  configMapKeyRef: 
+	    name: app-config
+		key: APP_COLOR
+
+	  
+containers:
+- image: <>
+  envFrom:                    (env)
+  - configMapRef: 
+      name: app-config
+  
+```
+ env:
+  - name: APP_COLOR
+    valueFrom: 
+	  secretKeyRef:
+	  
+volumes:                   (volume)
+- name: app-config-volume
+  configMap:
+    name: app-config
+	
+ConfigMaps
+
+kubectl create configmap <config-name> --from-literal=<key>=<value>  --from-literal=<key>=<value>  
+
+kubectl create configmap app-config --from-file=<path-to-file>
+
+app.prop
+APP_COLOR: blue
+APP_MODE: prod
+
+
+```config-map.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: <>
+data: (instead of spec)
+  APP_COLOR: blue
+```
+
+kubectl get cm
+kubectl describe cm <>
+
+
+Kubernetes Secrets
+
+kubectl create secret generic <secret-name> --from-literal=<key>=<value>
+
+kubectl create secret generic <secret-name> --from-file=<path-to-file>
+app-secret.properties
+       DB_Host=mysql
+       DB_User=root 
+       DB_Password=password
+	   
+
+kubectl create -f 
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: app-secret
+data: 
+  DB_Host: bXlzcWw=
+  
+  
+  run echo -n 'mysql' | base64 
+```
+
+kubectl get secrets
+kubectl describe secrets
+
+to get value 
+kubectl get secret app-secret -o yaml 
+
+to decode run, echo -n "bXlzcWw=" | base64 --decode 
+
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: simple-webapp-color
+spec:
+  containers:
+  - name: simple-webapp-color
+    image: simple-webapp-color
+	ports: 
+	  - containerPort: 8080
+    envFrom:
+      - secretRef: 
+	      name: app-secret
+		
+```
+
+SecurityContext
+```
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: ubuntu-sleeper-pod 
+spec: 
+  securityContext:  (can be pod level or container level)
+    runAsUser: 1000
+  containers: 
+    - name: ubuntu-sleeper
+	  image: ubuntu-sleeper:1.0
+	  securityContext:
+	    runAsUser: 1000
+		capabilities:          (capabilities only supported at container level)
+		  add: ["MAC_ADMIN"]
+	  command: ["sleep"] 
+	  args: ["10"] 
+```
+k exec ubuntu-sleeper -- whoami
+k replace --force -f pod.yaml
+
+k explain po --recursive | less 
+
+
+ServiceAccounts
+k create serviceaccount dashboard-sa
+kubectl describe serviceaccount dashboard-sa
+kubectl describe secret dashboard-sa-token-dbbm
+
+By default each namespace has a serviceaccount defined. whenever we create a pod, the default-sa is already mounted 
+
+kubectl exec -it my-dashboard ls /var/run/secrets/k..io/serviceaccount
+ca.crt namespace token (3 files)
+kubectl exec -it my-dashboard cat /var/run/secrets/k..io/serviceaccount/ca.crt
+
+if we want to use new serviceaccount and also if we dont want to use default sa
+
+```
+kind: Pod
+spec: 
+  serviceAccountName: dashboard-sa
+  automountServiceAccountToken: false
+```
+
+jq -R 'split(".") | select(length > 0) | .[0],.[1] | @basse64d | fromjson' <<< eyJh
+
+
+in 1.24, you must create token, it is not mount automatically
+kubectl create serviceaccount dashboard-sa 
+kubectl create token dashboard-sa 
+(now expiry is set for this token)
+
+if you still want to create in old-way(cant use TokenRequest api)
+```
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token 
+metadata:
+  name: 
+spec: 
+  name: mysecretname 
+  
+```
+
+
+Resource Requirements
+
+default cpu - 256Mi, CPU - 0.5 for a container of pod (0.1 = 100m) when we set up LimitRange
+
+```
+kind: Pod
+spec: 
+  containers:
+  - name: simple-webapp-color
+    image: simple-webapp-color
+	resources: 
+	  requests: 
+	    memory: "1Gi"
+		cpu: 1
+      limits: 
+        memory: "2Gi"
+        cpu: 2 
+		
+```
+in case a pod/container is exceeding its cpu limit, kubernetes throttles the CPU
+a container can use more than its limit. if a pod uses more memory than limit constantly, it will be terminated 
+
+```
+apiVersion: v1
+kind: LimitRange
+metadata: 
+  name: mem-limit-range
+spec: 
+  - default: 
+      memory: 512Mi
+	defaultRequest: 
+	  memory: 256Mi
+	type: Container
+```
+
+Taints(set on nodes) and Tolerations(set on pods)
+kubectl taint nodes node-name key=value:taint-effect(what should happen to pod that doesn't tolerate this taint)
+ taint-effect = NoSchedule / PreferNoSchedule / NoExecute(new pods wont be scheduled, existing will be evicted)
+
+kubectl taint nodes node01 app=blue:NoSchedule
+```
+kind: Pod
+spec: 
+  containers:
+    - image: nginx 
+	  name: nginx-container
+  tolerations: 
+  - key: "app"
+    operator: "Equal"
+	value: "blue"
+	effecct: "NoSchedule" (all should be in double quotes)
+``` 
+To untaint node
+ k taint node controlplane node-role.kubernetes.io/control-plane:NoSchedule- (notice minus)
+ 
+
+Node selectors
+```
+kind: Pod
+spec:
+  containers:
+    - name: data-processor
+	  image: data-processor
+  nodeSelector:
+    size: large (labels are of node)
+cant use size == large or medium
+```
+kubectl label node <node-name> <label-kye>=<label-value>
+
+
+Node Affinity and anti-affinity
+```
+kind: Pod
+spec: 
+  containers:
+  - name: nginx
+    image: nginx
+  affinity:
+    nodeAffinity: 
+	  requiredDuringSchedulingIgnoreExecution: 
+	    nodeSelectorTerms: 
+		- matchExpressions: 
+		  - key: disktype
+		    operator: In  / NotIn / Exists(no need of values)
+			values: 
+			- ssd
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 1
+        preference:
+          matchExpressions:
+          - key: another-node-label-key
+            operator: In
+            values:
+            - another-node-label-value
+```
+
+To indent in vim
+use Shift+v(capital v) expand selection using arrows and Shift+. to indent right
+
+vim ~/.vimrc
+set nu
+set expandtab
+set shiftwidth=2
+set tabstop=2
+
+Multi-Container Pods
+ambassador 
+adapter
+sidecar - web-server image + log-agent image both sharing storage, networking
+
+```initContainers
+spec: 
+  containers:
+  initContainers:
+  - name: init-myservice
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup myservice; do echo waiting for myservice; sleep 2; done;']
+  - name: init-mydb
+    image: busybox:1.28
+    command: ['sh', '-c', 'until nslookup mydb; do echo waiting for mydb; sleep 2; done;']
+
+Readiness and Liveness Probes
+```
+spec:
+  containers:
+  - image: <any web server>
+    readinessProbe:  (now kubernetes waits for httpGet statusCode)
+	  httpGet:
+	    path: /api/ready
+		port: 8080
+	  initialDelaySeconds: 10 (warmup period)
+	  periodSeconds: 5 (how often to check readinessProbe)
+	  failureThreshold: 8 (default -3, )
+  - image: <any db>
+    readinessProbe: 
+	  tcpSocket:
+		port: 3306
+  - image: <any script based>
+    readinessProbe:
+	  command: ["cat", "/app/is_ready"]
+```
+```
+  - image: <any web server>
+    livenessProbe:  (now kubernetes waits for httpGet statusCode)
+	  httpGet:
+	    path: /api/ready
+		port: 8080
+	  initialDelaySeconds: 10 (warmup period)
+	  periodSeconds: 5 (how often to check readinessProbe)
+	  failureThreshold: 8 (default -3, )
+  - image: <any db>
+    livenessProbe: 
+	  tcpSocket:
+		port: 3306
+  - image: <any script based>
+    livenessProbe:
+	  command: ["cat", "/app/is_ready"]
+```
+
+controlplane ~ ➜  cat ~/.vimrc
+set termguicolors
+execute pathogen#infect()
+syntax on
+colorscheme dracula
+filetype plugin indent on
+set sw=2
+set et
+set ts=2
+set ai
+
+
+Container Logging
+docker logs -f ecf 
+kubectl logs -f event-sim-pod 
+
+If there are muliple containers, you should specify the container name, else it fails
+kubectl logs -f event-sim-pod container-name-1
+
+
+Monitor and Debug Kubernetes applications
+git clone https://github.com/kubernetes-incubator/metrics-server.git
+k create -f deploy/1.8+/
+
+kubectl top node --sort-by=memory | --no-headers | head -1 (wc -l for lines) 
+kubectl top pod 
+
+
+Pod Design
+
+Labels, Selectors and Annotations
+kubectl get pods --selector app=App1
+ k get all  -A --selector env=prod,tier=frontend,bu=finance
+
+
+kubectl rollout history deployment nginx
+kubectl rollout history deployment nginx --revision=4
+kubectl rollout status deployment nginx
+kubectl rollout undo deployment nginx 
+
+Jobs
+restartPolicy Never onFailure Always
+```
+apiVersion: v1
+kind: Pod
+metadata: 
+  name: math-pod
+spec:
+  containers:
+  - name: math-add
+    image: ubuntu
+	command: ['expr', '3', '+', '2']
+  restartPolicy: Never (so that kubernetes doesn't try to restart, Always=default)
+```
+
+```
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: math-add-job
+spec: 
+  completions: 3 (until 3 successful completions)
+  parallelism: 3
+  metadata: 
+    <>
+  template:
+	spec:
+	  containers:
+	  - name: math-add
+		image: ubuntu
+		command: ['expr', '3', '+', '2']
+	  restartPolicy: Never
+```
+k logs math-add-job-eeffx
+k delete job math-add-job
+
+CronJobs
+```
+apiVersion: v1
+kind: CronJob
+metadata:
+  name: hello
+spec: 
+  schedule: "* * * * *"
+  jobTemplate: 
+    spec: 
+	  completions: 3 (until 3 successful completions)
+	  parallelism: 3
+	  template:
+		spec:
+		  containers:
+		  - name: math-add
+			image: ubuntu
+			command: ['expr', '3', '+', '2']
+		  restartPolicy: Never
+```
+k create job throw-dice-job --image=kodekloud/throw-dice --dry-run=client -o yaml
+k create cronjob throw-dice-cron-job  --schedule="30 21 * * *" --image=kodekloud/throw-dice -o yaml --dry-run=client
+
+
+Kubernetes Services
+
+NodePort, ClusterIP
+
+Ingress Networking(layer - 7 load balancer)
+
+
+ingress controller
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-ingress-controller
+spec:
+  replicas: 1
+  selector: 
+    matchLabels: 
+	  name: nginx-ingress 
+	template: 
+	  metadata:
+	    name: nginx-ingress 
+      spec: 
+	    containers: 
+		- name: nginx-ingress-controller 
+		  image: quay.io/kubernetes-ingress-controller/nginx-ingress-controller:0.21.0
+		args:
+		- /nginx-ingress-controller
+		- --configmap=$(POD NAMESPACE)/nginx-configuration  (error-log-path, keep-alive, ssl-protocols, need not be have any config at this point)
+		ports: 
+		- name: http
+		  containerPort: 80
+		- name: https
+		  containerPort: 443
+		env: 
+		- name: POD_NAME
+		  valueFrom: 
+		    fieldRef: 
+			  fieldPath: metadata.name
+		- name: POD_NAMESPACE
+		  valueFrom:
+		    fieldRef:
+		      fieldPath: metadata.namespace 
+```
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-configuration
+  
+```
+
+
+we need a service to expose this ingress controller to external world
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-ingress
+spec: 
+  type: NodePort
+  ports: 
+  - port: 80
+    targetPort: 80
+	protocol: TCP 
+	name: http
+  - port: 443
+    targetPort: 443
+	protocol: TCP
+	name: https 
+  selector: nginx-ingress
+```
+
+The ingress controllers have intelligence to monitor the kubernetes cluster and configure nginx server
+To this this, it needs serviceaccount, Roles, clusterRoles, RoleBindings
+```
+apiVersion: v1
+kind: ServiceAccount 
+metadata:
+  name: nginx-ingress-serviceaccount
+
+```
+
+
+
+Ingress Rules
+
+```
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: ingress-wear
+spec: 
+  backend: 
+    serviceName: wear-service 
+	servicePort: 80 
+```
+
+kubectl get ingress 
+
+Rules 
+1. www.my-online-store.com/wear or watch or any
+kubectl describe ingress ingress-wear-watch 
+```
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: ingress-wear-watch
+spec: 
+  rules:  (1 rule, 2 paths)
+  - http: 
+      paths: 
+	  - path: /wear
+        pathType: Prefix 	  
+	    backend: 
+          service:
+		    name: wear-service 
+	        port:
+              number: 80 
+	  - path: /watch
+        pathType: Prefix 	  
+	    backend: 
+          service:
+		    name: watch-service 
+	        port:
+              number: 80 	  
+```
+2. www.wear.my-online-store.com/ or /returns or /support 
+```
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: ingress-wear-watch
+spec: 
+  rules: (2 rules, 2 hosts, 1 path for each)
+  - host: wear.my-online-store.com
+    http: 
+      paths: 
+	  - backend: 
+          serviceName: wear-service 
+	      servicePort: 80 
+   - host: watch.my-online-store.com
+     http: 
+       paths:		  
+	   - backend: 
+           serviceName: watch-service 
+	       servicePort: 80 
+```
+3. www.watch.my-online-store.com/ or /movies or /tv 
+4. any else www.listen.my-online-store.com or www.eat. or www.drink.
+
+
+kubectl create ingress <ingress-name> --rule="host/path=service:port"
+kubectl create ingress ingress-test --rule="wear.my-online-store.com/wear*=wear-service:80"
+
+```
+metadata: 
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: / #(otherwise ingress will forward to /watch endpoint which may not be configured)
+	nginx.ingress.kubernetes.io/redirect-ssl: "false" #(look at logs of ingress-controller, if it is failing due to too many redirects, use this)
+```
+Our watch app displays the video streaming webpage at http://<watch-service>:<port>/
+
+Our wear app displays the apparel webpage at http://<wear-service>:<port>/
+
+We must configure Ingress to achieve the below. When user visits the URL on the left, his request should be forwarded internally to the URL on the right. Note that the /watch and /wear URL path are what we configure on the ingress controller so we can forwarded users to the appropriate application in the backend. The applications don't have this URL/Path configured on them:
+
+http://<ingress-service>:<ingress-port>/watch --> http://<watch-service>:<port>/
+
+http://<ingress-service>:<ingress-port>/wear --> http://<wear-service>:<port>/
+
+
+
+Without the rewrite-target option, this is what would happen:
+
+http://<ingress-service>:<ingress-port>/watch --> http://<watch-service>:<port>/watch
+
+http://<ingress-service>:<ingress-port>/wear --> http://<wear-service>:<port>/wear
+
+Notice watch and wear at the end of the target URLs. The target applications are not configured with /watch or /wear paths. They are different applications built specifically for their purpose, so they don't expect /watch or /wear in the URLs. And as such the requests would fail and throw a 404 not found error.
+
+
+
+To fix that we want to "ReWrite" the URL when the request is passed on to the watch or wear applications. We don't want to pass in the same path that user typed in. So we specify the rewrite-target option. This rewrites the URL by replacing whatever is under rules->http->paths->path which happens to be /pay in this case with the value in rewrite-target. This works just like a search and replace function.
+
+For example: replace(path, rewrite-target)
+In our case: replace("/path","/")
+
+
+Network Policies
+By default - kubernetes allow all
+``` allow ingress from api-pod on port 3306
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: db-policy
+spec: 
+  podSelector:
+    matchLabels: 
+      role: db
+  policyTypes:
+  - Ingress (Egress is not in policyTypes, so egress traffic unaffected
+  // - Egress
+  ingress:
+  - from: 
+    - podSelector: (1st rule)
+        matchLabels: 
+          name: api-pod 
+      namespaceSelector: (from the pod from this namespace)
+        matchLabels:
+          name: staging
+    - ipBlock: (or 2nd rule, add in egress, as it is egress to db pod)
+        cidr: 192.168.0.10/32 (backup server not in kubernetes cluster)
+    ports: 
+    - protocol: TCP
+      port: 3306
+```
+---
+
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-ingress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-ingress
+spec:
+  podSelector: {}
+  ingress:
+  - {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-egress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-all-egress
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  egress:
+    to: 
+    - {}
+---
+
+k get po --show-labels
+
+If we put TCP in port in netpol, then ping is not allowed
+
+
+
+Persitence and Volumes
+
+```
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: <>
+spec: 
+  containers: 
+  - name: <name-of-container>
+    image: <image>
+    volumeMounts: 
+    - mountPath: /var/local/aaa
+      name: mydir 
+    - mountPath: /var/local/aaa/1.txt
+      name: myfile
+  volumes: 
+  - name: mydir 
+    hostPath: 
+       # Ensure the file directory is created
+      path: /var/local/aaa 
+      type: DirectoryOrCreate
+  - name: myfile 
+    hostPath: 
+      path: /var/local/aaa/1.txt 
+      type: FileOrCreate
+```
+```
+spec:
+  containers:
+  - image: alpine
+    name: alpine
+    command: ["bin/sh", "-c"]
+    args: ["shuf -i 0-100 -n 1 >> /opt/number.out;"]
+    volumeMounts:
+    - mountPath: /opt
+      name: data-volume
+  volumes: 
+  - name: data-volume 
+    hostPath: 
+      path: /data (not recommended for use across nodes, as /data is different for each node)
+      type: Directory 
+```
+
+```
+volumes:
+- name: data-volume
+  awsElasticBlockStore: 
+    volumeID: <volume-id>
+    fsType: ext4
+```
+
+
+administrator creates persistent volumes and user creates persistent volume claims
+one to one b/w PV - PVC 
+```
+apiVersion: v1
+kind: PersitentVolume
+metadata:
+  name: pv-col1
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 1Gi
+  persistentVolumeReclaimPolicy: Retain //default-Retain, others-Delete, Recycle
+  awsElasticBlockStore: 
+    volumeID: <volume-id>
+    fsType: ext4
+```
+k get pv 
+
+```
+apiVersion: v1
+kind: PersitentVolumeClaim
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi
+  
+```
+kubectl create -f pvc-definition.yaml
+k get pvc 
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: mypod
+spec:
+  containers:
+    - name: myfrontend
+      image: nginx
+      volumeMounts:
+      - mountPath: "/var/www/html"
+        name: mypd
+  volumes:
+    - name: mypd
+      persistentVolumeClaim:
+        claimName: myclaim
+```
+
+
+Storage Classes(Dynamic provisioning) not in exam
+```
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: google-storage 
+provisioner: kubernetes.io/gce-pd 
+volumeBindingMode: <>
+```
+```
+kind: Pod
+spec:
+  gcePersisitentDisk: 
+    pdName: pd-disk
+    fsType: ext4 
+```
+Now we no longer need PV and any associated storage is created when storage class is created 
+
+in pvc, to use storageclass we defined
+```
+kind: PersitentVolumeClaim
+spec: 
+  storageClassName: google-storage(storage class resource) (storage class creates pv, we need not manually create pv)
+```
+
+Stateful Sets(not in exam)
+MySQL replication across servers (single master(RW), multi slave(R))
+1st =, master, then slaves 
+2nd = cp data from master to slave 
+3. enable continuous replication from master to slave1
+4. wait for slave 1 to be ready
+..slave1 to slave2...
+master to slave2
+7. configure master address on slave
+
+Stateful sets= order, name mysql-0, mysql-1, ...
+```(similar to deployment)
+apiVersion: v1
+kind: StatefulSet
+metadata:
+  name: mysql
+  labels:
+    app: mysql
+spec:
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec: 
+      containers: 
+      - name: mysql
+        image: mysql
+  serviceName: mysql-h (headless-service-name)
+  // podManagementPolicy: Parallel
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mysql
+
+```
+deleted in order (5-1),, created in order(1-5)
+can override with `podManagementPolicy: Parallel`
+headless service creates dns record with podname.headless-servicename.namespace.svc.cluster-domain.example 
+                                          mysql-0.mysql-h.default.svc.cluster.local
+```
+apiVersion: v1
+kind: Service
+metadata: 
+  name: mysql-h  (----down)
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app: mysql 
+  clusterIP: None (differentiates b/w service and headless-service)
+```
+```
+kind: Pod
+metadata:
+      labels:
+        app: mysql
+    spec: 
+      containers: 
+      - name: mysql
+        image: mysql
+      subdomain: mysql-h (---up name of svc headless)
+      hostname: mysql-pod (2nd condition for creating dns entry) but if we create using deployment every hostname would be same, here statefulsets help
+```
+
+for creating storage in stateful sets, you move the pvc(metadata, spec) to under volumeClaimTemplates 
+
+
+
+
+Security Primitives
+    kube-apiserver
+    Authentication: username-passwords, tokens, certs, external like LDAP, ServiceAccounts 
+    Authorization: RBAC, ABAC(Attribute based), Node Authorization, Webhook mode 
+    
+    
+        curl https://my-kube-playground:6443/api/v1/pods --key admin.key --cert admin.cert --cacert ca.crt 
+        
+        kubectl get pods --server my-kube-playground:6443 --client-key admin.key --client-certificate admin.crt --certificate ca.crt 
+        
+        kubectl get pods --kubeconfig (with contents of above params)
+        by default, it looks under $HOME/.kube/config
+```
+apiVersion: v1
+kind: Config
+current-context: dev-user@google (default context)
+clusters:
+- name: my-kube-playground
+  cluster: 
+    certificate-authority: /etc/kubernetes/ca.crt (better to use full path) or cert..-auth..-data field in base64 
+    certificate-authority-data:(use instead of above): Mx...
+      SX...l==
+    server: https://my-kube-playground:6443
+contexts: //(cluster + user)
+- name: my-kube-admin@my-kube-playground
+  context: 
+    cluster: my-kube-playground
+    user: my-kube-admin 
+    namespace: <finance, marketing....>
+users:
+- name: kube-admin
+  user: 
+    client-certificate: admin.crt 
+    client-key: admin.key 
+```        
+kubectl config view 
+kubectl config use-context prod-user@production 
+kubectl config -h 
+kubectl config --kubeconfig=/root/my-kube-config use-context research
+
+
+Api Groups
+core /api
+/v1 - /namespaces
+
+namedapis apis/ 
+/apps/v1 - deployments, replicasets, statefulsets
+/networking.k8s.io/v1/networkpolicies
+/networking.k8s.io/v1/certificatesigningrequests
+
+
+actions - list, get, create, delete, update, watch 
+
+curl http:://localhost:6443 -k  --key admin.key --cert admin.crt --cacert ca.crt 
+
+alternatively launch proxy - kubectl proxy (which is different from kubeproxy)
+
+Node Authorizer 
+kubelet part of system:nodes group node01 will be authorized by kube api 
+
+
+ABAC - Policy file in JSON for each "user" or "group" in file - edit policy file and restart apiserver 
+{"kind": "Policy", "spec": { "user": "dev-user", "namespace": "*", "resource": "pods", "apiGroup": "*" }}
+
+RBAC: 
+
+Webhook: open-policy-agent
+
+AlwaysAllow
+AlwaysDeny
+
+these are set in kube-apiserver 
+--authorization-mode=AlwaysAllow (default)
+
+--authorization-mode=Node,RBAC,Webhook (first Node if not-> RBAC -> Webhook )
+
+
+```RBAC
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role 
+metadata: 
+  name: developer 
+rules: 
+- apiGroups: [""]  // for core, empty
+  resources: ["pods"]
+  verbs: ["list", "get", "create", "update", "delete"]
+- apiGroups: [""]  
+  resources: ["ConfigMap"]
+  verbs: ["list", "create"]
+```
+
+Link User to that Role
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata: 
+  name: devuser-developer-binding
+subjects: 
+- kind: User 
+  name: dev-user 
+  apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: Role 
+  name: developer
+  apiGroup: rbac.authorization.k8s.io
+```
+ 
+Role and RoleBindings are limited to namespaces(default in above ones)
+kubectl get roles/rolebindings
+kubectl describe role/rolebinding <>
+
+what-if we want to check    
+kubectl auth can-i create deployments
+yes
+kubectl auth can-i delete node 
+no  
+
+adminstrator can test for/impersonate other users too --namespace test
+kubectl auth can-i create deployments --as dev-user 
+no 
+kubectl auth can-i  delete node --as dev-user 
+no
+
+```
+- apiGroups: [""]  // for core, empty
+  resources: ["pods"]
+  verbs: ["list", "get", "create", "update", "delete"]
+  resourceNames: ["blue", "orange"] // can restrict to certain resources too 
+```
+
+
+ClusterRoles, ClusterRoleBindings
+
+node is cluster scoped, it cant limited to namespace 
+Resources can be namespaced or cluster scoped 
+
+To list all namespaced resources
+kubectl api-resources --namespaced=true
+kubectl api-resources --namespaced=false
+
+Roles and RoleBindings are used for namespaced resources 
+ClusterRoles, ClusterRoleBindings are for cluster scoped resources and namespaced resources 
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole 
+metadata: 
+  name: cluster-administrator 
+rules: 
+- apiGroups: [""]  // for core, empty
+  resources: ["nodes"]
+  verbs: ["list", "get", "create", "delete"]
+
+```
+kubectl create clusterrole pod-reader --verb=get,list,watch --resource=pods
+
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata: 
+  name: cluster-admin-role-binding
+subjects: 
+- kind: User 
+  name: cluster-user 
+  apiGroup: rbac.authorization.k8s.io
+roleRef: 
+  kind: ClusterRole 
+  name: cluster-administrator
+  apiGroup: rbac.authorization.k8s.io
+```
+
+Admission Controllers 
+can control whether we shouldn't allow docker images, runAsUser: 0 rootuser, not allow some securityCOntexts 'MAC_ADMIN'
+authentication -> authorization -> admission controllers -> create pod 
+They help in security . some examples 
+- AlwaysPullImages 
+- DefaultStorageClass 
+- EventRateLimit
+- NamespaceExists (NamespaceAutoProvision not default)
+...
+
+run to see what admission controllers are enabled by default 
+kube-apiserver -h | grep enable-admission-plugins 
+or 
+kubectl exec kube-apiserver-controlplane -n kube-system -- kube-apiserver -h | grep enable-admission-plugins
+
+To add admission controller update in kube-apiserver.service
+```
+--enable-admission-plugins=NodeRestriction,NamespaceAutoProvision 
+--disable-admission-plugins=DefaultStorageClass
+```
+NamespaceAutoProvision,NamespaceExists are deprecated and replaced by NamespaceLifecycle 
+
+ps -ef | grep kube-apiserver | grep admission-plugins
+
+
+
+Validating and Mutating Admission Controllers 
+
+NamespaceExists -  Validating 
+DefaultStorageClass - Mutating
+
+To support external admission-controllers into our deployed webhook server (which returns the received json with "allowed": true/false)
+MutatingAdmissionWebhook
+ValidatingAdmissionWebhook
+```
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: demo-webhook
+webhooks:
+  - name: webhook-server.webhook-demo.svc
+    clientConfig:
+      service:
+        name: webhook-server
+        namespace: webhook-demo
+        path: "/mutate"
+      caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURQekNDQWllZ0F3SUJBZ0lVYVAzclY1ZFlxZXVheVZXV0RmeUswWjdxRmpRd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0x6RXRNQ3NHQTFVRUF3d2tRV1J0YVhOemFXOXVJRU52Ym5SeWIyeHNaWElnVjJWaWFHOXZheUJFWlcxdgpJRU5CTUI0WERUSXlNVEF5TlRFMU5EWXlObG9YRFRJeU1URXlOREUxTkRZeU5sb3dMekV0TUNzR0ExVUVBd3drClFXUnRhWE56YVc5dUlFTnZiblJ5YjJ4c1pYSWdWMlZpYUc5dmF5QkVaVzF2SUVOQk1JSUJJakFOQmdrcWhraUcKOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQXRUam8xQnJRbjA3TVJ1Zy93WTJJeGlkVjRCNW9VNnpORkRUMApLUzYwUFN0eXkxVU4ycThuVVhkc3QxRmF2dHNLK3h4aWtzMGlJcks4SUY1RU4vOWRiUE83ZU42VHRibzBkSkNDCjNFRkF1amlNcUcwT3hTNEVNYy9GUHBKYklrOXRidkhSUThncitBZzZUbXBWMlYxQlB2OEZSekppaDRXajVTcTMKOUIvbXAwV0o2Q3JaT2k1YlhRUGhOcVhsWnZvN3VXYXJHWHJwRVE1RzVyMGszV0lYNEF1S0FjOEROMDZETlVRdQpSWXMyUGlyc1B1R3V6eTBjby9VRlBnWWkwMHBSaXNESzRidUNNL3RBWXRZWnErM2t1T1pVWTVSQ0VqUzdwclppCnloZmtYRjFZOHJBUlQ0MkZJZGxHVDluZ3dIUytuQVUvU04zUXpxQVppTStPbTUrVUV3SURBUUFCbzFNd1VUQWQKQmdOVkhRNEVGZ1FVRmhTRHRuTXVkUEEvYTloT0RPSGx6bm4wRE93d0h3WURWUjBqQkJnd0ZvQVVGaFNEdG5NdQpkUEEvYTloT0RPSGx6bm4wRE93d0R3WURWUjBUQVFIL0JBVXdBd0VCL3pBTkJna3Foa2lHOXcwQkFRc0ZBQU9DCkFRRUFJNW1RWFNrMHFEbE5Hb3JjL0RnMWhEMll6Nmo3dWxkY25MMGtyN0UwbGZoSkptVkdMbzBxa2dnOFVmNC8KZUlsTytpWnNMK013OWt3WlRIRHVxckxhbFZZWDBqYVgvMUk2QTFaWmNiZXRDdW04aVp5ZEtxLzkra1pRek5oawo3RDROSHEwSUtIeVlqRmQ2L0I1RlFhdHI4UllQZHVZajVqWTRLNjZ5RkNmYk9uMjdIN2FVN3NiVFA1VG1adExmCkdpQ0NQTUtCblRUZHpyWCt3VjduWlQ2TXd6ZUxSSjdwQ2lGb0RuN1RKQm9tMitZVXFyWUYvaytTVTI0NzI4Q0oKMWRxV3hzUk1MbnJLaDJ3YTl6bVZSY0FaT2dFVCs1T1E5MkhJbk9zNWdubEZpYXpuM05zQ1I4bGtSeGM5V0l0WgphaHkweGNDL2tHVjh2R3EySVlBR0dnOWdmdz09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [""]
+        apiVersions: ["v1"]
+        resources: ["pods"]
+    admissionReviewVersions: ["v1beta1"]
+    sideEffects: None
+```
+
+API Versions
+alpha
+beta
+stable/ga 
+```in kube-apiserver.yaml
+ExecStart=...
+--runtime-config=batch/v2alpha1\\
+```
+
+API Deprecations:
+course - v1alpha1
+webinar - v1alpha1
+
+1. API elements can only be removed by incrementing the version of the API group 
+course - v1alpha2
+
+2. API objects must be able to round-trip between API versions in a given release with info loss, with the exception of whole REST resource that don't exist in some versions
+
+beta - support for 3 releases or 9 months whichever is longer 
+ga - 3 releases or 12 months whichever is longer 
+alpha = 0 releases
+
+kubectl convert -f <old-file> --output-version <new-api>
+curl -LO https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl-convert
+chmod +x kubectl-convert
+ mv kubectl-convert /usr/local/bin/kubectl-convert
+
+
+Identify short-names
+kubectl api-resources 
+k explain job - to see apiVersion 
+
+ preferred version for authorization.k8s.io ?
+ Where & runs the command in the background and kubectl proxy command starts the proxy to the kubernetes API server.
+root@controlplane:~# kubectl proxy 8001&
+curl http://localhost:8001/apis/authorization.k8s.io 
+
+always backup before making changes to `cp kube-apiserver.yaml kube-apiserver.yaml.backup`
+
+
+# Create a secret with several keys
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: Secret
+metadata:
+  name: mysecret
+type: Opaque
+data:
+  password: $(echo -n "s33msi4" | base64 -w0)
+  username: $(echo -n "jane" | base64 -w0)
+EOF
+
+
+
+
+
+CustomResourceDefinition crd/crds
+(stores in etcd datastore like deployments, but needs controller to make actions)
+
+CustomContoller(in go/python etc..)
+
+Operator Framework
+OperatorHub.io 
+
+
+Deployment Strategies
+Recreate, RollingUpdate 
+
+
+Blue/Green Canary  - blue(old), green(new) is deployed along old version, now 100% traffic to old, tests run on new. After tests are successful, we switch traffic to green(new)
+best implemented with istio 
+
+```
+kind: Deployment
+metadata: 
+  name: myapp-blue
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      version: v1 
+  template: 
+    metadata: 
+      name: <>
+      labels: 
+        version: v1
+    spec: 
+    ...
+    
+---
+kind: Deployment
+metadata: 
+  name: myapp-green
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      version: v2
+  template: 
+    metadata: 
+      name: <>
+      labels: 
+        version: v2
+    spec: 
+    ...
+
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: my-service
+spec: 
+  selector: 
+    version: v1  (change to v2 after tests are successful)
+```
+
+Canary Updates
+(small % of traffic sent to new)
+Route traffic to both versions how? - set a common label on both deployments - (app: frontend) and use service with app: frontend label
+Route only small percent to v2 how? - reduce pods to min possible (pods in 5:1 )
+Service Mesh like Istio helps here 
+
+
+Helm 
+package manager
+```templates/deployment.yaml
+  spec: 
+    containers: 
+    - image: {{ .Values.image }}
+```
+```values.yaml
+image: wordpress:4.8-apache 
+```
+
+helm search hub wordpress 
+
+to search in bitnami 
+helm repo add bitnami https://charts.bitnami.com/bitnami 
+
+now use 
+helm search repo wordpress  # to search for package in artifactory hub 
+
+helm install [release-name] [chart-name] 
+helm install release-1 bitnami/wordpress 
+helm install release-2 bitnami/wordpress 
+
+
+helm list #to see releases
+helm uninstall my-release #
+
+if only need to download it, not install 
+helm pull --untar bitnami/wordpress (chart usuallu downloads as .tar file)
+
+helm repo list 
+
+```
+
+kubectl explain cronjob.spec.jobTemplate --recursive 
+
+
+bash
+```
+#!/bin/bash
+for i in {1..6};
+do
+#echo $i
+#echo "redis0$i";
+mkdir -p "redi0$i"
+done
+```
+
+```
+#!/bin/bash
+for i in {1..6};
+do
+#echo $i
+echo "redis0$i";
+#mkdir -p "redi0$i" 
+cat << EOF | kubectl apply -f -
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: redis0$i
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /redis0$i
+EOF
+done
+```
+
+```
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: redis-cluster
+spec:
+  selector:
+    matchLabels:
+      app: redis-cluster # has to match .spec.template.metadata.labels
+  serviceName: "redis-cluster-service"
+  replicas: 6 # by default is 1
+  minReadySeconds: 10 # by default is 0
+  template:
+    metadata:
+      labels:
+        app: redis-cluster # has to match .spec.selector.matchLabels
+    spec:
+      volumes:
+      - name: conf
+        configMap:
+          name: redis-cluster-configmap
+          defaultMode: 0755
+      terminationGracePeriodSeconds: 10
+      containers:
+      - name: redis
+        image: redis:5.0.1-alpine
+        command: ["/conf/update-node.sh", "redis-server", "/conf/redis.conf"]
+        env: 
+        - name: POD_IP
+          valueFrom: 
+            fieldRef:
+              fieldPath: status.podIP
+              apiVersion: v1 
+        ports:
+        - containerPort: 6379
+          name: client
+        - containerPort: 16379
+          name: gossip
+        volumeMounts:
+        - name: conf
+          mountPath: /conf
+          readOnly: false 
+        - name: data
+          mountPath: /data
+          readOnly: false 
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+```
+Now we boot the redis cluster. The command to run, is to get the IPs of all the cluster member pods using jsonpath and provides it as arguments to the cluster initialization tool.
+```
+ kubectl exec -it redis-cluster-0 -- redis-cli --cluster create --cluster-replicas 1 $(kubectl get pods -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379 {end}')
+```
