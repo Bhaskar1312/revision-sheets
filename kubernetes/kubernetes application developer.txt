@@ -1560,3 +1560,8 @@ Now we boot the redis cluster. The command to run, is to get the IPs of all the 
 ```
  kubectl exec -it redis-cluster-0 -- redis-cli --cluster create --cluster-replicas 1 $(kubectl get pods -l app=redis-cluster -o jsonpath='{range.items[*]}{.status.podIP}:6379 {end}')
 ```
+
+k run tmp --restart=Never --rm -i --image=nginx:alpine -- curl >IP<
+
+k top pod --sort-by='cpu' --no-headers | tail/head -n 1
+    
