@@ -1,0 +1,27 @@
+ps aux | grep java        
+ <=> jps #list all running jvms(process id, main class) without  classpath,args etc..
+ jps -l # Fully qaulified class name
+ jps -m # show args passed to main method
+ jps -v # show all args passed to jvm itself
+
+javap 
+javap <class file> # list class fields, methods (also for scala, groovy, clojure)
+javap -c <class file> #to see complete bytecode
+
+jmap -heap <process id> # summary of jvm memory space, heap config and gc type
+jmap -histo <process id> # print histogram of each class in heap, instances
+jmap -dump:format=b.file=<file-name> <process-id> # snapshot of entire heap to file 
+
+jhat <heap heap dump file by jmap> # run a local web server 
+
+jinfo <process id> # system props jvm loaded with, and jvm command flags
+
+jstack <process id> # print stack traces for all current java threads running in a jvm
+ 
+jconsole and jvisualvm - graphical tools for connecting to jvms and interactively monitoring
+
+jshell - REPL
+
+
+original: https://medium.com/97-things/there-are-great-tools-in-your-bin-directory-54638f3e200e
+    
