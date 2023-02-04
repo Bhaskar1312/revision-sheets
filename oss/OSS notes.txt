@@ -1,0 +1,112 @@
+Intro to OSS  (LFD102)
+  Use of OSS means source code is made available with a license which provides rights to examine, modify and redistribute, without restriction on the user's identity or purpose.
+  
+  There is a multiplicity of licensing methods, falling into the two general classifications:
+    Permissive (such as BSD-licensed software)
+    Restrictive (such as GPL-licensed software)
+  
+  
+  Proprietary (Closed Source) Software
+    
+    Price is not the point! 
+The difference with OSS and proprietary models has nothing to do with price.
+ One can charge as much as one wants for an open product and one can provide a proprietary product for free. 
+ The license differences have to do with redistribution, modification, reuse of code, etc.
+ 
+ OSS Governance Models
+ Company-Led (mostly, a closed process)
+     Development is strongly led by one corporate or organizational interest
+     One entity controls software design and releases
+     May or may not solicit contributions, patches, suggestions, etc.
+     Internal discussions and controversies may not be aired very much
+     It is not definitively known what will be in the next software release
+     Upon release, all software is completely in the open
+     Examples: Google Android, Red Hat Enterprise Linux
+  Benevolent Dictatorship (strong leadership)
+     One individual has overriding influence in every decision
+     Project's quality depends on that of the dictator
+     Can avoid endless discussions and lead to quicker pace
+     As project grows, success depends critically on the dictator's ability to:
+     - Handle many contributors
+     - Use a sane, scalable version control system
+     - Appoint and work with subsystem maintainers
+     The dictator's role may be social and political, not structural (forks can occur at any time)
+     Maintainers write less and less code as projects mature
+     Example: Linux kernel
+  Governing Board (tighter control by smaller groups)
+     A body (group) carries out discussions on open mailing lists
+     Decisions about design and release dates are made collectively
+     Decisions about who can contribute, and how patches and new software are accepted, are made by the governing body
+     There is much variation in governing structures, rules of organization, degree of consensus required, etc.
+     Tends to release less frequent, but hopefully well-debugged versions
+     Examples: FreeBSD, Debian.
+
+The open source program office serves as a center for functions, including:
+
+Choosing OSS code to be used
+    Facilitating adoption of the code and popularizing its availability and usage
+    Keeping track of usage
+    Auditing compliance considerations
+    Making sure proper information and training is available to all employees, as needed.
+
+Designing an Open Source Policy
+   How much of the product is desired to be OSS? Are there current closed source components which could be replaced by open source ones,
+   perhaps both improving the product and its forward maintenance?
+   Which license(s) are a good fit to your needs and which licenses can you use in various OSS components you integrate, such as libraries, 
+   APIs, etc.? Are you best off with permissive licenses (like BSD or Apache) or more restrictive ones (like GPL)? Can you mix them in one or more released products?
+   Do you have a strong enough understanding (and legal help) to set up procedures for using both proprietary and open source code in a way which protects both types?
+   How will you review the code to make sure things are being done properly, that inappropriately licensed material does not find its way into your code, 
+   both the open and closed parts? Will you use automated license compliance tools, such as FOSSology, SPDX, or FOSS Bar Code Tracker
+   
+   https://www.fossology.org/get-started/faq/
+   
+   Know Where the Code is Coming From: DCO and CLA
+      It is very important for any open source project to document and understand where all contributed code is coming from.
+      This is important for multiple reasons, including:
+      Knowing who the expert(s) are on the contributions; when there are questions or modifications, generally these people need to either answer them or do the work, or at least review it before acceptance.
+      Knowing the legal provenance of the code; if someone either inadvertently or intentionally uses code that violates the license it may have used in another context this can be a big problem. In this case it is important to know who to blame.
+      Two common methods for handling these issues are the use of either a Contributor License Agreement (CLA) or a Developer Certificate of Origin (DCO). There can be arguments about which is more appropriate for a given project. However, a number of well-established projects have migrated from CLA to DCO as their operative integrity documentation.
+      With a CLA (the older method) contributors must sign an agreement which can vary from project to project. For example, they may or may not grant copyright and/or patent licenses.
+      The DCO was introduced by the Linux Foundation in 2004 and is simpler and of lighter weight. Every git commit must be signed off with this approach.
+      With either approach, the servers hosting the software repositories (such as GitHub or GitLab) can use checks to ensure all contributions either have a CLA in place or are signed off as required by a DCO.
+      Generally speaking a CLA is a one-time operation, whereas a DCO requires a sign-off with each contribution, but this is trivial (i.e., adding the -s option to each commit operation).
+      A detailed summary of the use of DCOs is given here. When you use the -s option, each commit will have a message embedded such as:
+      Signed-off-by: Some Developer <some-developer@example.com>
+      
+      
+      
+      Jenkins is an open source CI/CD system.
+      Jenkins X is an open source CI/CD solution for cloud applications on Kubernetes.
+      Spinnaker is an open source multi-cloud continuous delivery platform.
+      Tekton is an open source software specification for CI/CD components.
+      
+      Patents
+      The Open Invention Network (OIN) was created as a global patent pool; companies and other entities which join the OIN enter in a mutual non-aggression agreement 
+      within the OSS-based ecosystem. OIN members agree in return for not suing each other over patent issues, they gain access to each other’s patent portfolio free of charge.
+      
+      Introduction to OSS Licensing and Legal Issues
+      There are two broad classes of licenses: 
+         Restrictive, such as the GPL in all of its forms 
+         Permissive, such as the BSD and Apache Foundation Licenses
+      Restrictive Licenses
+          Demand the software remains open and place strong limitations on any attempt to make proprietary closed products. 
+          Changes to the code must be made available to future recipients. A prominent example is the GPL (General Public License), a copyleft license.
+      Permissive Licenses
+          Do not require modifications and enhancements to be generally available. Prominent examples include the BSD (Berkeley Software Distribution) and Apache licenses.
+          
+      (important) https://en.wikipedia.org/wiki/Comparison_of_free_and_open-source_software_licenses
+      
+      http://oss-watch.ac.uk/apps/licdiff/ - ask questions, get license which suites
+      
+      There are several resources you can use to help you choose the most appropriate license for your project:
+         Open Source Initiative - Open Source Licenses by Category
+         Sponsored by GitHub - Choose an Open Source License - this site walks you through the properties you must consider, helping you decide what license makes sense.
+         (important)TLDRLegal - Browse Software Licenses and Summaries - this site tags software licenses with key properties to help you navigate easier and better understand the existing licenses.
+         GNU - Various Licenses and Comments About Them - this site provides a description of copyleft licenses and comments about them.
+         
+         Gerrit - advanced GIT workflow
+         
+         
+         https://forum.linuxfoundation.org/categories/lfd102-class-forum
+         
+         https://www.gitkraken.com/
