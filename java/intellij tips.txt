@@ -1,0 +1,142 @@
+Intellij Heinz Kabutz
+
+1. open project structure(to change JDK) - CTRL + ALT + SHIFT + S 
+2. Settings - Font, plugins, Editor settings - CTRL + ALT + S
+3. color scheme and key mapping - CTRL + `(tilde) 
+4. Code folding (doc comments, method bodies) + smart keys > camelHump words (to select part of words) in CTRL + ALT + S ( settings)
+5. CTRL + SHIFT + -> <- left/right arrows - to select word by word in camelHump or entire line 
+6. File > Repair IDE -> index corrupted or livelock (kill -9)
+ Help > My Productivity - to see how many features you used - Look at what you dont do and learn shortcut for it
+ 
+7. Presentation assistant - to show what shortcuts you are using to viewers
+8. CTRL + W -> to increase code selection first line, then block, then method, then class
+   and ctrl + shift + w -> to decrease code selection 
+9. Key Promoter X (a separate plugin) -> tells what shortcut to use. e.g Build project CTRL + F9
+
+10. JOL and JMH plugins - JOL for object memory footprint
+11. Find Action (CTRL + SHIFT + A) - shows shortcut 
+12. Shift + Shift (Search everywhere in project). shift^4 -> select in non-project items -ide/jdk as well
+    search for methods in intellij (CTRL + F12), you can also use SHIFT + SHIFT and search for methods in a class
+
+13. ALT + 1 -> open/close the project explorer , then press up/down arrows to move across files 
+14. ALT + 4 -> Run tool , ALT+5 -> Debug window
+15. ALT + 9 -> GIT window 
+16. Jump to last tool window -> F12
+17. SHIFT + ESC -> to hide last opened window
+18. Project Explorer(gear icon) -> settings -> (Enable) Always open selected files, (Enable) always open files with a single click
+19. CTRL + E -> recent files, CTRL + E + E -> toggle only edited files 
+
+20. ALT + ENTER -> fix anything
+21. Generate New Code -> ALT + INSERT (getters,setters,hashCode,equals,toString,etc)
+22.  "/**" ENTER -> doc comments
+23. psvm, main, sout , soutv, soutp(all param print for method), soutm(method name), serr
+24. iter (for loop iterate), fori->for loop , itco -> using iterator, next loop (it tab expands, it enter keeps way it is), itar(over ele of arr), ritar(reverse iter of array)
+    lookup or change variable/input to these via enter 
+    The above are called live Templates -> Ctrl + J (opens list of live templates)
+    ctrl + alt + s  (settings)-> Editor -> live templates -> Java (look for live templates)
+25. Navigation -> CTRL + click or CTRL+B (go to declaration) 
+    CTRL + ALT + B -> go to implementation 
+    CTRL + U -> go to superclass method/superclass
+    Hold CTRL for auto going to implementation(hyper linking)
+    
+26. ALT + F7 -> Find Usages
+27. Navigation -> CTRL + ALT + left/right to move to and from 
+28. Bookmarks CTRL + SHIFT + 1,2 ...A..Z and go using CTRL +1,2...
+29. CTRL + F - Find 
+    CTRL + R - Replace 
+30. SHIFT + enter -> a new line even if u are in middle of a line 
+31. CTRL + W -> if u put cursor in right place very few W presses, put cursor at oepning/closing curly bracket and hit CTRL+W
+32. CTRL + SHIFT + up/down -> to move selected code up/down
+33. Surroud with -> select something and then CTRL + ALT + T -> if/else, try/catch/finally, synchronized
+
+34. CTRL + ALT + J -> live templates context aware C->Callable, RL ->ReadWriteLock.readLock WL ->RWLOCK.writeLockm, I->Iterable or array
+35. own Live templates Preferences -> Editor -> Live templates -> Java -> +
+long $TIME$ = System.nanoTime(); 
+try { 
+ $SELECTION$ 
+} finally { 
+ $TIME$ = System.nanoTime() - $TIME$; 
+ System.out.printf("$TIME$ = %dms%n", 
+ ($TIME$/1_000_000)); 
+}
+
+36. F2 -> go to next error 
+37.  CTRL+D -> duplicates the current line 
+     CTRL + SHIFT + V -> paste from recent buffers
+     CTRL + Y -> delete the current line 
+     CTRL + X (cut),C(copy curr line),V(paste from clipboard)
+     
+     
+Column Select Editing
+38. Press ALT and drag mouse with left click and edit columns
+    or ALT + SHIFT + INSERT using keyboard
+    
+39. CTRL + SHIFT + U toggleCase(switchcase)
+40. CTRL + ALT + Shift + L -> reformat code -> optimize imports + code cleanup (first time)
+    from next time -> CTRL + ALT + L 
+    Editor | General | Auto Import -> Add unambiguous imports on the fly checkbox
+
+41. CTRL+W to duplicate , CTRL+R and select in selection(to remove space), CTRL+W to extend selection to right and toggle case (CTRL + SHIFT + U)
+   use ctrl + w to select and move across whole word 
+   
+   smart line join/split
+   CTRL + SHIFT + J to join lines 
+   
+42. view > appearance > Enter Presentation mode (shows only editor)
+
+43. Smart Auto Completion = CTRL + SHIFT + SPACE 
+    complete statement = CTRL + SHIFT + ENTER 
+    CTRL + P -> to show params if they are not showing
+
+44. //* Next time put one more slash at the start of the line 
+    /*/
+
+45. CTRL + .(DOT) for code folding -> to hide something we already understand
+46. CTRL + O -> override, CTRL + I (Implement)
+47. camelcase code completion COWAL -> CopyOnWriteArrayList
+
+48. File > local history > show history (without git)
+    CTRL + K =>commit a change
+    CTRL + SHIFT + K => push a change
+    CTRL + T => update project from VCS
+   
+49. COPY - F5
+    MOVE - F6 
+    RENAME = SHIFT + F6 = renames whatever we are working on - classes, methods, params, variables, fields(use alt + enter  and enter => to rename all occurences)
+    SHIFT + F6 (to rename in strings, comments as well)
+    
+50. CTRL + SHIFT +F = Find in Files (in notepad++ too)
+
+51. Change signature (of methods)
+  CTRL + F6  
+  Press F2 to enter and ALT + ENTER to show fix, inline param val to null, later remove if condition
+
+52. CTRL + ALT + V -> introduce variable (after selecting or can select later)
+    or add .var and extract variable
+    
+53. CTRL + ALT + M -> SHow context menu and then extract
+54. Inline code -> oppsite to extract method -> CTRL + ALT + N 
+     
+55.  Extract field = CTRL + ALT + F 
+     Extract constant = CTRL + ALT + C (snake case)
+     Extract Param = CTRL + ALT + P 
+     Safe delete = ALT + DELETE -> Check if not used anywhere 
+     Post fix .var, !(and press tab, it flips negation),   convert to multiple ifs or merge multiple if's
+     
+56. Analyzer -> click on src -> Analyze src with default IDE profile 
+  In code style issues, make field final -> with one click 
+  src -> Analyze by only one inspection -> weaker Declaration access can be 
+  
+57. enhanced switch, push down swith 
+    replace with pattern variable
+    
+58. To run or debug current class -> CTRL+SHIFT + F10 / F9
+    vmoptions: 
+    show run/debug settings before start -> Run/Debug configurations -> edit configuration template -> application -> 1. show run/debug before start 2. add vmoptions 
+    toggle breakpoint - CTRL + F8 
+    resume program -> F9 
+    step over -> F8
+    step into -> F7 
+    smart step into -> SHIFT + F7 (when multiple statements in one line, which statement to step into)
+    Force step into -> ALT + SHIFT + F7 -> for debuggig JDK classes or third party classes 
+    step out -> SHIFT + F8 
