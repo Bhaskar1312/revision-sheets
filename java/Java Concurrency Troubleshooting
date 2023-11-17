@@ -1,0 +1,77 @@
+Some GC Defaults and Options
+Tune the heap size with
+-XX:InitialRAMPercentage
+-XX:MaxRAMPercentage
+-XX:MinRAMPercentage
+
+Consider Async Logging(read logback appenders, logging ~log4j)
+code doesn't have to block while logging 
+don't log with standard System.out.println();
+if two methods(or lines) have parallelStream(), they both draw threads from a shared pool of java threads, if one of them is time-consuming, it will hog the whole app 
+
+CPU Utilization increases because in addition to the already running threads, garbage collection threads join the pile. The more garbage there is to collect, the more CPU time the garbage collector will spend cleaning up.
+
+The Z Garbage Collector (ZGC) is a low latency garbage collector that strives to minimize pauses to a maximum of 10 ms per sweep. Ideal for high throughput and low latency goals. It's also sometimes called the Zero Garbage Collector.
+
+Use parallel access safe classes from the java.util.concurrent and java.util.concurrent.atomic packages if you want to have mutable class-level variables, but you don't want to incur the overhead of synchronization.
+
+A JVM frozen by garbage collection can result in both latency and throughput issues.
+
+
+collect thread dumps
+jmc
+jfr
+jcmd
+jstack
+jvisualvm
+
+find java process id
+windows - tasklist /fi "imagename eq java.exe"
+say PID=15184
+unix/macos - pgrep java
+
+standard output
+jcmd 15184 Thread.print 
+or jcmd 15184 > bhaskar_threaddump.txt 
+
+online thread dump analyzers
+jstack.review
+spotify thread dump analyzer 
+
+
+java Thread statuses
+RUNNABLE
+BLOCKED
+WAITING
+TIMED_WAITING
+
+you may ignore internal jvm threads that are marked daemon 
+look for BLOCKED in thread dump, also pay attention to the time fields (cpu, elapsed)
+
+mission control -> can also use with remote jvm
+threads, triggers 
+
+java -XX:+UnlockCommercialFeatures -XX:+FlightRecorder
+
+jfr > Threads, Memory JVM Internals(GC), Event Browser 
+
+jmh > jmh-core, jmh-generator-annprocess 
+
+@State(Scope.Benchmark) -> mark class as provider of states and data 
+@Param("") -> set default value 
+
+@Setup(Level.Invcation) Run before execution 
+
+@Benchmark
+@BenchmarkMode({Mode.ThroughPut, Mode.AverageTime})
+@OutputTimeUnit(TimeUnit.MILLISECONDS)
+@Fork(2) // insulated virtual VMs
+@Threads(5)
+@Warmup(iterations=3,time=3,timeUnit=TimeUnit.SECONDS)
+
+
+all these can be setup by command line options too > good for pipelines
+
+
+
+
