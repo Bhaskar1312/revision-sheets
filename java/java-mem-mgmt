@@ -1,0 +1,92 @@
+collection phase: Sweeping
+Normal Sweeping
+Sweeping with Compacting
+Sweeping with copying
+
+Heap memory
+Young generation(eden space - new objects and survivor space)
+Old generation(tenured space)
+Non-heap memory
+Metaspace from 8+(Permanent generation before java 8)
+
+copying of objects from young gen to old gen is called scavenging
+
+Stop the world GC
+Inorder to mark every object, you need to pause the application. Marking is an expensive process
+
+5 types GC
+Serial GC - mark and copy for young gen, mark compact sweep for old gen on a single thread = stop the world - single core machine 
+Parallel GC - mark and copy for young gen, mark compact sweep for old gen - multiple threads = still stop the world, since multiple threads, onlly need to be stopped for short time
+concurrent Mark Sweep CMS GC - mark and copy and stop the world for young gen, mark sweep compact and mostly concurrent, running on multiple threads 
+G1 (Garbage First) GC - divides heap into small regions, keeps track of live and dead objects per memory segment, aims for shortest pauses possible, memory segment with most dead objects are collected first
+  running on multiple threads and concurrent and stop the world processes
+Z GC - aims for max 10ms pauses, reference coloring, only 64 bit systems, sweep and copy, load barriers (from java 15+)
+
+remembered sets.
+
+Metrics for GC 
+Allocation rate 
+Heap population
+Mutation rate 
+Object life span 
+mark time ( how long to mark all)
+compaction time ( how long to compact and relocate)
+GC cycle time(how long to perform full GC round)
+
+ visualvm.exe --jdkhome "C:\Users\Bhaskar\Downloads\programs\Java\zulu17-fx"
+jstat - jvm statisitcs monitoring tool 
+tasklist /fi "imagename eq java.exe" // say 19184 
+jstat -gcutil  
+>jstat -gcutil 19184 500 10 // half-second, 10metrics
+C:\Users\Bhaskar\Downloads\temp>jstat -gcutil 19184 500 10
+  S0     S1     E      O      M     CCS    YGC     YGCT     FGC    FGCT     CGC    CGCT       GCT
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     -  79.23  25.33  10.45  97.33  89.43      3     0.062     0     0.000     0     0.000     0.062
+     
+     S0 - survivor space 
+     S1 
+     E - eden space
+     O - old space 
+     M - Metaspace 
+     YGC - young gen gc event 
+     YGCT - young gen gc time
+     
+
+smaller heap means GC needs to happen more often 
+when the heap size is too large, a full GC cycle can take very long 
+Best heap size depends on app, < 5% of execution time should be on GC 
+
+java -Xmx16m GCDemo.java
+
+once metaspace reaches limit, it just expands 
+set maximum size, set a threshold for GC, set min and max free ratio 
+java 7 to 8 really was a disaster because of the changes in the perm gen versus the metaspace, and not setting the maximum size could actually make applications have a very, very heavy
+
+>java -XX:MaxMetaspaceSize=40m GCDemo
+
+-XX:+UseSerialGC 
+-XX:+UseParallelGC 
+-XX:+UseConcMarkSweepGC
+-XX:+UseG1GC
+-XX:+UseZGC 
+look at oracle docs for specific options for each 
+
+
+For a healthy heap, You can see the heap size increase, and then garbage collection kicks in and it drops; it increases again, and then garbage collection kicks in and it drops; etc.
+
+java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath="./heapdump.hprof" Demo
+
+common solutions to OOM
+set the object to null
+close the resources as streams and connections
+avoid string concats , use stringbuilder instead 
+careful with static collections holding objects 
+overwrite hashcode and equals(especially when custom objects get added to hashsets/maps)
