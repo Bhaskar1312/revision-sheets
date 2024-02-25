@@ -1,0 +1,174 @@
+int[] values = {1,2,3};
+// object headers - 12 bytes, on 64bit, compressedOOps
+// length - 4 bytes, 
+// 3*4 bytes for values
+// 12 + 4 + 4n = 16 + 4*3 = 28 ~ 8 byte multiple = 32 bytes 
+
+// short[] smaller // 2 bytes per entry
+// byte[] bytes // 1 byte per entry
+
+//String[] names = {"John", "Bhaskar"}
+System.arrayCopy(names, 0, newNames, 0, names.length)
+
+
+reading in array is very fast(especially in primitive arrays, caches), (as contigous)
+
+
+Arrays.asList // returned mutable list of fixed size, add,clear->UnsupportedException
+
+List.of //Java9+ immutable list, set(1, ob) throws UnsupportedException
+
+ArrayList -> .trimToSize();
+ConcurrentLinkedQueue
+
+
+Enumeration<String> en = vec.elements();
+Iterator<String> en = names.iterator();
+while(en.hasNext()) {
+name = en.next();
+if(name.contains("o")) {
+  names.remove(name);
+}
+}
+
+//fail fast iterator - ConcurrentModificationException
+names.listIterator() // go back, front, set element
+
+
+CopyOnWriteArrayList, fail-safe iterator
+
+Arrays.parellelSort(arr);
+-verbose:gc
+
+Sets
+.addAll(set2) //union
+set1.retainAll(set2)//intersection, now set1 contains intersection only
+set1.removeAll(set2) // A-B 
+
+TreeSet should be Comparable, red-black balanced binary trees 
+Set<Object> set = new TreeSet<>();
+set.add("Hello");
+set.add(42);// here classcastexception is thrown, class java.lang.String cannot be cast to class java.lang.Integer
+
+--add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.reflect=ALL-UNNAMED
+
+LongAccumulator is a thread-safe class
+if you shuffle and put to map, then the depth is likely lower than putting sorted elements
+TreeMap/TreeSet is not thread-safe
+add -> putIfAbsent
+
+ConcurrentSkipListSet ConcurrentSkipListMap//sorted, thread-safe get in O(lgn)
+CopyOnWriteArrayList CopyOnWriteArraySet // doesn't use comparator, but uses equals, useful in Observer(instead of java's deprecated one)
+
+Stream.of(arr).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(", "{", "}");
+%2^power is &(2^power -1)
+ use of TreeMap as a fallback for HashMap in Java 8
+ so since java 8, u should implement COmparable<YourObject> if you have lot of clashes like Pixel hashCode 31*x +y;
+ No ConcurrentHashSet; ConcurrentHashMap.newKeySet();
+ 
+ map.of(upto 10 k, v, pairs)
+ map.ofEntries(...varargs)
+ computeIfAbsent has contention issues if a lot of threads are requesting same key 
+ myMap.forEach()
+ MapClashInspector heinz newsletter-235 for java 8 map of nonstring based being 3 times slower than java-7
+ 
+ If you add an element when map gets resized internally, then you could end with infinite loop in HashMap
+ node pointing to itself
+ ConcurrentHashMap low probability of clashing when multiple threads using it
+ 
+ for TreeMap, have comparator, equals, hashCode too
+ 
+ you can subclass Person(used for TreeMap)
+ class Person implements Comparable<Person> {}
+ public static class Programmer extends Person implements Comparable<Programmer> {} //Comparable inherits both Programmer and Person so compile-time error
+ 
+ Comparator interface 
+ Comparator.<Person - Type witness>comparing(p->p.name).thenComparingInt(p->p.year);
+ 
+ Map map = new TreeMap<>(Comparator.comparingInt(String::length));
+ map.put("one", 1);
+ map.put("two", 2);
+ // sout(map); // ["one->2"]
+ 
+ IntStream.range(0,10_000).parallel().forEach(i->myTreeMap.put(i, i*i)); //throws NullPointerException
+ //same for hashMap can produce infinite loop or the map will contain less than 10_000 entries
+ use ConcurrentSkipListMap(sorted) or ConcurrentHashMap or Hashtable
+ 
+ Hashtable firstEntry.equals(secondEntry) and HashMap secondEntry.equals(firstEntry) / dont use asymetric equals and expect both to behave the same
+ 
+ putIfAbsent of hashMap is broken in java-8
+ map.putIfAbsent(null, "oops"); // but map[null="oops"]
+ 
+ LinkedHashMap LinkedHashSet not thread-safe
+ LRU
+ new LinkedHashMap<>(mySize, 0.75f, true/*default false*/) { //remember about accessOrder, or insertionOrder
+ public boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+ return size()> mySize;
+ //if(size() > mySize) {
+ //return super.removeEldestEntry(eldest);
+ }
+ }
+ }
+ 
+ EnumSet
+ EnumSet<Thread.Safe> states = EnumSet.allOf(Thread.State.class)
+ EnumMap
+ IdentityHashMap
+ map.put("Hello", 42);
+ map.get("Hello");//42
+ map.get(new String("Hello"));//null
+ System.identityHashCode(key);//use inside hashCode for use inside ConcurrentHashMap with custom IdentityKey so that thread-safe or Collections.synchronizedMap
+ Properties // extends Hashtable but uses ConcurrentHashMap for everything
+ String ..=System.getProperty("java.util.concurrent.ForkJoinPool.common.parallelism","42");//for Strings
+ int ..=Integer.getInteger("java....", 42);
+ Boolean.getBoolean(..,)
+ Long.getLong()
+ WeakHashMap
+ WeakReference of keys, entries disappear when they are collected by garbage collector
+ get(), size() can be quite slow as entries are expunged 
+ 
+ 
+ Queue, Deque
+ in some of the queues, they calculate size inside size dont maintain size
+ LinkedList - not thread-safe
+ ConcurrentLinkedQueue, ConcurrentLinkedDeque // use CAS, and VarHandles for locks, dont maintain size, so if you keep adding elements and size() O(n) would never return
+ 
+ ArrayDeque - add(throws ex if doesn't add), offer; poll(), remove(), 
+ BlockingQueue
+ LinkedBlockingQueue(extensively used in concurrency package, uses ReEntrantLocks-disadavantage), LinkedBlockingDeque
+ ExecutorsService pool = Executors.newFixedThreadPool(10);// LinkedBlockingQueue
+ ArrayBlockingDeque(uses 1 lock unlike LinkedBlockingQueue 2 locks 1-put 2-take)
+ LinkedTransferQueue
+ Executors.newWorkStealingPool(10);//uses ForkJoinPool 
+ 
+ DelayQueue, synchronousQueue(NOT asynchronous, NOT FIFO, but LIFO, but fairness constructor for FIFO),
+ LinkedTransferQueue(originally published for use in ForkJoinPool, but people are using ForkJoinPool differently
+ recursive work stealing, hence jdk authors changed it)
+ 
+ PriorityQueue // not stable sort, unbounded, priority thread pool 
+ PriorityBlockingQueue
+ Arrays.sort is stable sort for objects, but not for primitives
+ 
+ pq.spliterator().hasCharacterstics(Spliterator.ORDERED)
+ 
+ Collections.addAll(nmae,..varargs)
+ Collections.checked List/Map/NavigableMap
+ 
+ List<String> list = new ArrayList<>(); // instead we can also use Collections.checkedList(new ArrayList<>();,String.class);//here list.add(42) throws CCE 
+ list.add("some");
+ List unchecked = list;
+ list.add(42); // works
+ for(String name: list) // here classcastexception 
+ 
+ Collections.disjoint()
+ Stream.generate(()->).limit(10).collect(Collectors.toList());
+ 
+ List.of()
+ Map.of()
+ Set.of()
+ Collections.unmodifiableList(new ArrayList<>());
+ Collections.synchronizedCollection(new ArrayList<>());
+ 
+ java.util.Arrays
+ Arrays.deepEquals(arr1, arr2); // >= 2d 
+  Arrays.deepToString();
