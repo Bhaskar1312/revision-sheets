@@ -1,0 +1,1167 @@
+Welcome to Databases and SQL
+Hello, and welcome to the magical world of databases and SQL!
+
+First off, what is a database? A database is like a huge, digital filing cabinet where you can store, manage, and retrieve data. In this course, we'll focus on a specific type of database known as a relational database. A relational database stores data in tables, much like how an Excel file has different sheets for different sets of data.
+
+Now, SQL, which stands for Structured Query Language, is the standard language used to interact with these databases. Think of it as a toolbox for managing and manipulating data. Whether you want to find a specific piece of data, update it, delete it, or create a new one, SQL is your go-to resource.
+
+SQL and Its Tools - Introduction to MySQL
+The tool we're going to use in these lessons is MySQL. While there are multiple database management systems that use SQL, such as PostgreSQL and SQLite, MySQL is a well-established, flexible tool. That's why we've chosen it to kickstart our SQL journey.
+
+Additionally, MySQL's widespread use and supportive community make it an excellent starting point for beginners, ensuring you can find help and resources easily as you learn.
+
+Your Dataset - Lionel Messi's Career Stats
+To make our data journey engaging, we're using a unique dataset – tables that capture various aspects of Lionel Messi's illustrious career. This dataset includes detailed statistics from different seasons, matches, goals, assists, and more. For now, let's focus on one table: Seasons. Here's a sneak peek at a sample of the Seasons table.
+
+season_id	season	trophies_won
+1	04/05	1
+2	05/06	2
+This table records each season with a unique identifier, the name of the season and the number of trophies won. With this in mind, let's move on to writing our first simple SQL command.
+
+The SHOW TABLES Command
+Sometimes you might want to know what tables are present in the database you're working with. Here is where the SHOW TABLES command comes in handy:
+
+SHOW TABLES;
+
+Executing this command returns a list of all the tables in your current database:
+
+Tables_in_practice_db
+clubs
+competitions
+matches
+matchevents
+players
+seasons
+
+Understanding SQL Syntax Essentials
+Learning SQL syntax effectively is crucial for communicating clearly with databases. Here are some fundamental syntax components to know:
+
+Semicolon (;): Serves as the end of a statement, similar to a period in a sentence. Correct usage is crucial for clear command separation. Example: SHOW TABLES;.
+
+Comments: Comments are used for adding notes or explanations within your SQL code, which are ignored during execution. SQL supports both single-line and multi-line comments.
+
+Single-line comments start with --. The rest of the line after -- is ignored by SQL. For example:
+
+-- This command lists all tables
+SHOW TABLES;
+
+Multi-line comments are enclosed in /* and */, ignoring everything in between. These are useful for longer explanations or notes. Example:
+
+/*
+The following command is used
+to display all tables in the database
+*/
+SHOW TABLES;
+
+Grasping the use of semicolons for statement demarcation and comments for annotating your SQL scripts ensures your queries are both effective and easily understandable.
+
+Getting to Know a Table - Viewing All Data
+Next, let's learn how to view all data from a table.Getting to Know a Table - Viewing All Data
+Next, let's learn how to view all data from a table.
+
+SELECT * FROM Seasons;
+
+The SELECT keyword is used to specify the data we wish to see. The asterisk * represents our request to see all the data. Lastly, FROM Seasons; instructs the database to display the data from the Seasons table.
+
+Upon executing this command, we'll receive a comprehensive list of all the data present in the Seasons table. You'll get to try it in the practice section that follows.
+
+Recap
+That's a wrap for our first lesson! We've journeyed from understanding the basics of databases and SQL to learning how to write our first query. Now, you're equipped to display a list of all tables in your dataset using SHOW TABLES; and to view all data from a table with SELECT * FROM Seasons;.
+
+Now, let's apply our newly acquired knowledge to some practical exercises! The upcoming practice exercises are based on the topics covered in this lesson. These will reinforce your understanding and help you become comfortable with the basics of SQL.
+
+
+Navigating the SQL SELECT Statement
+Greetings, and welcome to our second unit in the "Learning SQL with Leo Messi" course!
+
+You have already journeyed through what databases are, explored the world of SQL, and understood the usage of MySQL. Remember how we wrote our first SHOW TABLES SQL command to list all the tables in a Messi database? That was your first step into SQL syntax!
+
+SQL, unlike many programming languages, doesn't deal with logic or flow control; instead, it understands, manipulates, and retrieves data stored in databases in a structured manner.
+
+Getting to Know SELECT Syntax
+In this lesson, we will cover the SELECT keyword. The syntax is straightforward.
+
+General Syntax:
+SELECT column1, column2, ..., columnN FROM table_name
+In this syntax, you mention the column names that you want to retrieve, separated by commas. If you want to retrieve all columns, replace the column names with an asterisk (*).
+
+Let's see how it works!
+
+Querying the Database: Select All
+Let's pull all the data from the Clubs table. We'll use the asterisk (*) symbol to do this.
+SELECT * FROM Clubs;
+This statement fetches all columns, along with their data, from the table Clubs. You would see club_id, club_name, club_country, and more, all displaying data from the Lionel Messi's clubs table.
+
+SELECT for Specific Columns
+Now, what if we want only specific information, such as the club name and club country? It's simple. We replace the asterisk with the required column names. Here's how:
+SELECT club_name, club_country FROM Clubs;
+In this example, we have fetched only the club_name and club_country columns from our Clubs table. Isn't fine-tuning our query results exciting?
+
+Alias in SQL: Using AS Keyword
+Can we rename column names in the output for better understanding? Yes, we can! Thanks to SQL aliasing features. The AS keyword is used to rename a column or table with an alias.
+SELECT club_name AS Name, club_country AS "Club Country" FROM Clubs;
+In this statement, AS is used to rename club_name to Name and club_country to Club Country in our output. Notice that we use double quotes around Club Country because the new name contains spaces. This way, our result set has more comprehensible column names.
+
+The output of this query would be:
+
+Name	Club Country
+FC Barcelona	Spain
+Paris Saint-Germain	France
+
+Wrapping Up: Summary and Preparing for Practice
+Let's recap what we've covered:
+
+SELECT * FROM Clubs will fetch all columns.
+SELECT club_name, club_country FROM Clubs will fetch specific columns.
+SELECT club_name AS Name, club_country AS "Club Country" FROM Clubs will fetch specific columns and rename them in the output.
+Practice these commands with different columns and aliases to gain a firm understanding of the SELECT statement. Don't worry if you make mistakes — they are stepping stones to mastering any new skill. Let's get to practice.
+
+End of Lesson Recap and Lookahead
+That wraps up our second unit! You now understand the SQL syntax, the SELECT command, and the usage of the AS keyword to rename items in the output of your query.
+
+The practice exercises that follow this lesson will further reinforce these concepts. Remember, the best way to learn is by doing. So, try writing and running your own SQL commands before you move on to the practice exercises.
+
+Great job so far, and keep practicing!
+
+Introduction
+Greetings! In the previous lessons, we immersed ourselves in the basics of SQL, learned about databases, and discussed the SELECT statement. We practiced those concepts with actual data related to soccer superstar Lionel Messi. This lesson brings us to another important aspect of SQL — the WHERE clause. With this tool, we'll be able to narrow down our data retrieval to only select the records that meet certain conditions.
+
+Understanding the WHERE Clause
+The WHERE clause is an essential part of SQL used to filter records. This clause extracts only those records from a table that fulfill a specified condition. The WHERE clause can be used with SQL commands like SELECT, UPDATE, DELETE, etc. It significantly enhances our ability to interact with a database by allowing us to retrieve targeted data instead of complete sets of records.
+
+Syntax of WHERE Clause
+The syntax of the WHERE clause looks like this:
+
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+
+In this syntax, after the SELECT statement and the FROM statement, we add the WHERE clause followed by a condition. The condition is what we set to filter our data. If the condition is true for a record, then that record is selected.
+
+Your Dataset - Lionel Messi's Matches
+Before we dive into examples of using the WHERE clause, let's familiarize ourselves with the Matches table. This table stores details about soccer matches and includes the following columns:
+
+match_id	season_id	competition_id	matchday	date	venue	club_id	opponent_id	result
+1	1	1	34	2005-01-05	H	1	2	2:0
+2	2	2	Group Stage	2005-11-02	H	1	2	5:0
+
+Example of WHERE Clause Use
+Let's see the WHERE clause in action to fetch matches from a specific year. Suppose you want to know all the matches Lionel Messi played in 2005. Here's how you would write the SQL query:
+
+SELECT match_id, date, venue, result
+FROM Matches
+WHERE YEAR(date) = 2005;
+
+This query uses the WHERE clause to filter albums where the date year is equal to 2005. Note how we used the YEAR() function on date for this query, as date is a DATE type column.
+
+Another Example
+To filter our records and get specifics, we would lean on the WHERE clause. Let's say we are interested in all of Messi's matches played after the year 2005. We can achieve this by adding a WHERE clause to our previous query:
+
+SELECT * FROM Matches
+WHERE YEAR(date) > 2005;
+
+Here, WHERE YEAR(date) > 2005 is the condition we've set. The YEAR(date) function extracts the year from the date column, and > 2005 specifies that we’re looking for records where the year is greater than 2005. The query selects all rows from the Matches table whose date field contains a year later than 2005.
+
+Bringing it Together and Next Steps
+Well done for getting through this new concept. We've just learned what the WHERE clause is, how its syntax works, and how it helps us customize our data retrieval process. By using the WHERE clause, we were able to retrieve all of Messi's matches played after 2005 from the Matches table.
+
+Next, in our practice exercises, we'll be using the WHERE clause extensively to create more selective queries. Remember, mastery comes with practice. So head over to the exercises and give it a go! Soon enough, you'll be navigating SQL databases like a pro!
+
+Introduction to the Lesson
+Great job on making it this far! Today we're going to extend your SQL knowledge even further. So far, you've learned about the basics of SQL, the SELECT statement, and the WHERE clause. Today, we're going to focus on enhancing those skills using logical operators.
+
+Logical Operators are at the heart of any computational language, SQL being no exception. They're used in the WHERE clause of SELECT statements (as well as other statements like INSERT, UPDATE, and DELETE which you'll learn about in the future) to combine or negate conditions and ultimately help us sieve out precise information from our database.
+
+Understanding AND and OR Operators in SQL
+Firstly, we have the AND and OR operators.
+
+An AND operator returns TRUE if both listed conditions are true. It essentially narrows your search results because it adds more conditions that records must meet.
+
+Meanwhile, an OR operator returns TRUE if either of the conditions listed is true, effectively broadening your search results because it only requires one of the conditions to be met.
+
+To see them in action, follow the code examples:
+
+/* Using 'AND' operator */
+SELECT * FROM Matches WHERE competition_id > 1 AND date < '2006-01-01';
+
+/* Using 'OR' operator */
+SELECT * FROM Matches WHERE venue = 'H' OR result = '5:0';
+
+Now let's analyze the above code snippets:
+
+In the first example, we employ the AND operator, which will extract matches from the database (SELECT * FROM Matches) that meet both conditions - the competition_id is greater than 1 and the date is earlier than 2006-01-01.
+
+In the second snippet, we utilize an OR operator, extracting matches that are either played at Home venue (venue = 'H') or the result is 5:0 (result = '5:0'). This means matches that fulfill either or both conditions will be returned.
+
+Introduction to IN and BETWEEN Operators in SQL
+Next, we have the IN and BETWEEN operators:
+
+The IN operator allows us to specify multiple values in a WHERE clause, a clean, efficient alternative to multiple OR conditions.
+
+The BETWEEN operator selects values within a given range, which can be numbers, text, or dates.
+
+Now let's use these operators:
+
+/* Using 'IN' operator */
+SELECT * FROM Matches WHERE match_id IN (1, 2, 3);
+
+/* Using 'BETWEEN' operator */
+SELECT * FROM Matches WHERE match_id BETWEEN 1 AND 5;
+
+The first example employs the IN operator to extract (SELECT * FROM Matches) matches that have a match_id of 1, 2, or 3. It's less tedious than writing match_id = 1 OR match_id = 2 OR match_id = 3.
+
+In the next line, the BETWEEN operator performs a range-based search. So, this command will extract matches that have a match_id between 1 and 5, i.e., numbers 1, 2, 3, 4, and 5.
+
+Conceptualizing the NOT Operator
+Finally, we have the NOT operator, which is used to exclude records that meet specific conditions. Let's try it out in a SELECT statement:
+
+/* Using 'NOT' operator */
+SELECT * FROM Matches WHERE match_id NOT BETWEEN 3 AND 8;
+
+In the snippet above, we use the NOT operator to exclude certain records from our selection. This line extracts features of matches where the match_id is not in the range of 3 to 8.
+
+Logical operators, such as AND, OR, IN, NOT IN, and BETWEEN, help us refine our SQL queries to get the data we need in a more efficient and specific way. These tools will allow us to retrieve specific sets of data from our database, which in our case, are Messi's football stats.
+
+Review, Conclusion, and Upcoming Practice
+Great job! Today, you've deepened your understanding of the SELECT statement through the usage of logical operators, making your data retrieval more precise and flexible. You started with AND and OR operators, moved to the IN operator, and finally used the BETWEEN operator.
+
+As usual, remember that practice makes perfect! Our upcoming exercises will offer hands-on learning opportunities to further enhance your skills and understanding. We'll be using Messi's soccer stats to run some SQL queries using all the logical operators you've learned.
+
+So, get ready to retrieve some specific data while deepening your understanding of SQL. Keep practicing, and you'll become a SQL superstar in no time!
+
+Introduction
+Hello again! As we continue our journey through the world of SQL, let's take a quick moment to remember how far we've come. We've worked our way through the basics of SQL, practiced with queries, understood how to select data from tables, and even learned how to filter our data using the WHERE clause and logical operators.
+
+Now, let's explore a new key SQL keyword — ORDER BY — and discover how we can use this to organize and sort our data.
+
+Understanding `ORDER BY` Clause
+In SQL, the ORDER BY keyword is used to sort the result set in ascending or descending order. It's an invaluable tool when seeking insights from data and one that you will use frequently. The ORDER BY keyword sorts the records in ascending order by default, but descending order can be applied by using DESC after the column name.
+
+To illustrate how this works, let's say we have a Matches table with columns: match_id, date, and result. If we would like to sort our list of matches by year in descending order, we could use the ORDER BY clause like this:
+
+SELECT match_id, date, result 
+FROM Matches
+ORDER BY YEAR(date) DESC;
+
+Linking SELECT with ORDER BY
+Remember our dear friend, the SELECT statement? Well, it's back again. This time, however, we're going to pair it up with the ORDER BY clause. The general syntax looks like this:
+
+SELECT column_name 
+FROM table_name 
+ORDER BY column_name ASC|DESC;
+
+To better understand, let's look at a code that you will know how to write by the end of this lesson:
+
+SELECT match_id, date, result
+FROM Matches 
+ORDER BY YEAR(date) ASC;
+
+This code retrieves album names and their corresponding match dates from the Matches table and organizes them in ascending order of their year.
+
+Interpreting Results
+Let's break down our SQL query and the output:
+
+SELECT match_id, date, result: This part of the command specifies the columns that we want to retrieve from the Matches table.
+FROM Matches: Here we are specifying the table that we want to retrieve data from.
+ORDER BY YEAR(date) ASC: The ORDER BY clause sorts the records based on the year. The ASC part specifies that we want the sorting to be in ascending order. The ORDER BY keyword sorts the records in ascending order by default, so the ASC keyword is optional here.
+If we run the query, we would see the matches listed in reverse order.
+
+Summary and Preparation for Practice
+Great job! Today, you've learned how to sort data in SQL using the ORDER BY clause. Understanding how to arrange your data using ORDER BY is a critical skill as you delve into more complex data analysis.
+
+Prepare for the upcoming practice sections where you will get to flex your SQL muscles by using the ORDER BY clause to sort different aspects of Messi's dataset. Happy sorting!
+
+Just remember, the goal here isn't just to know how to use the ORDER BY clause, but to understand why you use it and when to use it.
+
+
+Introduction and Expanding the Horizon
+Welcome! I'm thrilled to have you all on board for this exciting adventure — Learning SQL Joins with Leo Messi. This course combines the allure of Messi's soccer career with the excitement of data analysis, creating a unique, engaging learning experience for you.
+
+We are about to dive into the fascinating world of SQL JOINs, linking tables together in complex but significant ways, much like Messi intricately navigates through defenders on a soccer field.
+
+Our tool of choice for this course is MySQL, a globally recognized database management system. However, if you're planning to use a different SQL-based system, rest assured — the concept of JOINs is universal across all platforms.
+
+Brief Dataset Description
+Let’s get to know our dataset, inspired by the career of Leo Messi, which contains three primary tables. Below are some sample rows to give you an idea about the structure starting from the simplest table:
+
+Matches Table
+
+match_id	season_id	competition_id	matchday	date	venue	club_id	opponent_id	result
+1	1	1	34	2005-01-05	H	1	2	2:0
+2	2	2	Group Stage	2005-11-02	H	1	2	5:0
+This table holds all of Messi's matches with details like the competition date, the result of the match, and the venue type.
+
+Competitions Table
+
+competition_id	competition_name
+1	LaLiga
+2	UEFA Champions League
+This table lists the competitions Messi participated in, with details about the start and end dates of each competition.
+
+Clubs Table
+
+club_id	club_name	club_country
+1	FC Barcelona	Spain
+2	Paris Saint-Germain	France
+The Clubs table provides details about the clubs where Messi has played and the geographical context by including the country of each club.
+
+What are SQL JOINs?
+SQL JOINs are techniques to combine data from two or more tables based on a shared column between them. They aid in extracting meaningful information that might be spread over different tables. Several types of JOINs give us the flexibility to manipulate the connection and manage exactly which data to combine.
+
+Understanding Different Types of SQL JOINs
+Before we deep-dive into the world of SQL JOINs, it's crucial to grasp the variants of joins available to us. Each type serves a unique purpose, empowering us to fine-tune our queries to retrieve the exact data we need. Let's explore the main types of JOINs you'll encounter:
+
+INNER JOIN
+
+An INNER JOIN, regularly referred to as just JOIN, is the most prevalent type. It yields records with matching values in both participating tables. If there's no match, the rows won't appear in the result. If no specific type of JOIN is specified, INNER JOIN is the default.
+
+Example:
+
+SELECT Matches.match_id, Matches.date, Clubs.club_name
+FROM Matches
+JOIN Clubs ON Matches.opponent_id = Clubs.club_id
+WHERE Matches.venue = 'A'
+ORDER BY Matches.date DESC;
+
+-- Sneak peek of the output:
+-- | match_id | date       | club_name       |
+-- |----------|------------|-----------------|
+-- |      703 | 2023-02-26 | FC Barcelona    |
+-- |      700 | 2023-02-01 | FC Barcelona    |
+In this example, we use INNER JOIN to combine the Matches and Clubs tables. The query retrieves the match ID, date of the match, and opponent club name for matches played away (venue = 'A'), ordered by match date in descending order.
+
+LEFT JOIN (or LEFT OUTER JOIN)
+
+A LEFT JOIN (also known as LEFT OUTER JOIN) provides all records from the left table and the matched records from the right table. If there's no match, the result set will include NULL values for the right table's columns. This JOIN is beneficial when you want to include all records of one table (the left one) regardless of matching rows in the other table.
+
+RIGHT JOIN (or RIGHT OUTER JOIN)
+
+Alternatively, a RIGHT JOIN (or RIGHT OUTER JOIN) offers all records from the right table and the matched records from the left table. If there's no match, the result set will include NULL values for unmatched left table's columns.
+
+FULL JOIN (or FULL OUTER JOIN)
+
+A FULL OUTER JOIN yields all records when a match exists in either of the participating tables. It amalgamates the effects of both LEFT JOIN and RIGHT JOIN. If there's no match, the result set will have NULL values for every column of the table that lacks a matching row. FULL JOIN is not directly supported in MySQL, but can be emulated with a combination of LEFT JOIN, RIGHT JOIN, and UNION, which we'll see later in this course.
+
+Wrapping Up and Looking Ahead
+When contemplating the conclusion of this introductory module on SQL JOINs, you can compare yourself to a footballer who's now learning a new skill. Remember, understanding SQL JOINs theoretically paves the way, but hands-on application is key towards true mastery.
+
+Moving forward, we'll begin by delving into each table — Matches, Competitions, and Clubs — individually. This method will not only familiarize you with the data but also build a solid foundation for when we begin interlinking these tables using JOINs. From simple data retrieval to intricate queries, you'll learn to articulate the story of Messi's career using SQL.
+
+Welcome and Recap
+Salute and welcome back! It's splendid to see you eager to sink deeper into the cosmos of SQL JOINs through our athletic sentinel, Leo Messi's career statistics. Previously, we cast light on distinct kinds of JOINs and toured separately through the rich tables in our football database. Our next itinerary involves an in-depth discussion of INNER JOIN.
+
+Exploring INNER JOIN
+In this session, we aim to detail one vital type of JOIN: the INNER JOIN. Essentially, the INNER JOIN in SQL is a clause that merges rows from two tables based on a shared column between them. The output is a result set that exclusively polishes the rows satisfying the match condition.
+
+Before we rush headlong into any particular examples, let's take a minute to inspect the standard syntax for running an INNER JOIN:
+
+SELECT column1, column2, ...
+FROM table1
+INNER JOIN table2
+ON table1.column_name = table2.column_name;
+
+This syntax is the scaffolding of our queries anytime we desire to intertwine data from two interconnected tables. We'll explore the practical interpretation of this structure in joining Matches and MatchEvents later in this lesson.
+
+By the completion of this lesson, you should be skilled at fetching match and event data from the MatchEvents and Matches tables using INNER JOIN. The key match_id will serve as the common link between these two tables.
+
+INNER JOIN in Action
+Let's inaugurate with a barebones example:
+
+Suppose we have a MatchEvents table showcasing the event Left-footed shot. This event can be found in the Matches table under the match_id 12345. We can cleverly exploit an INNER JOIN to unify these two tables:
+
+SELECT Matches.date, MatchEvents.event_type 
+FROM Matches 
+INNER JOIN MatchEvents 
+ON Matches.match_id = MatchEvents.match_id;
+
+-- Sneak peek of the output:
+--  date       | event_type          |
+-- |------------|---------------------|
+-- | 2005-05-01 | Left-footed shot    |
+-- | 2005-11-02 | Left-footed shot    |
+
+In this SQL statement:
+
+SELECT Matches.date, MatchEvents.event_type designates the information we desire — date from the Matches table and event_type from the MatchEvents table.
+FROM Matches marks out the table we launch our query from.
+INNER JOIN MatchEvents specifies our aim to associate the Matches table with the MatchEvents table.
+ON Matches.match_id = MatchEvents.match_id is the crucial condition hooking up these tables. It states that the join should manifest on the match_id columns, which should exist in both tables. This condition certifies that rows from Matches and MatchEvents are matched correctly.
+After executing the INNER JOIN query on the Matches and MatchEvents tables, the result engenders an exhaustive list that matches each event with its respective date. This output exemplifies the power of INNER JOIN to proficiently bind related data from two tables, delivering a crystal-clear overview of the association between matches and events.
+
+Reversing the Order
+We polish this topic by fetching all the event types and their corresponding match dates in descending order of match_id. Here is the template for the query.
+
+SELECT Matches.date, MatchEvents.event_type 
+FROM Matches 
+INNER JOIN MatchEvents 
+ON Matches.match_id = MatchEvents.match_id 
+ORDER BY Matches.match_id DESC;
+
+-- Sneak peek of the output:
+-- | date       | event_type             |
+-- |------------|------------------------|
+-- | 2023-03-04 | Left-footed shot       |
+-- | 2023-02-26 | Right-footed shot      |
+
+In this scenario, the ORDER BY Matches.match_id DESC condition organizes the results in descending order by match ID.
+
+Epilogue
+Well done! You've conquered much territory over this lesson. You've mastered the INNER JOIN instruction to pull out specific data from two interlaced tables. This SQL instrument is priceless in exploring the intricate connections buried within databases. Continue practicing, and before you know it, you'll be churning out SQL statements just like Messi scores goals!
+
+Introduction to Diving Deeper into Joins
+Great work! You've grasped the essentials and have now explored INNER JOIN while analyzing Lionel Messi's match history. Now it's time to delve deeper into SQL JOINs using the data from Messi's matches and career stats. We are going to focus on LEFT JOIN and RIGHT JOIN in this course. Before we start working with the more detailed soccer data at our disposal, it's vital for us to clearly understand these joins through a simpler example.
+
+Recap of SQL Joins
+Before we start, keep in mind that SQL JOINs allow us to combine data from two or more tables based on a related column. We've previously worked with INNER JOIN, which selects rows that have matching values in both tables. In this lesson, we'll see how LEFT JOIN and RIGHT JOIN can help us manipulate our data further.
+
+Sample Tables Overview
+To help understand these JOIN types,consider two simple tables: Matches and MatchEvents.
+
+Matches Table:
+
+match_id	season_id	competition_id	matchday	date	venue	club_id	opponent_id	result
+1	1	1	34	2005-01-05	H	1	2	2:0
+2	2	2	Group Stage	2005-11-02	H	1	2	5:0
+The Matches table provides detailed information about each match, including the match_id, date, result, and other relevant attributes like season, competition, venue, and participating clubs. This is useful for tracking the specifics of when, where, and against whom each match took place.
+
+MatchEvents Table:
+
+event_id	match_id	playing_position	minute	at_score	event_type	goal_assist_id
+1	1	CF	90+1	2:0	Left-footed shot	1
+2	2	RW	34	3:0	Left-footed shot	NULL
+The MatchEvents table helps to connect each match to the events that happened in it using corresponding match_id values.
+
+INNER JOIN Explained
+INNER JOIN returns rows when there's a match in both tables. If there's no match, those rows are not included in the output.
+
+Example:
+SELECT Matches.match_id, Matches.result, MatchEvents.event_id, MatchEvents.event_type
+FROM Matches
+INNER JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id;
+
+-- Sneak peek of the output:
+-- | match_id | result | event_id | event_type             |
+-- |----------|--------|----------|------------------------|
+-- |        1 | 2:0    |        1 | Left-footed shot       |
+-- |        2 | 5:0    |        2 | Left-footed shot       |
+
+Understanding the LEFT JOIN
+LEFT JOIN includes all rows from the left table, along with any matches from the right table. If there's no match, the output displays NULL for the right table's columns.
+
+Example:
+SELECT Matches.match_id, Matches.result, MatchEvents.event_id, MatchEvents.event_type
+FROM Matches
+LEFT JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id;
+
+-- Sneak peek of the output:
+-- | match_id | result | event_id | event_type             |
+-- |----------|--------|----------|------------------------|
+-- |        1 | 2:0    |        1 | Left-footed shot       |
+-- |        2 | 5:0    |        2 | Left-footed shot       |
+
+Diving into the RIGHT JOIN
+RIGHT JOIN ensures that every row from the right table is included in the output, with matched rows from the left table.
+
+Example:
+SELECT Matches.match_id, Matches.result, MatchEvents.event_id, MatchEvents.event_type
+FROM Matches
+RIGHT JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id;
+
+-- Sneak peek of the output:
+-- | match_id | result | event_id | event_type             |
+-- |----------|--------|----------|------------------------|
+-- |        1 | 2:0    |        1 | Left-footed shot       |
+-- |        2 | 5:0    |        2 | Left-footed shot       |
+
+Note: With the provided sample tables, there currently seems to be no visible difference due to the limited number of rows and the fact that each match has a corresponding event. However, in general, there is a difference: RIGHT JOIN includes all rows from the right table (MatchEvents) and any corresponding rows from the left table (Matches). It's advisable to try this on tables with more rows and different cases where some rows in the right table do not have corresponding rows in the left table to see the full effect.
+
+Summary and Next Steps
+Having explored INNER JOIN, LEFT JOIN, and RIGHT JOIN in detail:
+
+INNER JOIN returns rows with matching values in both tables.
+LEFT JOIN holds all data from the left table, irrespective of whether there's a match in the right.
+RIGHT JOIN behaves similarly to LEFT JOIN but favors the right table.
+With a solid understanding of each JOIN type, we are now ready to explore even more complex queries using the Messi match and event dataset in upcoming lessons. Prepare to delve into FULL JOIN in our next lesson, as we continue unraveling the subtleties of SQL JOINs. Journey onward in your SQL exploration!
+
+Introduction to SQL FULL JOIN Mastery
+Hello there! It's great to see that you've stuck around for the next exciting topic on our soccer journey with Leo Messi's career and SQL JOINs. After introducing ourselves to INNER JOIN, LEFT JOIN, and RIGHT JOIN in the earlier lessons, we're now moving on to the fourth and final type – true to its name, the FULL JOIN.
+
+SQL JOINs are essential when it comes to processing data, and having a command over FULL JOINs can help you effectively analyze intricate data relations. For this lesson, we will be continuing with MySQL, but remember, the understanding of SQL you garner here is transferable to other relational database management systems (RDBMS) such as PostgreSQL, SQL Server, and SQLite, with just slight differences in their syntax.
+
+Traversing Through JOINs and Understanding FULL JOIN
+Before we plunge into FULL JOIN, let's reinforce our knowledge of JOINs. SQL JOINs enable us to merge rows from two or more tables based on a common column among them. An INNER JOIN returns rows where there is a match in both tables. A LEFT JOIN gives all records from the left table and the matched records from the right one. A RIGHT JOIN, conversely, returns all records from the right table and the matched records from the left one.
+
+FULL JOIN in SQL straddles the territory between LEFT JOIN and RIGHT JOIN. It provides all records where there is a match in either the left table or the right one, essentially unifying the results of LEFT JOIN and RIGHT JOIN to offer a comprehensive view of your data.
+
+This simple visual aid below can help make sense of it, where A and B are the tables we are joining and the green areas depict the results of different JOINs.
+
+SETS VENN DIAGRAM
+
+Practical Implementation Of SQL FULL JOIN in MySQL
+Let's put our concepts into practice using FULL JOIN to merge relevant data from Messi's Matches and MatchEvents:
+
+-- First part: Fetch all matches and their associated events
+SELECT Matches.match_id, Matches.date, MatchEvents.event_type
+FROM Matches
+LEFT JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id
+
+UNION ALL
+
+-- Second part: Retrieve events with no matching matches, ensuring we aren't omitting any data
+SELECT Matches.match_id, Matches.date, MatchEvents.event_type
+FROM Matches
+RIGHT JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id
+WHERE Matches.match_id IS NULL;
+
+-- Sneak peek of the output:
+-- | match_id | date       | event_type             |
+-- |----------|------------|------------------------|
+-- |        1 | 2005-05-01 | Left-footed shot       |
+-- |        2 | 2005-11-02 | Left-footed shot       |
+
+
+-- First part: Fetch all matches and their associated events
+SELECT Matches.match_id, Matches.date, MatchEvents.event_type
+FROM Matches
+LEFT JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id
+
+UNION ALL
+
+-- Second part: Retrieve events with no matching matches, ensuring we aren't omitting any data
+SELECT Matches.match_id, Matches.date, MatchEvents.event_type
+FROM Matches
+RIGHT JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id
+WHERE Matches.match_id IS NULL;
+
+-- Sneak peek of the output:
+-- | match_id | date       | event_type             |
+-- |----------|------------|------------------------|
+-- |        1 | 2005-05-01 | Left-footed shot       |
+-- |        2 | 2005-11-02 | Left-footed shot       |
+
+In this query, we adopt a bifurcated strategy. The first section applies a LEFT JOIN to list all matches along with their corresponding events, if any. The latter section, which is essential for simulating a FULL JOIN, uses a RIGHT JOIN to cover those rows from the MatchEvents table that fail to find a match in the Matches table (we ensure this by checking WHERE Matches.match_id IS NULL).
+
+By joining these two parts through UNION ALL, we effectively simulate a FULL JOIN, yielding a complete view that includes all matched and unmatched records from both tables.
+
+Managing NULL Values in FULL JOIN Operations
+In the query we've just dissected, the condition WHERE Matches.match_id IS NULL in the second select statement plays a crucial role. This ensures that only those records from the MatchEvents table are added that are not in the Matches table. By handling NULL values in this way, we ensure that our dataset is complete, which is extremely valuable for data analysts who want to cover all possible angles in their exploration.
+
+Lesson Recap
+You've now learned how to emulate a FULL JOIN in MySQL, developing queries that provide a thorough understanding of the relationships between Messi's matches and match events. Today's lesson involved a meticulous application of SQL, giving you an improved set of technical skills and a more refined critical approach.
+
+As you move on to the practice exercises, remember the structured method of merging LEFT JOIN and RIGHT JOIN operations. This will help solidify your understanding and demonstrate how malleable SQL techniques can solve even the most convoluted data problems. Remember, continue to apply your knowledge with imagination and precision.
+
+Introduction and Overview
+Welcome to the first lesson of the course "Mastering SQL Functions and Clauses with Leo Messi". In this introductory lesson, you will learn about the SQL COUNT function and how it is used to perform quantitative analysis on datasets.
+
+SQL, or Structured Query Language, is a powerful tool for querying and managing data in relational databases. It is widely used in data analysis, business intelligence, and various other fields for retrieving meaningful insights from data.
+
+What You Will Learn
+In this lesson, you will:
+
+Understand what the COUNT function does.
+Learn the basic syntax of the COUNT function.
+See an example of counting rows in a table.
+Apply the COUNT function in a real-world context, using sports analytics as an example.
+By the end of this lesson, you will be able to use the COUNT function to obtain quantitative insights from a dataset.
+
+Dataset Introduction
+In case you haven't done any of our other courses using this dataset, here is a quick overview for you. Below are some sample rows to give you an idea of the structure starting from the simplest table:
+
+Matches Table
+match_id	season_id	competition_id	matchday	date	venue	club_id	opponent_id	result
+1	1	1	34	2005-01-05	H	1	2	2:0
+2	2	2	Group Stage	2005-11-02	H	1	2	5:0
+The Matches table contains all of Messi's matches.
+
+MatchEvents Table
+event_id	match_id	playing_position	minute	at_score	event_type	goal_assist_id
+1	1	CF	90+1	2:0	Left-footed shot	1
+2	2	RW	34	3:0	Left-footed shot	NULL
+The MatchEvents table lists Messi's match events (goals), linking them to their matches, and includes details about the playing position, minute, at-moment score, type of event and reference to player who assisted the goal.
+
+Seasons Table
+season_id	season	trophies_won
+1	04/05	1
+2	05/06	2
+The Seasons table breaks down the trophies won in each season.
+
+Introduction to COUNT Function
+The COUNT function in SQL is used to return the number of rows that match a specified condition. It can also be used without any condition to count all rows in a table. It is a simple yet powerful tool for performing quantitative analysis on data.
+
+Common Use Cases
+The COUNT function is commonly used in the following scenarios:
+
+Counting the total number of rows in a table.
+Counting the number of unique entries.
+Counting the number of entries that satisfy a particular condition.
+Understanding how to use the COUNT function helps you derive quick summary statistics from your data, making it essential for tasks ranging from basic reporting to complex data analysis.
+
+Basic Syntax of the COUNT Function
+The basic syntax of the COUNT function in SQL is as follows:
+
+SELECT COUNT(column_name) FROM table_name WHERE condition;
+
+Let's break this down:
+
+SELECT: The command used to retrieve data from the database.
+COUNT(column_name): The COUNT function, which takes a column name as an argument.
+FROM table_name: Specifies the table from which to retrieve the data.
+WHERE condition: An optional clause to filter the rows counted.
+For example, if you want to count all rows in a table without any condition, you can use the * symbol:
+
+SELECT COUNT(*) FROM table_name;
+
+Example: Counting Total Rows in a Table
+Let's walk through an example to demonstrate how to count the total number of rows in a table. Recall the table named Seasons that stores information about different seasons.
+
+To count the total number of rows in the Seasons table, we use the following SQL query:
+
+SELECT COUNT(*) FROM Seasons;
+
+-- Output:
+-- COUNT(*)
+-- ---------
+-- 19
+
+Explanation:
+
+SELECT COUNT(*): This command tells the database to count all rows.
+FROM Seasons: This specifies the table from which to count the rows.
+In this example, the COUNT function returns 19, which is the total number of rows in the Seasons table.
+
+Real-world Application: Sports Analytics
+Counting rows in a table is not just a theoretical exercise; it has practical applications in real-world scenarios. For instance, in sports analytics, you might want to count how many seasons a player like Leo Messi's team won at least one trophy.
+
+Imagine a dataset that includes information about various players and the seasons they have played. Here, the COUNT function can help you quickly determine meaningful statistics related to specific players or teams.
+
+For example, if we wanted to count the number of seasons for which Messi's team won at least one trophy, we would use the following query:
+
+SELECT COUNT(*) FROM Seasons WHERE trophies_won > 0;
+
+-- Output:
+-- COUNT(*)
+-- ---------
+-- 15
+
+This query would count the total number of rows in the Seasons table where the trophies_won is greater than 0.
+
+Summary and Next Steps
+In this lesson, you learned:
+
+The importance of SQL and quantitative analysis.
+How the COUNT function works and its basic syntax.
+How to use the COUNT function to count total rows in a table.
+Practical applications of the COUNT function in sports analytics.
+Now that you understand the COUNT function, you are ready to put this knowledge into practice. Proceed to the hands-on exercises to solidify your understanding and prepare for more advanced SQL topics in upcoming lessons. Happy querying!
+
+Introduction to DISTINCT
+Hello again! I hope you enjoyed the previous unit on understanding and using the COUNT function. Today, we're going to expand your SQL knowledge further by introducing a new concept: the DISTINCT keyword in SQL. While DISTINCT is not strictly speaking a function it's a powerful keyword/clause that will help you strengthen your data querying skills.
+
+When handling data, especially large datasets, we often encounter duplicate values. The DISTINCT keyword helps us remove these duplicates and present a clean, unique list of values. Isn't that handy?!
+
+This concept is common in many areas of life. Imagine you're trying to create a list of all the cities from which your friends come. If three friends come from New York, should we count New York three times? Of course not! We use distinct or unique values, and SQL provides the DISTINCT keyword to do just that with our data.
+
+As we learn SQL using Messi's matches, we'll be using DISTINCT to explore his distinct sport footprints.
+
+The Need for DISTINCT in Our Database
+Given Lionel Messi's rich game history, utilizing DISTINCT is quite handy. We can use it to identify unique seasons, and much more. It will broaden our understanding of his matches data.
+
+Let's first learn the format of a basic SQL query that uses DISTINCT.
+
+Introduction to DISTINCT
+Hello again! I hope you enjoyed the previous unit on understanding and using the COUNT function. Today, we're going to expand your SQL knowledge further by introducing a new concept: the DISTINCT keyword in SQL. While DISTINCT is not strictly speaking a function it's a powerful keyword/clause that will help you strengthen your data querying skills.
+
+When handling data, especially large datasets, we often encounter duplicate values. The DISTINCT keyword helps us remove these duplicates and present a clean, unique list of values. Isn't that handy?!
+
+This concept is common in many areas of life. Imagine you're trying to create a list of all the cities from which your friends come. If three friends come from New York, should we count New York three times? Of course not! We use distinct or unique values, and SQL provides the DISTINCT keyword to do just that with our data.
+
+As we learn SQL using Messi's matches, we'll be using DISTINCT to explore his distinct sport footprints.
+
+The Need for DISTINCT in Our Database
+Given Lionel Messi's rich game history, utilizing DISTINCT is quite handy. We can use it to identify unique seasons, and much more. It will broaden our understanding of his matches data.
+
+Let's first learn the format of a basic SQL query that uses DISTINCT.
+
+SELECT DISTINCT column_name FROM table_name;
+
+It is time to apply this format to our Lionel Messi's matches dataset. Consider the following statement:
+
+SELECT DISTINCT season_id FROM Matches;
+
+-- Sneak peek of the output:
+--  season_id
+-- -----------
+--          1
+--          2
+
+This query will fetch all the distinct or unique season_id from the Matches table. We use DISTINCT to avoid getting repeated IDs in the output.
+
+More Applications of DISTINCT
+Let's look at a few more examples using the DISTINCT keyword.
+
+What if we want to know all the unique clubs Messi has played for? Simple, we would run:
+
+SELECT DISTINCT club_id FROM Matches;
+
+-- Output:
+--  club_id
+-- ---------
+--        1
+--        2
+
+When using DISTINCT, it's important to remember that fetching unique values from large datasets can be time-consuming and slow down your queries. Therefore, always consider the performance implications and use DISTINCT only when necessary.
+
+Lesson Wrap-Up and Practice Preview
+That wraps up our introduction to the DISTINCT keyword in SQL! Well done on expanding your SQL toolkit. Today, you learned to use DISTINCT to fetch unique values from a database, which is handy in many data analysis scenarios. We also explored how distinct can be applied to Lionel Messi's data for deeper insights.
+
+Now, it's time to apply your newfound knowledge in practice! Next up, you'll be tackling some hands-on exercises using DISTINCT with the Lionel Messi dataset. Happy coding!
+
+Introduction to Aggregate Functions in SQL
+Welcome back! So far, we've explored the COUNT function to count rows and the DISTINCT keyword to ensure data uniqueness. Now, we will dive into another powerful aggregate function in SQL: SUM.
+
+Aggregate functions help us summarize and analyze data. For example, when analyzing a soccer match dataset, you might want to find the total number of goals scored by a team throughout a season. The SUM function allows you to add up values in a column, providing valuable insights.
+
+Let's get started by understanding the tools and environment you'll need for this lesson.
+
+Understanding SUM
+The SUM function is an aggregate operation in SQL, used to calculate the total sum of a numerical column in a database. Think of it as a mathematical operation that adds up all the numbers in a set—simple, yet profound!
+
+The syntax is as follows: SUM(column) where column is the name of the column for which you want to calculate the sum.
+
+You might be wondering, "When would I need to use SUM?" Consider a situation where you have a matches database like ours and want to determine the total number of events of each season. That's a perfect opportunity to deploy the SUM function. Let's see how it works!
+
+Applying SUM in a Query
+Here's the basic syntax:
+
+SELECT SUM(expression) FROM table_name;
+
+SUM(expression): SUM() function expects at least one argument to specify what to sum. The correct usage is SUM(expression), where expression is typically a column name or a numerical value, such as SUM(1) to count occurrences or SUM(column_name) to sum up values from a specific column.
+table_name: The table containing the column you want to sum.
+For example, if you want to find the total number of trophies won in all seasons, you would use the SUM function on the column that records the number of trophies.
+
+SELECT SUM(trophies_won) FROM Seasons;
+
+-- Output:
+--  SUM(trophies_won) 
+-- -------------------
+--                 28 
+
+Let's see a practical example emphasizing our shared interest: soccer matches, and then break it down:
+
+SELECT Matches.season_id, SUM(1) AS TotalEvents
+FROM Matches
+JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id
+GROUP BY Matches.season_id;
+
+-- Sneak peek of the output:
+-- | season_id | TotalEvents |
+-- |-----------|-------------|
+-- |         1 |           1 |
+-- |         2 |           8 |
+
+It might seem complex, but don't worry! We're here to dissect it line by line.
+
+SELECT Matches.season_id, SUM(1) AS TotalEvents: In this query, SUM(1) is used to count the number of events for each season. This utilizes the SUM() function in a straightforward manner to aggregate the total count of events by season. This part of the query selects rows separately for each group according to the season_id from the Matches table and calculates the total number of events by summing 1 for each event in the group.
+FROM Matches: This line informs SQL that our main table in this operation is Matches.
+JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id: Here, we express our intention to join the Matches table with the MatchEvents table on the common field match_id, essentially linking matches and their respective events. Note that JOIN here is synonymous with INNER JOIN, which ensures that only matching rows between the tables are selected.
+GROUP BY Matches.season_id: Finally, we use the GROUP BY clause to group the total events by seasons. You will learn more about GROUP BY in the next unit!
+
+Common Pitfalls and Tips
+When working with the SUM function, there are a few common pitfalls to be aware of:
+
+Bear in mind that SUM works with numerical data. Using it on non-numerical columns will result in errors.
+The AS keyword, as seen in the code, can make your output more readable by renaming the result of our SUM operation. Don't forget to use it as necessary.
+
+Lesson Recap and Looking Ahead
+Great job! You've made excellent progress in mastering SQL functions. In this lesson, we learned about the SUM function and how to use it to perform aggregate calculations in SQL. We applied it to our Lionel Messi database and calculated the total events in each season.
+
+In the upcoming practice exercises, you'll get the opportunity to apply the SUM function, deepen your understanding, and increase your confidence in handling it. Stay determined as you continue to unleash the power of SQL!
+
+Introduction to GROUP BY Clause
+Welcome back! In the previous lessons, you have already learned how to use SQL functions like COUNT, DISTINCT, and SUM to analyze data. Now, let's take it a step further by learning how to group data using the GROUP BY clause.
+
+What does the GROUP BY clause do? It does exactly what it sounds like it does. The GROUP BY clause is used in collaboration with aggregate functions such as COUNT, SUM etc., to group the result-set by one or more columns. This is extremely useful when you want to find trends or patterns in your data based on certain attributes.
+
+Syntax and Usage of SQL GROUP BY
+Understanding the syntax of the GROUP BY clause is crucial for its effective utilization. Here is the simplified structure for employing the GROUP BY clause:
+
+SELECT column_name, aggregate_function(column_name) AS alias_name
+FROM table_name
+GROUP BY column_name;
+
+In this pattern, column_name is the field you wish to group by, and aggregate_function(column_name) AS alias_name applies an aggregate function (like SUM, COUNT, etc.) to this grouped data, assigning it an alias for easy reference.
+
+It's important to note that the GROUP BY clause is used to aggregate rows that have the same values in specified columns into summary rows. The ORDER BY clause, which may follow GROUP BY, is optional and used if you want to order the aggregated results in a specific way, but it's not a requirement for performing grouping operations.
+
+Working with the GROUP BY clause
+Now, let's apply the GROUP BY clause using our dataset, focusing specifically on the Matches table to analyze match data in a structured manner.
+
+Suppose we want to understand the distribution of matches across different seasons and count the number of matches played per season. Here’s how we can achieve this:
+
+SELECT season_id, COUNT(match_id) AS NumberOfMatches
+FROM Matches
+GROUP BY season_id;
+
+-- Sneak peek of the output:
+-- | season_id | NumberOfMatches |
+-- |-----------|-----------------|
+-- |         1 |               1 |
+-- |         2 |               8 |
+
+This query illustrates the use of the GROUP BY clause to aggregate match data based on the season_id within the Matches table. Each season_id represents a distinct season in which Lionel Messi competed. By counting the occurrences of match_id for each season, we obtain the total number of matches played per season.
+
+Another Example
+Let's explore a more detailed example, integrating multiple SQL techniques:
+
+SELECT Matches.date, COUNT(MatchEvents.event_id) AS TotalEvents
+FROM Matches
+JOIN MatchEvents ON Matches.match_id = MatchEvents.match_id
+GROUP BY Matches.date
+ORDER BY Matches.date DESC;
+
+-- Sneak peek of the output:
+-- | date       | TotalEvents |
+-- |------------|-------------|
+-- | 2023-03-04 |           1 |
+-- | 2023-02-26 |           1 |
+
+This SQL query retrieves the date of each match and counts the total number of events (such as goals) per match date. The results are grouped by match date and sorted from the most recent to the oldest. This example demonstrates the powerful combination of GROUP BY with JOIN operations to derive meaningful insights from match data.
+
+Common Pitfalls and Tips
+When using the GROUP BY clause, ensure that every non-aggregated column in your SELECT statement is also included in the GROUP BY clause. This ensures accurate grouping of your data.
+
+Additionally, remember that the GROUP BY clause does not guarantee a specific order of output rows. If you need your results in a particular order, use the ORDER BY clause, as demonstrated in our example.
+
+Summarizing the Lesson and Looking Ahead
+Congratulations on mastering another crucial SQL technique—the GROUP BY clause! This lesson has equipped you with the ability to analyze and summarize match data effectively. You’ve learned how to group results using SQL’s GROUP BY clause and explored practical examples that provide insights into Lionel Messi’s performance across seasons.
+
+In the next part of this course, you'll practice combining the GROUP BY clause with other SQL functions to uncover deeper insights from Messi's career statistics. Keep practicing to solidify your SQL skills and continue exploring the fascinating world of sports analytics!
+
+Quick Recap
+Great job on making it this far! Thus far, we've covered a great deal, from drilling into COUNT and DISTINCT to exploring SUM and GROUP BY. These are some of the key SQL functions required to dig deep into any dataset. In this unit, we're going to broaden our repertoire by applying these aggregate functions to analyze data related to Lionel Messi's career achievements.
+
+As you may recall from our previous lessons, aggregate functions allow us to perform calculations on a set of values to return a single scalar value. We've already seen the COUNT and SUM functions in action, but have you ever wondered if we could derive other useful insights, such as averages? That’s where the SQL AVG function comes into play.
+
+SUM and AVG Functions
+At this juncture, the SUM function must seem pretty familiar to you. It does the heavy lifting when we need to find total values. For instance, it calculates total trophies won or total goals scored in our case.
+
+On the other hand, the AVG function might be new to you. It's a classic SQL function utilized for calculating the arithmetic mean of a set of values. Simply put, AVG can help us determine an average value, such as the average trophies won per season in Lionel Messi's career.
+
+Example 1: Utilizing The SUM Function
+
+-- Aggregate total trophies won per each season
+SELECT Seasons.season_id, SUM(Seasons.trophies_won) as TotalTrophiesWon
+FROM Seasons
+JOIN Matches ON Seasons.season_id = Matches.season_id
+GROUP BY Seasons.season_id;
+
+-- Sneak peek of the output:
+-- | season_id | TotalTrophiesWon |
+-- |-----------|------------------|
+-- |         1 |                1 |
+-- |         2 |               16 |
+
+In the above example, we're using the SUM function to find the total trophies won per season in Lionel Messi's career. This is achieved by joining the Seasons and Matches tables on season_id, where Matches records the details of matches played in each season. The GROUP BY clause ensures we get a total trophies count for each season, providing a comprehensive view of Messi's career achievements.
+
+Example 2: Leveraging The AVG Function
+
+-- Aggregate average trophies won per each season after 2010
+SELECT Seasons.season_id, AVG(Seasons.trophies_won) as AverageTrophiesWon
+FROM Seasons
+JOIN Matches ON Seasons.season_id = Matches.season_id
+WHERE YEAR(Matches.date) > 2010
+GROUP BY Seasons.season_id;
+
+-- Sneak peek of the output:
+-- | season_id | AverageTrophiesWon |
+-- |-----------|--------------------|
+-- |         7 |             3.0000 |
+-- |         8 |             4.0000 |
+
+
+Here, we're introducing the AVG function to find the average trophies won per season in Lionel Messi's career after 2010. By filtering matches based on the date condition (YEAR(Matches.date) > 2010), we focus on more recent seasons. The AVG function calculates the arithmetic mean of trophies won across these seasons, offering insights into Messi's consistent performance over time.
+
+Remembering the GROUP BY Clause
+From our past lessons, you should recall that the GROUP BY clause groups a result into subsets that share the same attribute value. It’s a vital component when using aggregate functions like SUM, COUNT, AVG, and others because it enables us to apply these functions to each group of data independently, providing us with insightful segmented data.
+
+As you've noticed in our examples, GROUP BY plays an essential role when using aggregate functions. We use GROUP BY to return a separate sum or average for each season, allowing us to analyze Messi's career achievements in a structured manner.
+
+You are Almost There
+Excellent work on learning how to use the SUM and AVG functions and mastering their symbiotic relationship with the GROUP BY clause. Using these functions isn't always straightforward, but with practice, it will become second nature.
+
+Congratulations on completing this lesson of the course! Let's continue practicing to solidify this knowledge and enhance your SQL skills further.
+
+Introduction and Context Setting
+Welcome to the course "Learning SQL with Leo Messi"! In this course, you'll learn how to use SQL to query and analyze data from a real-world dataset revolving around soccer games.
+
+We'll be working with two main tables:
+
+Matches: Contains data about the matches played.
+MatchEvents: Contains events that occurred during each match.
+Here's a quick preview of what these tables look like:
+
+Matches Table:
+
+match_id	season_id	competition_id	matchday	date	venue	club_id	opponent_id	result
+1	1	1	34	2005-01-05	H	1	2	2:0
+2	2	2	Group Stage	2005-11-02	H	1	2	5:0
+MatchEvents Table:
+
+event_id	match_id	playing_position	minute	at_score	event_type	goal_assist_id
+1	1	CF	90+1	2:0	Left-footed shot	1
+2	2	RW	34	3:0	Left-footed shot	NULL
+
+Logical Operators
+Logical operations are vital in SQL for filtering data based on certain conditions. The main logical operators are:
+
+AND: All conditions must be true.
+OR: At least one condition must be true.
+NOT: The condition must be false.
+Here we'll focus on the AND operator, which we'll be using extensively.
+
+Logical operators allow you to fine-tune your data queries, making it possible to extract exactly what you need from your dataset. Understanding these operations is fundamental for effective SQL querying.
+
+
+Understanding Syntax and Clause Structure
+Think of SQL statements as real-world phrases that you can dissect into multiple parts. Each part plays a specific role. For instance, consider
+
+SELECT *
+FROM Matches
+WHERE result = '4:0' AND YEAR(date) BETWEEN 2010 AND 2013;
+
+-- Sneak peek of the output:
+-- | match_id | season_id | competition_id | matchday    | date       | venue | club_id | opponent_id | result |
+-- |----------|-----------|----------------|-------------|------------|-------|---------|-------------|--------|
+-- |      100 |         6 |              1 | 18          | 2010-01-16 | H     |       1 |           2 | 4:0    |
+-- |      101 |         6 |              1 | 18          | 2010-01-16 | H     |       1 |           2 | 4:0    |
+
+This SQL query has distinct parts:
+
+SELECT *: This phrase indicates that it wants to retrieve all columns.
+FROM Matches: This phrase specifies the table from which to retrieve the data.
+WHERE: This word starts the condition clause, which refines the query.
+result = '4:0' AND YEAR(date) BETWEEN 2010 AND 2013: These are the conditions that rows must meet to be included in the result.
+Notice the AND operator here? It helps us set multiple conditions. Our statement tells SQL to "Show me all columns from the Matches table, but only those which have the result '4:0' (result = '4:0') and whose year is between 2010 and 2013".
+
+We can use the AND logical operator to add multiple conditions to our SQL statement. For instance, in our example, we want a list of matches, but not just any matches. We're looking for the ones with result '4:0' (result = '4:0'), AND those within a certain time range (YEAR(date) BETWEEN 2010 AND 2013). Similarly, the OR operator allows us to query data that meet either one condition or another, enabling more flexible data retrieval based on varying criteria.
+
+Working with Numeric Fields Using AND/OR
+Logical operators like AND and OR aren't just for boolean values. They can be used with numeric data, too. In SQL, numeric comparisons are quite straightforward: you can use = for equality, > for greater than, < for less than, >= for greater than or equal to, <= for less than or equal to, and <> or != for not equal to.
+
+
+Using Logical Operators to Work with Date Fields
+Just like numeric fields, we can use logical operators to work with date fields. Here is another example:
+
+SELECT MatchEvents.*
+FROM MatchEvents
+JOIN Matches ON Matches.match_id = MatchEvents.match_id
+WHERE Matches.date > '2010-01-01' AND MatchEvents.minute < 30;
+
+-- Sneak peek of the output:
+-- | event_id | match_id | playing_position | minute | at_score | event_type             | goal_assist_id |
+-- |----------|----------|------------------|--------|----------|------------------------|----------------|
+-- |      103 |      103 | RW               | 7      | 1:0      | Left-footed shot       |             19 |
+-- |      110 |      110 | CF               | 13     | 1:0      | Left-footed shot       |             19 |
+
+In this statement, we're looking for all match events (SELECT MatchEvents.*) from the dataset where the date is after the first day of 2010, AND the event happened before the 30th minute (MatchEvents.minute < 30). We use the AND operator to combine these two conditions.
+
+Summary and Upcoming Practice Overview
+That wraps up our introductory lesson on using AND/OR logical operators in SQL. We've learned how to construct SQL queries using these operators to filter out specific data based on multiple conditions. Now that you've gained a solid understanding of using AND/OR operators, it's time to put this knowledge into practice. In the next section, you'll encounter various exercises to solve, giving you hands-on experience in using logical operators in SQL to retrieve specific data. Keep practicing and happy querying!
+
+Introduction to SQL Conditional Operators
+In our previous lesson, we tackled the foundational knowledge of the logical operators AND/OR in SQL. Now, we're going to extend this knowledge by introducing SQL conditional operators, which will further enhance the precision and detail of your queries. These operators include LIKE, BETWEEN, and IN.
+
+In essence, conditional operators in SQL allow us to filter the output of our SQL queries based on certain criteria or conditions. They're used in conjunction with the SQL WHERE clause to specify the conditions that data must meet to be included in the query results. Let's delve into each of these conditional operators.
+
+Getting Started with the LIKE Operator
+The LIKE operator in SQL is used in a WHERE clause to search for a specified pattern within a column. More often than not, it works with wildcard characters, such as the percentage % sign, which can represent zero, one, or multiple characters.
+
+The % sign is versatile:
+
+When used at the beginning of a string (e.g., %pattern), it matches any sequence of characters leading up to the specified pattern.
+When used at the end of a string (e.g., pattern%), it matches any sequence of characters that follow the specified pattern.
+When used in the middle of a string (e.g., st%ng), it matches any sequence of characters between the specified patterns.
+Here's an example showing how the LIKE operator is used:
+
+-- Use LIKE operator to find all matches played in 2005
+SELECT match_id, date
+FROM Matches
+WHERE date LIKE '2005%';
+
+-- Output:
+-- | match_id | date       |
+-- |----------|------------|
+-- |        1 | 2005-05-01 |
+-- |        2 | 2005-11-02 |
+-- |        3 | 2005-11-27 |
+
+In the above example, we search for all matches in the Matches table whose date starts with '2005', using the LIKE operator and the % wildcard. This will return all matches played in the year 2005.
+
+The Power of the BETWEEN Operator
+The BETWEEN operator in SQL is used to select values within a specific range. These values can be numbers, text, or dates. It is used with the WHERE clause.
+
+The syntax for using BETWEEN is column_name BETWEEN value1 AND value2, where value1 and value2 define the range within which to search. It is important to note that BETWEEN is inclusive of both value1 and value2.
+
+Here's an example of a SQL query that uses the BETWEEN operator:
+
+-- Use BETWEEN operator to choose events that occurred in the first half
+SELECT event_id, minute
+FROM MatchEvents
+WHERE minute BETWEEN 1 AND 45;
+
+-- Sneak peek of the output:
+-- | event_id | minute |
+-- |----------+--------+
+-- |        2 | 34     |
+-- |        8 | 42     |
+
+In this query, the BETWEEN operator is used to filter events from the MatchEvents table whose minute falls between 1 and 45 (inclusive).
+
+Efficiency of the IN Operator
+The IN operator in SQL allows us to filter data based on multiple values in a WHERE clause. It serves as a shorthand for multiple OR conditions and it's often used when there's a need to compare a column with more than two values.
+
+Consider this example of a SQL query using the IN operator:
+
+-- Find matches from specific competitions and list their results
+SELECT 
+    m.match_id AS MatchID,
+    m.result AS Result,
+    me.event_type AS EventType
+FROM Matches m
+JOIN MatchEvents me ON m.match_id = me.match_id
+WHERE m.competition_id IN (1, 2) AND me.event_type = 'Left-footed shot';
+
+-- Sneak peek of the output:
+-- | MatchID | Result | EventType        |
+-- |---------|--------|------------------|
+-- |       1 | 2:0    | Left-footed shot |
+-- |       2 | 5:0    | Left-footed shot |
+Lesson Review and Practice Heads Up
+Great work so far, and congratulations! By reaching this point, you've developed a solid understanding of SQL conditional operators. Remember, these are powerful tools — when used correctly, they can make your data querying more detailed and precise.
+
+Next up, you're going to get some hands-on practice. Applying the new skills you've acquired in different scenarios will reinforce your understanding and enhance your SQL proficiency. Look forward to applying these conditional operators in multiple contexts. You're doing great so far, and I'm confident that you'll effectively tackle the next section. Let's move on to the practice component and keep the SQL learning momentum going strong!
+In this example, the IN operator permits us to select matches whose competition_id is either 1 or 2, and the event_type in the MatchEvents table is 'Left-footed shot'. The table aliases m and me are used to make the query concise — m represents the Matches table and me represents the MatchEvents table. This helps in writing shorter and more readable SQL queries.
+
+Recap of Previous Lessons
+Hello again! In our previous lessons, we explored the functionality of Logical AND/OR operations and delved into conditional operators in SQL such as LIKE, IN, and BETWEEN. We delved deeply into how these tools not only allow us to filter and retrieve data accurately but also provide more nuanced control over our queries. In this unit, we'll build on those skills and introduce a new SQL concept—subqueries—which will enable us to perform even more complex data analysis.
+
+Introduction to Subqueries
+So, what is a subquery? A subquery, also known as an "inner query" or "nested query," is a query nested within another SQL query. It allows us to solve convoluted problems that require multiple steps, making our SQL statements even more powerful. Essentially, a subquery can retrieve data for the primary or outer SQL query to utilize. Like other SQL queries you're now familiar with, they begin with a SELECT statement and conclude with an appropriate clause such as WHERE or FROM.
+
+For instance, let's consider a straightforward subquery that calculates the average minute of events in the MatchEvents table:
+
+SELECT AVG(minute) FROM MatchEvents;
+
+-- Output:
+--  AVG(minute) 
+-- -------------
+--    51.828125 
+
+This subquery, when used within a larger query, can help us compare each event's minute to the average and filter out events that meet certain conditions.
+
+Nesting Subqueries
+Subqueries can be nested within other subqueries or queries. Nesting is the act of placing one item inside another. In the case of subqueries, nesting results in an outer query, possibly containing one or more subqueries. These subqueries can, in turn, contain further subqueries, enabling SQL to solve exceptionally complex tasks.
+
+While the concept might appear intimidating initially, don't worry! The beauty of nested subqueries is that they can always be broken down into smaller, easier-to-understand steps.
+
+Subquery Use Case Example
+Let's examine a straightforward example before we proceed to break down the final task. Suppose we want to find matches where the minute of an event is greater than the average minute of all events. Here's how we could accomplish this with a subquery:
+
+SELECT 
+    m.match_id AS MatchID,
+    me.minute AS Minute,
+    me.event_type AS EventType
+FROM Matches m
+INNER JOIN MatchEvents me ON m.match_id = me.match_id
+WHERE me.minute > (
+    SELECT AVG(minute)
+    FROM MatchEvents
+);
+
+-- Sneak peek of the output:
+-- | MatchID | Minute | EventType              |
+-- |---------|--------|------------------------|
+-- |       1 | 90+1   | Left-footed shot       |
+-- |       5 | 82     | Left-footed shot       |
+
+In this example:
+
+We introduce aliases m for Matches and me for MatchEvents to simplify references within the query.
+First, we perform an INNER JOIN on the Matches and MatchEvents tables on the match_id field.
+Next, we filter using a WHERE clause that compares each event's minute to the average minute (SELECT AVG(minute) FROM MatchEvents) of all events. This is our subquery.
+This query retrieves matches where at least one event occurred later than the average minute of events.
+You have now seen how to use subqueries to tackle complex SQL problems!
+
+Summary and Upcoming Practice
+Great job making it this far! In this lesson, we learned about subqueries and their ability to break complex SQL tasks down into manageable parts. We firmly believe in learning by doing, so we have arranged a set of practice exercises where you can apply the concept of subqueries and become more comfortable with them.
+
+In the next lesson, we'll continue to delve deeper into more advanced SQL query techniques. Keep up the great work! You're doing amazing!
+
+Introduction
+Hi there! You've made substantial progress, and I'm impressed with all you've learned so far. You've mastered the use of SQL logical and conditional operators and elevated your data analysis with subqueries. In this unit, we're diving into complex queries and conditional logic — an advanced SQL topic that will allow for even more intricate data queries and analysis.
+
+We will continue to work with our sports database, focusing on the Matches and MatchEvents tables. As a quick reminder, the Matches table contains details such as match IDs, dates, and results, while MatchEvents holds information about events during matches, like minute and event type.
+
+Are you ready to get started? Let's jump right in!
+
+Employing the IF Function in SQL
+In SQL, the IF function is one of the most useful tools we have for adding conditional logic to our queries. It operates according to a simple principle: if a specific condition is true, then do something; if it's false, then do something else.
+
+Let's put this into practice by categorizing matches into 'Recent' and 'Earlier' periods using an SQL query:
+
+SELECT
+    match_id AS MatchID,
+    date AS MatchDate,
+    IF(YEAR(date) > 2015, 'Recent Match', 'Earlier Match') AS MatchPeriod
+FROM
+    Matches;
+    
+-- Sneak peek of the output:
+-- | MatchID | MatchDate  | MatchPeriod   |
+-- |---------|------------|---------------|
+-- |       1 | 2005-05-01 | Earlier Match |
+-- |       2 | 2005-11-02 | Earlier Match |
+
+In the query above, the IF function checks whether each match's date is after 2015. If the condition is true, 'Recent Match' is returned; otherwise, 'Earlier Match' is returned. This approach allows us to categorize matches based on their dates in a very efficient and readable manner.
+
+Deep Dive into the CASE Statement
+The CASE statement is an exceptionally versatile tool in SQL, allowing us to execute actions based on various conditions, offering a functionality somewhat similar to the IF statement but with enhanced flexibility. Unlike the IF function, which is binary in its conditionality (true or false), the CASE statement supports multiple conditions, providing a robust means to handle complex logical operations within our queries.
+
+Let's explore how we can categorize matches by their event time using the CASE statement:
+
+SELECT
+    m.match_id AS MatchID,
+    me.minute AS Minute,
+    CASE
+        WHEN me.minute < 30 THEN 'Early'
+        WHEN me.minute BETWEEN 30 AND 60 THEN 'Mid'
+        ELSE 'Late'
+    END AS EventTimeCategory
+FROM
+    MatchEvents me
+JOIN
+    Matches m ON me.match_id = m.match_id;
+    
+-- Sneak peek of the output:
+-- | MatchID | Minute | EventTimeCategory |
+-- |---------|--------|-------------------|
+-- |       1 | 90+1   | Late              |
+-- |       2 | 34     | Mid               |
+
+In this example, we're joining the Matches and MatchEvents tables through the match_id field. Within our SELECT statement, the CASE is applied to determine a match event's time category. It sequentially evaluates each condition specified by the WHEN clauses until one is found true. If none of the WHEN conditions match, the ELSE clause (considered a default) is returned. Note that the ELSE clause is optional; if it is omitted and no conditions are met, the CASE statement will return NULL. Here's a closer look at the workflow:
+
+The CASE statement starts its evaluation.
+If the minute is less than 30, 'Early' is returned.
+If the minute is between 30 and 60, 'Mid' is returned.
+If neither condition is met, the ELSE part catches all remaining possibilities, returning 'Late'.
+The conclusion of the CASE statement is marked by the END keyword, signifying the end of the conditional checks. Following END, we use AS EventTimeCategory to label the outcome of our CASE statement, assigning it as a new column in our results. This naming convention is not just for clarity; it’s essential for referencing the produced column in other parts of our query or in applications that consume this query's output.
+
+Conclusion and Practice: Transferring Learning into Action
+Great job! You've just learned to use the IF function and CASE statement to write more advanced SQL queries. You now have the skills to filter data more accurately, write conditional statements in SQL, and analyze real-world data more effectively.
+
+Next, try your hands at a series of practice exercises on CodeSignal. We have prepared these exercises to reinforce what you have learned in this lesson. The more you practice these skills, the more confident you'll become in handling real-world scenarios.
+
+A Final Note
+Congratulations! You are almost at the end of this course. You should be incredibly proud of your progress. These tools are powerful additions to your data analysis arsenal, and you'll find them invaluable in your future work. Keep practicing and keep learning. We're excited to see where your new skills will take you!
+
