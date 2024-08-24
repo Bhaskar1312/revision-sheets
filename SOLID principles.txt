@@ -1,0 +1,59 @@
+Understanding Typical Interview Questions on SOLID Principles in Software Design
+Welcome to this unit! Let's dive into the SOLID principles in software design, which are critical for creating maintainable, scalable, and robust software systems.
+
+Here are some example questions you might encounter during an interview:
+
+Can you explain the SOLID principles in software design?
+Why are these principles important, and how do they enhance software design?
+Can you provide examples of each SOLID principle?
+By mastering these questions, you'll be well-equipped to showcase your understanding of SOLID principles and their practical applications in software development.
+
+What You Need To Know
+The SOLID principles are a set of five design principles aimed at improving software design's modularity, flexibility, and scalability. Here's an overview of each principle, along with why they are essential:
+
+
+
+Single Responsibility Principle (SRP):
+
+What it is: A class should have only one reason to change, meaning it should only have one responsibility or job.
+Why it matters: SRP makes your classes more manageable and easier to understand, which simplifies maintenance and reduces the risk of bugs.
+Example: Consider a User class responsible for user data. Handling email notifications for the user should be in a separate Notification class.
+Open/Closed Principle (OCP):
+
+What it is: Software entities should be open for extension but closed for modification.
+Why it matters: OCP allows you to add new functionality without changing existing code, reducing the risk of introducing bugs.
+Example: Use interfaces or abstract classes to allow new implementations without altering existing ones.
+Liskov Substitution Principle (LSP):
+
+What it is: Subtypes must be substitutable for their base types without altering the correctness of the program.
+Why it matters: LSP ensures that derived classes can be used in place of base classes, promoting code reusability and robustness.
+Example: If Bird extends Animal, then objects of type Bird should replace Animal objects without unexpected behavior.
+Interface Segregation Principle (ISP):
+
+What it is: Clients should not be forced to depend on interfaces they do not use.
+Why it matters: ISP encourages creating smaller, more specific interfaces rather than one large, general-purpose interface, enhancing modularity and reducing dependencies.
+Example: Instead of a Manager interface with unrelated methods, create separated interfaces such as IEmployeeManager and IProjectManager.
+Dependency Inversion Principle (DIP):
+
+What it is: High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not depend on details; details should depend on abstractions.
+Why it matters: DIP reduces tight coupling between components, making the system easier to modify and test.
+Example: Use dependency injection to provide dependencies to a class, ensuring it relies on interfaces rather than concrete implementations.
+Typical Follow Ups
+Here are some common follow-up questions you might get during these kinds of interview questions.
+
+"Can you provide a real-world example of applying the Single Responsibility Principle?"
+
+Good Response: "Sure, think of an Invoice class tasked with generating and calculating invoices. If we also add printing functionalities to the same class, it violates SRP. Instead, we should create a separate InvoicePrinter class to handle printing, thus each class has a single responsibility."
+"Why is the Open/Closed Principle important in software development?"
+
+Good Response: "OCP is crucial because it allows existing code to remain untouched when adding new features, reducing the risk of introducing new bugs. It also makes the software more adaptable to changing requirements without extensive refactoring."
+"Can you explain a scenario where the Liskov Substitution Principle might be violated?"
+
+Good Response: "LSP is violated if a subclass overrides a method in a way that changes the expected behavior. For example, if a Rectangle class has a setWidth method and a Square class inherits from it and changes both width and height in setWidth, this breaks LSP because users of Rectangle expect only the width to change."
+"How does the Interface Segregation Principle benefit software design?"
+
+Good Response: "ISP benefits software design by reducing the impact of changes. When interfaces are too large, changes to the interface affect all implementing classes. Smaller, segmented interfaces ensure that each module only relies on methods it actually uses, promoting a more modular and maintainable codebase."
+"Can you provide an example of the Dependency Inversion Principle in action?"
+
+Good Response: "Absolutely. Consider a ReportGenerator class that needs to save reports. If it directly instantiates a FileSaver class, it's tightly coupled. Instead, we can inject an ISaver interface into ReportGenerator, allowing us to use different savers like FileSaver or DatabaseSaver depending on the concrete implementation provided at runtime. This follows DIP by decoupling high-level ReportGenerator from low-level saving implementations."
+By understanding these principles and typical follow-up questions, you'll be better prepared to demonstrate your comprehension of SOLID principles in technical interviews.
