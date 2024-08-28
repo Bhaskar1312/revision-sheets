@@ -1,0 +1,3789 @@
+Rust Programming for Beginners
+
+Introduction
+Greetings, future coders! Are you ready to dive into the fascinating journey of Rust? Today, we're going to explore the fundamentals of Rust, focusing on syntax and comments. By the end of this lesson, you'll have written your first simple Rust program.
+
+Rust, a fast and memory-efficient language, serves as the launchpad of your coding journey. It is primarily used for system programming, but also finds applications elsewhere.
+
+Much like English has grammar rules, Rust follows a syntax. Let's explore this exciting world together!
+
+Rust Syntax Basics
+In Rust, just like in many other languages, we use statements to execute actions. Each statement ends with a semicolon (;). Rust uses curly braces ({ }) to delineate a block of code.
+
+Consider this straightforward Rust syntax example:
+fn main() {
+    println!("Hello, Rust World!");
+}
+In this case, we've declared the main function, which acts as the starting point of the program, and added a statement that prints "Hello, Rust World!" Don't worry if you don't understand every line of this code just yet. We'll break down each component step by step in this lesson.
+
+Construct Your First Rust Program
+Let's dive deeper into writing your first Rust program! Below is a straightforward Rust program that we have examined:
+fn main() {
+    println!("Hello, Rust World!");
+}
+Now, we'll analyze each piece of the program:
+
+fn main() { }: This function, called main, represents the start of our program. When you run a Rust program, this is the function that initiates execution. Don't worry if concepts like fn still seem unfamiliar to you. Just remember that the main function should always carry this name and be represented in this way.
+println!("Hello, Rust World!");: This statement prints "Hello, Rust World!" to the console.
+
+Meet Rust Comments
+Coding often involves leaving notes for ourselves as reminders or explanations. These are known as comments. They do not affect the execution of the code and are used for clarification or to leave helpful pointers for other coders (or even for ourselves) working on the code. In Rust, we use // for single-line comments and /* */ for multi-line comments.
+
+Look at how we use comments below:
+
+fn main() {
+   // This is a single-line comment.
+   /*  
+     This is a multi-line comment.
+     It spans multiple lines.
+     I can use multi-line comments
+     for more extensive notes that don't fit within a single line.
+   */
+    println!("Hello, Rust World!"); // This line prints "Hello, Rust World!"
+}
+
+In this example, the text following // and the text between /* */ won't influence the running of the program. We use the println! macro call to print the given text to the console.
+
+Topic Overview and Goal Setting
+Welcome back to your Rust journey! Let's immerse ourselves in the exploration of Rust Variables — our key constructs. Similar to a cornerstone, variables provide structure to our code, enriching it with data and information.
+
+A variable in coding is like a bookmark — a dedicated place in memory where a value is stored. This session aims to familiarize you with the concept of Rust variables, their declaration, naming rules, value assignments, and the concept of immutable variables.
+
+What are Rust Variables?
+Think of Rust variables as sticky notes imprinted with data. The short example below explains how to create a variable in Rust:
+
+let number_of_stars: i32; // Declare a variable, similar to making a new sticky note
+number_of_stars = 88; // Write a value on it
+println!("{}", number_of_stars); // Prints out: 88
+
+Let's break down each line of the code.
+
+let number_of_stars: i32;
+
+This line is similar to creating a new sticky note and labeling it number_of_stars. The let keyword is used to declare a variable named number_of_stars with the data type i32 (a signed 32-bit integer). For now, don't worry about the i32 part; we'll cover data types in a subsequent lesson.
+
+number_of_stars = 88;
+
+This line assigns the value 88 to the number_of_stars variable. It is like writing the information (88 in this case) on our number_of_stars sticky note.
+
+println!("{}", number_of_stars);
+
+This line prints the value of the number_of_stars variable to the console. The {} is a placeholder that gets replaced by the value of number_of_stars when the program is run.
+
+Rust also allows you to declare and assign a variable value simultaneously. Here's an example:
+
+let number_of_stars = 88; // Create and assign a value to a variable at the same time
+println!("{}", number_of_stars); // Prints out: 88
+
+Notice how we did not have to explicitly declare number_of_stars as i32. Rust has a feature called type inference where Rust can automatically infer the type of number_of_stars. The default integer type in Rust is i32.
+
+Assignment Operations in Rust
+In Rust, variables are divided into two categories: mutable and immutable. By default, all variables in Rust are immutable, which means once a value is assigned to them, it cannot be changed. If you attempt to alter the value of an immutable variable, the Rust compiler will throw an error.
+
+However, Rust gives you the ability to explicitly make a variable mutable using the mut keyword. A mutable variable is one whose value can be changed after it has been initially declared and assigned.
+
+Rust allows us to change a variable's value using the = operator, which works much like writing a new note on a previously used sticky note.
+
+let mut constellations = 88; // We make a new sticky note and write a value on it
+println!("{}", constellations); // Prints out: 88
+
+constellations = 77; // We change the note's details
+println!("{}", constellations); // Prints out: 77
+
+let stars = constellations; // stars has a value of 77
+// stars = 88; This would throw an error. You can't change the value of immutable variables
+
+
+Rust Naming Convention
+Choosing a name for a Rust variable follows certain rules and conventions similar to effectively labeling a sticky note. These ensure that our code remains clear and free from errors.
+
+The variable name should start with a lowercase letter and adhere to the snake_case convention: if the variable's name contains multiple words, use lowercase letters and separate each word with an underscore _. For instance, age, weight, my_age, first_day_of_week.
+
+Special characters and digits are not allowed at the start of variable names.
+Rust Naming Convention
+Choosing a name for a Rust variable follows certain rules and conventions similar to effectively labeling a sticky note. These ensure that our code remains clear and free from errors.
+
+The variable name should start with a lowercase letter and adhere to the snake_case convention: if the variable's name contains multiple words, use lowercase letters and separate each word with an underscore _. For instance, age, weight, my_age, first_day_of_week.
+
+Special characters and digits are not allowed at the start of variable names.
+
+// Correct way to declare a variable
+let my_age = 20;
+let my_weight = 72;
+let district_9_population = 10000;
+
+// Incorrect ways to declare a variable
+// let 0zero = 0;
+// let ?question_mark = 1;
+
+Rust Constants
+While the previous section explains how to change a variable's value, Rust also supports defining constants — variables that cannot alter their value once assigned. We use the const keyword to declare a constant. const variables must explicitly state their data type upon declaration and cannot use the mut keyword. Note that the let keyword is not used when declaring constants. For constants, the naming convention is to use uppercase letters with words separated by an underscore _.
+
+Declaring a value as const might be prudent if you are certain it won't change. Doing so improves readability, ensures safety (by avoiding unintentional changes), and can sometimes enhance performance.
+
+const DAYS_IN_WEEK: i32 = 7; // A constant is declared,
+
+println!("{}", DAYS_IN_WEEK); // Prints out: 7
+
+// DAYS_IN_WEEK = 6; This will cause an issue since "DAYS_IN_WEEK" is immutable
+
+In the example above, DAYS_IN_WEEK is a constant that prohibits any value changes after assignment.
+
+Lesson Recap and Next Steps
+Well done! You're now familiar with the basics of variables and constants in Rust. In upcoming lessons, we'll apply these concepts in real-world scenarios. Practice is the only way to convert knowledge into skills; so let's engage in tasks and proceed at a steady pace on our Rust Road to Mastery!
+
+Introduction to Basic Data Types in Rust
+In Rust, we have various data types that represent numbers, truth values, characters, and more. In this lesson, we will focus on i32, f32, bool, char, and String.
+
+The i32 data type represents 32-bit integers. The maximum value an i32 can store is 2147483647, or 2^31−1, and the minimum is -2147483648, or −2^31. Here's an example of i32:
+
+let days_in_week: i32 = 7;
+println!("{}", days_in_week);  // This will print: 7
+
+let maximal_integer: i32 = 2147483647;
+println!("{}", maximal_integer);  // This will print: 2147483647
+
+let too_big_integer: i32 = 2147483648; // Oops! This will cause a compile error. The number is too large.
+
+Next, we have the f32 data type in Rust, used for floating-point numbers — that is, numbers with decimal points. It can contain up to 7 decimal digits:
+
+let pi: f32 = 3.141592;
+println!("{}", pi);  // This will print: 3.141592
+
+Beyond numbers, we have the bool data type, which can hold either true or false. This type is commonly used in logical expressions and decision making:
+let is_earth_round: bool = true;
+println!("{}", is_earth_round);  // This will print: true
+
+let is_earth_flat: bool = false;
+println!("{}", is_earth_flat); // This will print: false
+
+We also have the char data type. This type is used to represent single Unicode character. char variables must be surrounded by single quotes (')
+let first_letter_of_alphabet: char = 'A';
+println!("{}", first_letter_of_alphabet); // This will print: A
+
+Exploring the String Data Type
+Last but not least, we have String. String is used to store a sequence of char elements.
+There are two types of Strings in Rust.
+
+String literals are immutable and have a type of &str.
+let welcome1 = "Hello World!"; // Creates a string literal
+println!("{}", welcome1); // This will print: Hello World!
+
+On the other hand, a String is by default immutable, but can be made mutable using the mut keyword.
+
+let mut welcome2 = String::from("Welcome to Rust!"); // Creates a new String
+println!("{}", welcome2); // This will print: Welcome to Rust!
+
+welcome2 = String::from("Hello Rust World!"); // Changing the value of welcome2
+println!("{}", welcome2); // This will print: Hello Rust World!
+
+Lesson Recap
+Excellent! You've just explored the basic data types in Rust. You can now handle i32 and f32 for numerical operations, bool for decision-making, char to manage characters, and String to work with textual data.
+
+That's a significant amount of new knowledge! Let's consolidate it through practice. The upcoming exercises are designed to help you apply these concepts. Brace yourself, and get ready to dive deeper into the world of Rust!
+
+fn main() {
+    let account_balance: f32 = 13458.23; // Balance in dollars
+    let is_budget_approved: bool = true; // Status of the budget
+    let expense_category: char = 'T'; // Category 'T' for travel expenses
+    let financial_statement = String::from("All finances are accounted for.");
+
+    println!("Account Balance: ${:.2}", account_balance); // {:.2} ensures account_balance is printed with exactly 2 decimal points
+    println!("Is the budget approved? {}", is_budget_approved);
+    println!("Expense Category: {}", expense_category);
+    println!("{}", financial_statement);
+}
+
+Lesson Introduction and Plan
+Hey there! Today, we're delving into the essential world of Rust comparison operators. These operators play a crucial role in controlling the flow of code by comparing values.
+
+Our goal is to understand comparison operators and their applications in Rust programs. We'll explore several Rust comparison operators and enhance your understanding through realistic examples.
+
+Exploring Rust Comparison Operators
+Imagine you are navigating a submarine underwater. Here, routes are determined by evaluating conditions such as the distances to underwater artifacts. These judgment calls are similar to comparisons, mirroring scenarios in programming. In Rust, we use comparison operators to make such determinations.
+
+Rust features six comparison operators: equal to (==), not equal to (!=), greater than (>), less than (<), greater than or equal to (>=), and less than or equal to (<=). Each of these produces either true or false, commonly referred to as boolean values.
+
+For example, consider the following comparison of a submarine's speed with that of a whale:
+
+let submarine_speed = 50;  // speed in km/h
+let whale_speed = 20;   // speed in km/h
+let submarine_faster: bool = submarine_speed > whale_speed; // evaluates to 'true'
+println!("Is the submarine faster than a whale? {}", submarine_faster);
+// Prints: Is the submarine faster than a whale? true
+
+In the code above, we compare submarine_speed and whale_speed using the > operator. The outcome, true, indicates that the submarine_speed is indeed greater than the whale_speed.
+
+Exploring == and != Operators
+Now, let's delve into the equal to (==) and not equal to (!=) operators. These operators are crucial when there is a need to compare values, such as when comparing the current oxygen level to the required level:
+let current_oxygen_level = 65;  // current oxygen level in %
+let required_oxygen_level = 80;  // required oxygen level in %
+
+let is_enough_oxygen = current_oxygen_level == required_oxygen_level;  // evaluates to 'false'
+let is_oxygen_low = current_oxygen_level != required_oxygen_level;  // evaluates to 'true'
+The == operator checks whether current_oxygen_level equals required_oxygen_level, which results in false. In contrast, the != operator asserts the inequality, returning true.
+
+Exploring <, >, <=, and >= Operators
+Next, we will examine the less than (<), greater than (>), less than or equal to (<=), and greater than or equal to (>=) operators. These operators are primarily used to compare numeric data, such as when you're studying two underwater sites and want to identify which one is nearer:
+
+let distance_to_site_a = 200; // distance in meters
+let distance_to_site_b = 150; // distance in meters
+
+let is_a_closer = distance_to_site_a < distance_to_site_b;  // evaluates to 'false'
+let is_b_closer_or_same = distance_to_site_a >= distance_to_site_b;  // evaluates to 'true'
+
+In the example above, we contrasted the distances to two underwater sites. The submarine isn't closer to site A, so is_a_closer yields false. On the other hand, the submarine is as close or closer to site B, hence is_b_closer_or_same returns true.
+
+Lesson Summary
+Excellent work! We've explored the comparison operators in Rust and their real-world applications. With this newfound understanding, you can handle decisions and effectively control the flow of your Rust programs. In the next step, we'll delve deeper with some hands-on practice exercises. Prepare to dive in!
+
+Lesson Overview
+Greetings, coder! Today, we're delving into Rust to master arithmetic and logical operations. This foundation is fundamental for data manipulation and decision-making within the Rust environment.
+
+Rust Arithmetic Operations Revealed
+Rust's primitive data types include i32 for whole numbers, f32 for decimal numbers, bool for true/false values, and char for single characters.
+
+You can perform arithmetic operations — such as addition (+), subtraction (-), multiplication (*), division (/), and modulus (which represents the remainder of the division, %) — on numerical types. Here's an example:
+let a: i32 = 10;
+let b: i32 = 2;
+println!("{}", a + b); // Outputs: 12
+println!("{}", a - b); // Outputs: 8
+println!("{}", a * b); // Outputs: 20
+println!("{}", a / b); // Outputs: 5
+println!("{}", a % b); // Outputs: 0
+
+Augmented Assignment Operators Uncovered
+In many programming languages, including Rust, there's a set of augmented assignment operators which are used as a shorthand method for modifying the value of our variables. These operators are +=, -=, *=, \=, and %=. The += operator adds the value on its right to the variable on its left and assigns the result to the variable. The other operators work similarly. Let's take a look.
+
+let mut number: i32 = 10;
+
+number += 2;   // same as number = number + 2;
+println!("{}", number); // Outputs: 12
+
+number -= 4;   // same as number = number - 4;
+println!("{}", number); // Outputs: 8
+
+number *= 3;   // same as number = number * 3;
+println!("{}", number); // Outputs: 24
+
+number /= 12; // same as number = number / 12;
+println!("{}", number); // Outputs: 2
+
+number %= 2 // same as number = number % 2;
+println!("{}", number); // Outputs: 0
+
+Logical Operations Demystified
+Logical operators — && (AND), || (OR), ! (NOT) — evaluate to bool values — true or false within the Rust environment.
+
+&& outputs true only if both boolean values are true, whereas || returns true if either value is true. ! inverses the boolean value.
+
+Below is an example of their application to two bool values:
+
+println!("{}", true && true); // true
+println!("{}", true && false); // false
+println!("{}", false && true); // false
+println!("{}", false && false); // false
+
+println!("{}", true || true); // true
+println!("{}", true || false); // true
+println!("{}", false || true); // true
+println!("{}", false || false); // false
+
+println!("{}", !true); // false
+println!("{}", !false); // true
+
+Rust's logical operations are most commonly applied to variables. Here's a brief example:
+let speed: i32 = 60;
+let min_speed: i32 = 30;
+let max_speed: i32 = 70;
+// Check if the speed is within the expected range.
+println!("{}", speed > min_speed && speed < max_speed); // Prints: true
+
+Lesson Summary
+Fantastic work! Today, we've learned about Rust's arithmetic operations and used logical operators to make complex decisions. Practice exercises are coming up to help solidify these critical concepts in Rust. Let the coding begin!
+
+Topic Overview
+Greetings, budding Rustaceans! Are you ready to delve into some fundamental knowledge about Rust? Today's journey will take us into the heart of the Rust language: Data Type Conversion. Often, we need to convert one data type to another for a different representation in our programs, much like translating alien languages in a Sci-Fi adventure. We'll focus on both automatic and explicit conversions, as well as potential pitfalls. So, fasten your seatbelts, and let's dive in!
+
+Automatic (Implicit) Conversions
+In Rust, unlike some other languages, automatic conversion of types isn't allowed. This restriction stems from Rust's focus on type safety, put in place to avoid unintended consequences of type conversion that may lead to bugs in the software.
+
+Rust doesn't automatically treat an i32 (integer) as an f64 (floating point), or vice versa. Here's what happens when you attempt to do so:
+
+let i: i32 = 10;  // an integer 
+let d: f64 = i;  // error: expected `f64`, found `i32` 
+
+Rust will throw a compile-time error stating it expected a f64 but found an i32 instead.
+
+Manual (Explicit) Conversions
+To convert between types in Rust, we must manually specify the conversion. This requirement is akin to a human (symbolizing f64) trying to fit into space suit designed for space dog (i32). We must explicitly modify the space dog suit to be human sized.
+
+Here's how to convert an i32 to a f64:
+
+let i: i32 = 10;  // an integer 
+let d: f64 = i as f64;  // explicit conversion to f64
+
+println!("The value of d: {}", d);   // Output: The value of d: 10
+
+And here's how to convert from a f64 to an i32:
+let d: f64 = 10.75; // a f64 number
+let i: i32 = d as i32;  // casting the double to int
+
+println!("The value of i: {}", i);  // Output: The value of i: 10
+
+Notice that the decimal part of 10.75 gets truncated during the conversion process, leaving only 10.
+
+Type Safety in Arithmetic Operations
+In Rust, strict type safety rules extend to arithmetic operations as well. This means that Rust doesn't implicitly convert types for addition or other arithmetic operations.
+
+For example, it's invalid to add an i32 value to an f32 value. You might expect this to work because it seems reasonable to add integers and floating-point numbers. However, for the purpose of safeguarding type safety, Rust disallows this operation. Here's what happens when you try to add variables of types i32 and f32:
+let a: i32 = 10;    // an integer
+let b: f32 = 10.5;  // a floating point number
+
+let c = a + b;     // error: expected `f32`, found `i32`
+Rust will throw a compile-time error, stating that it expected an f32 but found an i32 instead. This is because Rust can't automatically convert a from i32 to f32 to make the addition possible.
+
+If you intend to perform this operation, you must explicitly convert the i32 value to an f32 value like so:
+let a: i32 = 10;     // an integer
+let b: f32 = 10.5;  // a floating point number
+
+let c = a as f32 + b;     // explicit conversion of `a` to `f32`
+println!("The value of c: {}", c); // prints "The value of c: 20.5"
+
+Converting to and from Strings
+A common type of conversion in Rust programming involves the String type. This conversion includes turning numbers into strings for output, and vice versa.
+
+let ten: i32 = 10; // an integer with the value 10
+let ten_string: String = ten.to_string(); // A string with the value "10"
+println!("The value of ten_string: {}", ten_string);    // Output: The value of ten_string: 10
+
+let twenty_five_string = "25";
+let twenty_five: i32 = twenty_five_string.parse().unwrap();
+println!("The value of twenty_five: {}", twenty_five);    // Output: The value of twenty_five: 25
+
+let invalid_number = "25abc";
+let number: i32 = invalid_number.parse().unwrap(); // Oops! This will panic, "25abc" is not a number!
+
+let ten: i32 = 10; // an integer with the value 10
+let ten_string: String = ten.to_string(); // A string with the value "10"
+println!("The value of ten_string: {}", ten_string);    // Output: The value of ten_string: 10
+
+let twenty_five_string = "25";
+let twenty_five: i32 = twenty_five_string.parse().unwrap();
+println!("The value of twenty_five: {}", twenty_five);    // Output: The value of twenty_five: 25
+
+let invalid_number = "25abc";
+let number: i32 = invalid_number.parse().unwrap(); // Oops! This will panic, "25abc" is not a number!
+
+In the conversion to String, we use the to_string() method on an i32 value.
+
+In Rust, .parse() and .unwrap() are methods commonly used for type conversion and error handling, respectively:
+
+.parse() attempts to convert a string into some other type. It returns a Result type, which is an either Ok (if the operation was successful) or Err (if the operation failed).
+
+.unwrap() is used on the Result type variable. If the Result is Ok, .unwrap() will return the value inside the Ok. However, if the Result is Err, .unwrap() will raise and error and stop the code.
+
+Lesson Summary and Practice
+Bravo! You've conquered Data Type Conversion in Rust. You should now understand how to convert between different data types and appreciate the importance of type safety in Rust.
+
+Strengthen your understanding with some hands-on programming exercises! Practice is the key to solidifying your newly acquired knowledge and ensuring your code meets intergalactic standards!
+
+Charting Our Coding Journey: Overview of Control Structures in Rust
+Hello again, Rustonaut! Today, we're unraveling the mysteries of an essential programming tool: control structures. They guide the flow of our program. Are you ready to delve into if-else statements and match statements?
+
+If and If-Else Structure
+The structure of an if and if-else construct in Rust follows this format:
+if condition {
+    // action if condition is true
+}
+
+if condition {
+    // action if condition is true
+} else {
+    // action if condition is false
+}
+
+When the provided condition is true, we execute the block within the if clause. When the condition is false, we enter an optional else block.
+
+Navigating the Expanse of Rust's If-Else Statement
+An if statement is simplistic yet powerful. It instructs the compiler to execute actions only under specific conditions. Let's imagine we're checking a planet's atmospheric composition:
+
+let oxygen_level = 78; // The oxygen level on the planet
+
+if oxygen_level > 20 {
+    println!("Planet has breathable air!"); // Suitable oxygen_level
+} else {
+    println!("Oxygen level too low!"); // Oxygen level is insufficient
+}
+// The code prints: Planet has breathable air!
+
+In the example above, the statement if oxygen_level > 20 checks if the oxygen level is above 20. If the condition proves true, it prints "Planet has breathable air!". If it is false, the else statement provides an alternative command, printing "Oxygen level too low!".
+
+Multiple Conditions: Else If Statement
+To handle multiple conditions, we utilize else if:
+
+let oxygen_level = 58;
+if oxygen_level > 70 {
+    println!("Excellent Oxygen level!");
+} else if oxygen_level > 50 {
+    println!("Oxygen level is acceptable.");
+} else {
+    println!("Oxygen level is too low!");
+}
+// The code prints: Oxygen level is acceptable.
+
+The else if keyword provides alternative paths until the correct one is met, allowing us to respond appropriately to different atmospheric conditions. When the first condition is met, Rust ignores all remaining else if conditions.
+
+Traversing the Cosmos with Rust's Match Statement
+A match statement in Rust enables us to navigate multiple outcomes based on a variable's value. Let's suppose we're journeying to different planets and each requires different preparations:
+
+let planet_number = 3; // The selected planet number
+
+match planet_number {
+    1 => println!("Gearing up for Planet 1!"), // Case for planet 1
+    2 => println!("Preparing for Planet 2!"), // Case for planet 2
+    3 => println!("Get ready for Planet 3!"), // Case for planet 3
+    _ => println!("Resting at the spaceship."), // Default case
+}
+// The code prints: Get ready for Planet 3!
+
+In this code, each match arm corresponds to a planet number. The _ in the last arm is a catch-all pattern that matches any value. Every match statement must end with a _ arm.
+
+Reviewing our Code Maps before the Voyage
+Bravo! You've successfully navigated the nebula of Rust's control structures today. Keep practicing these skills in our upcoming exercises. Your coding skills will continue to strengthen as we dive deeper into the Rust universe, preparing you for the next stage of your coding journey. Push on!
+
+Overview of Rust Functions
+Welcome, wise explorer! We are embarking on a journey through the world of Rust. Our focus for today is Rust functions. A function in Rust behaves like a recipe: it takes in certain ingredients, or "arguments", processes them according to a set of instructions, and then produces an output, or a "return value".
+
+For instance, consider a function in a weather forecasting app. This function takes the current temperature and humidity as input, computes the likelihood of precipitation, and then displays the expected weather outcome.
+
+Are you ready for an adventure into the world of Rust functions? Let's begin!
+
+Learning to Write Rust Functions
+Creating a function in Rust involves the use of the keyword fn, the name of the function, parentheses (), and curly braces {}. Here is an example:
+
+fn hello_world() {
+    println!("Hello, World!");
+}
+
+In this function, hello_world is the name of the function. The body of the function, which is encapsulated within the curly braces, performs the operation of printing out the phrase "Hello, World!". Now that we've created our first function, let's understand how to use it.
+
+Calling Functions
+In Rust, like many other languages, functions can be called within other functions, including within the main function itself. This is crucial in structuring our program: we can break down complex tasks into digestible sub-tasks. Each sub-task can be defined as a function and then executed in a particular order within the main function or even other functions.
+
+In this example, we'll see how we can call a custom function, hello_world(), from within the main function:
+
+fn main() {
+    println!("Starting main function"); 
+    hello_world(); // Call hello_world function. 
+    println!("Ending main function");
+}
+
+fn hello_world() {
+    println!("Hello World!");
+}
+
+In the code above, we first defined the hello_world() function which, when called, prints "Hello World!". This function was then called within the main function, after printing "Starting 'main' function" and before printing "Ending 'main' function".
+
+When the above program is executed, the console output will be:
+
+Starting main function
+Hello World!
+Ending main function
+
+The order that functions are defined does not matter. Declaring fn hello_world() before fn main() works just fine.
+
+Functions allow us to organize our code and make it more readable and maintainable. We can reuse functions as many times as required, which allows us to reduce code repetition and make the program more efficient.
+
+Functions with Arguments
+Just as a chef increases the versatility of a recipe by incorporating varying ingredients, our function becomes versatile when we introduce arguments. These are the inputs that our function can manipulate and blend to produce diverse results.
+// Call the function with "Good Morning!"
+fn main() {
+    greet("Good Morning!"); // Prints: "Good Morning!"
+}
+
+fn greet(message: &str) {
+    println!("{}", message);
+}
+
+In the above greet function, message is called a parameter. It is a variable name that we have access to inside our function. After nameing the parameter, we must declare the data type of the variable. Here, we see message is expected to be of type &str, also known as a string literal.
+
+To invoke the function, we pass the string literal "Good Morning!" to the greet function. Inside the greet function, message now has a value of "Good Morning!". The greet function then prints "Good Morning!".
+
+Functions with Multiple Arguments
+To expand on the versatility of our functions, we can include multiple parameters. Each parameter will be separated by a comma and include its respective type annotation. By using multiple parameters, our functions can create more complex and tailored outputs.
+
+Let's examine this further with a function that introduces a person using their name and age:
+
+fn main() {
+    // Call the function with "Alice" and 30
+    introduce("Alice", 30); // Prints: "My name is Alice and I am 30 years old."
+}
+
+fn introduce(name: &str, age: i32) {
+        println!("My name is {} and I am {} years old.", name, age);
+}
+
+In the introduce function, we have two parameters: name and age. name is of type &str and age is i32, an integer type in Rust.
+
+By utilizing multiple parameters within our functions, we can greatly enhance the capability and complexity of the tasks we can perform.
+
+Functions that Give Back: Return Values
+In Rust, functions not only process operations but can also return a result or output. The returned value can then be used in other parts of your code. The data type the function returns is specified with an arrow -> followed by the type information. If a function does not return a value, the -> is not used.
+
+There are two ways to return a value from a function:
+
+An expression without a semicolon as the last line of the function
+The return keyword (with or without a semicolon). This is used when a function needs to return early when the rest of the function does not need to be run.
+Let's illustrate the concept with an example:
+
+fn main() {
+    // Call the function
+    let total = add_numbers(7, 3);
+    println!("The sum is: {}", total); // Prints: The sum is: 10
+    let difference = subtract_numbers(7,3);
+    println!("The difference is: {}", difference); // Prints: The difference is: 4
+}
+
+fn add_numbers(num1: i32, num2: i32) -> i32 {
+        let result = num1 + num2;
+        result // Returning result without 'return' keyword. 
+}
+
+fn subtract_numbers(num1: i32, num2: i32) -> i32 {
+    let result = num1 - num2;
+    return result; // Returning result with 'return' keyword
+    println!("The function returns early, so this line will not print.");
+}
+
+In the add_numbers function, we have num1 and num2 as parameters, and the function returns an integer (i32). The sum of num1 and num2 is calculated, and because result is the last expression of the function (without a semicolon), it's automatically returned.
+
+In the subtract_numbers function, we have num1 and num2 as parameters, and the function returns an integer (i32). The difference of num1 and num2 is calculated, and returned by using the return keyword. The print statement does not run because the function stops execution after it returns a value.
+
+Understanding how return values work in Rust functions significantly enhances our ability to write meaningful and reusable code.
+
+fn display_brewing_result(num_of_potions: i32) {
+    println!("We concocted {} potent health potions!", num_of_potions);
+}
+    
+fn brew_health_potions(vial_count: i32, health_per_vial: i32) -> i32 {
+    vial_count * health_per_vial // No semicolon because this value should be returned
+}
+    
+fn main() {
+    display_brewing_result(7);
+    let total_health = brew_health_potions(7, 20);
+    println!("We brewed health potions with a total of {} health points!", total_health);
+}
+
+
+Introduction
+Welcome to our exploration of Variable Shadowing and Scope in Rust! Today, we'll be learning these fundamental principles through clear explanations and practical examples, which will make our journey through Rust functions both interesting and efficient. So, fasten your seatbelts!
+
+Variable Shadowing
+In Rust, variable shadowing is a unique feature that allows you to declare a new variable with the same name as a previous variable. The new variable "shadows" the previous one, replacing the value of variable being "shadowed". This helps when you need to change the type of a variable or want to modify a variable but still use it immutably.
+
+Let's consider the following code:
+fn main() {
+    let x = 5;
+    let x = x + 1;
+
+    let true_value: bool = true;
+    let true_value = "True"; 
+}
+
+In this example, x is initially declared as holding the value 5. Subsequently, we declare x again, inferring that x now holds the result of x + 1. Importantly, the shadowed x retains its immutability.
+
+In another example, true_value is declared as a boolean holding true. Then, we shadow true_value and change its datatype to become a string, holding "True".
+
+Shadowing enables us to perform transformations on values while maintaining immutability and even changing types if necessary. Although it bears some resemblance to variable mutation, they are fundamentally different as shadowing involves creating a new variable.
+
+Variable shadowing requires redeclaring the variable again with the let keyword. If you do not use the let keyword, the Rust compiler will throw an error. For example:
+fn main() {
+    let x = 5;
+    x = x + 1; // Causes error because x is immutable
+
+    let mut true_value: bool = true;
+    true_value = "True"; // Causes error because true_value must be of type bool
+}
+
+First, an immutable variable x is declared and initialized with the value 5. The next line attempts to change the value of x by assigning it the result of x + 1. This is not possible because in Rust, an immutable variable's value cannot be altered once it's been initialized.
+
+Next, true_value is declared as a mutable boolean variable set as true. The next line tries to assign "True", a string, to true_value. This is incorrect because, in Rust, even mutable variables cannot change their type after declaration. true_value maintains its initial boolean type and cannot be assigned a string value.
+
+Understanding Variable Scope
+Programming involves using variables to store data. Every variable exists within a scope — a region where the variable is valid and can be accessed. In Rust, we can create a new scope using the{} braces, forming what we commonly refer to as "code blocks". Let's examine examples to make this clearer:
+
+fn main() {
+    let x = 8; // `x` is in scope for the entire function
+
+    {
+        let y = 5; // `y` is in scope only within this inner block
+        println!("x is in scope and has a value of {}", x); // Prints: x is in scope and has a value of 8
+        println!("y is in scope and has a value of {}", y); // Prints: y is in scope and has a value of 5
+    }
+
+    println!("x is still in scope and has a value of {}", x); // Prints: x is still in scope and has a value of 8
+    println!("{}", y); // Compiler error because `y` is out of scope here
+}
+
+In the above example, x is within a valid range throughout the main function, but y is only in scope within the inner block in which it's declared.
+
+Variable Scope and Shadowing
+In Rust, apart from defining the variable scope, you can also use variable shadowing within different scopes. Shadowing lets you reuse variable names and apply transformations to values, ensuring code clarity while fullfilling different needs in each scope. Let's explore further with two examples:
+
+fn main() {
+    let x = 8; // `x` is in scope for the entire function
+
+    {
+        let y = 5; // `y` is in scope only within this inner block
+        let x = 3;
+        println!("The new x is in this scope and has a value of {}", x); // Prints: The new x is in this scope and has a value of 3
+
+        println!("y is in scope and has a value of {}", y); // Prints: y is in scope and has a value of 5
+    }
+
+    println!("The value of x is still {} in this scope.", x); // Prints: The value of x is still 8 in this scope.
+}
+
+In this code, x is first initialized with the value 8 and it stays in scope throughout the main function. Inside the inner block, y is declared with the value 5 and x is redeclared with the value 3. This is a classic example of shadowing; x in the inner scope shadows x in the outer scope. But this doesn't affect the value of x in the outer scope; it is still 8, as proved by the last println! statement.
+
+Let's consider the effect of attempting to modify x in an inner scope when it's mutable:
+
+fn main() {
+    let mut x = 8; // `x` is in scope for the entire function
+
+    {
+        let y = 5; // `y` is in scope only within this inner block
+        x = 3;
+        println!("x is {} in this scope.", x); // Prints: x is 3 in this scope.
+        println!("y is in scope and has a value of {}", y); // Prints: y is in scope and has a value of 5
+    }
+
+    println!("The value of x is {} in this scope.", x); // Prints: The value of x is 3 in this scope.
+}
+
+In this example, x is declared as mutable in the outer scope with a value of 8. Inside the inner block, x is simply reassigned the value 3, without redeclaration. There's no shadowing in this case. So, the operation affects x's value in the outer scope as well; the last println! shows us that x now equals 3.
+
+This demonstrates the difference between variable shadowing and variable mutation in different scopes in Rust.
+
+Variable Scope in Functions
+In Rust, each function has its own scope. When passing variables between functions, Rust always creates a separate copy or a reference to the original variable in the new scope. This protects the variable's original value in its initial scope, unless explicitly modified. Let's understand this with two examples:
+
+fn main() {
+    let mut x = 8; // `x` is in scope for the entire function
+
+    add_one(x); // Prints: Inside add_one, x = 9
+
+    println!("The value of x is still {}", x); // Prints: The value of x is still 8
+}
+
+fn add_one(x: i32) {
+    let x = x+1;
+    println!("Inside add_one, x = {}", x);
+}
+
+In this first example, x is initialized to 8 in main(). The function add_one() is then called with x as the argument, which shadows the x inside add_one(). However, because add_one() has its own scope, this doesn't affect x in main(). Thus, after the function call, x remains 8.
+
+Now, let's see what happens if we modify x explicitly:
+
+fn main() {
+    let mut x = 8; // `x` is in scope for the entire function
+
+    x = add_one(x);
+
+    println!("The value of x is now {}", x); // Prints: The value of x is now 9
+}
+
+fn add_one(x: i32) -> i32 {
+    let x = x+1;
+    x
+}
+
+In this second example, we're explicitly updating the value of x in main() with the value returned by add_one(). Inside the function add_one(), x is incremented by 1 and returned to the caller. This updated value is then assigned to x in main(). Therefore, after the function call, x now equals 9.
+
+These examples illustrate the rules of variable scope when passing values between functions in Rust. The function's own scope protects the original value of a variable in the caller function unless we explicitly update it.
+
+
+Lesson Goal and Plan
+Hello, Coders! Today, we'll examine two intriguing Rust concepts: variable references and mutable references, essential for efficient memory management. You'll learn about them through an example of Rust code employing mutable references. Off we go!
+
+Introduction to Variable References
+Imagine we're stepping into the world of Rust's pointers, which act as directional signs to memory locations, much like addresses in a neighborhood.
+
+A variable reference is like having a house address—it guides you to where the house is located. Just as you can visit and look at the house based on its address, but not alter it, a variable reference allows you to see a value without changing it.
+
+To create a reference to a variable, add & before the variable name. To dereference a variable and get the value of a reference variable, add * before the variable name.
+
+Here's how we might express this in Rust:
+fn main() {
+    let x = 5;
+    let y = &x; // y is a reference to the memory location of x
+    let z = *y; // dereference y
+    println!("The value at y is {}", z); // Prints: "The value at y is 5"
+}
+In this case, y has the "address" that points to where x is in memory, much like having directions to a house. z contains the value stored at y.
+
+Introduction to Mutable References
+Consider this scenario in Rust:
+fn main() {
+    let mut x = 5;
+    let mut y = x;
+    y += 1;
+    println!("x is {}, y is {}.", x, y); // Prints: "x is 5, y is 6."
+}
+
+Here, we start by creating a mutable variable x with a value of 5. We then copy the value of x into a new variable y. When we increase the value of y by 1, x remains unchanged. The reason is that y is an entirely separate copy of x's value. It's like if you copied your friend's house key; changing the lock on your own house doesn't change the lock on your friend's house.
+
+Now, let's look at mutable references:
+
+
+fn main() {
+    let mut x = 5;
+    let y = &mut x;
+    *y += 1;
+    println!("x is {}", x); // Prints: x is 6
+}
+
+In sharp contrast with our earlier code, y here is not a copy of x's value but a mutable reference to x—it's as if you have the key to actually unlock and alter what's inside x's house.
+
+In our house metaphor, if the variable reference is like knowing the address of a house, then *y is akin to opening the door with a key and stepping inside. Once inside, you can rearrange the furniture or repaint the walls, essentially altering the state of the house's interior.
+
+If we then execute an action, like *y += 1;, we're not just looking at the house from the outside, we're changing something inside the house – specifically, we're incrementing the value that x holds. So, x's value changes because we've used our key (the mutable reference pointed to by y) to go inside and make an update.
+
+Mutable References with Functions
+When we're using mutable references with functions, we're essentially giving those functions the key to our house and permission to change the interior. Keep in mind, this is temporary. The function only has this power within its scope of operation, which is like a scheduled time when they're allowed to come in and make changes.
+
+Let's take a closer look at our Rust code:
+fn add_one(x: &mut i32) { // function taking a mutable reference to an i32
+    *x += 1; // increments the value the reference points to
+}
+
+fn main() {
+    let mut num = 5; // our mutable variable
+    add_one(&mut num); // pass a mutable reference to our variable
+    println!("The value of num is: {}", num); // prints: The value of num is: 6
+}
+
+fn add_one(x: &mut i32) { — Here, we declare add_one as a function that takes a mutable reference to a 32-bit integer.
+*x += 1; — We increment the value to which the mutable reference x points.
+let mut num = 5; — We declare a mutable integer num and assign it the value 5.
+add_one(&mut num); — We call the add_one function and pass it the mutable reference of num.
+println!("The value of num is: {}", num); — We print the new value of num, which is now 6, thanks to our add_one function.
+
+Mutable References and Scope
+Here's how the concept of scope connects with mutable references:
+
+In the main function, we have the num variable — let's think of it as our own house. We're comfortable letting add_one temporarily hold the key to our house (the mutable reference to our num variable) because we trust that add_one will only make the specific change we have agreed on.
+
+This agreement is referred to as 'scope'. The add_one function has a scope that is clearly defined by its function body. It can only make changes within this scope.
+
+Once add_one does its job, that is, increments our num variable by one, its scope ends. It steps out, hands the key back, and it can no longer make any changes to our house. The key no longer works beyond the end of the add_one function, and the mutable reference it once had is no longer valid.
+
+This mechanism is crucial for preserving data integrity as it ensures that changes made by functions are controlled, traceable, and limited to the intended scope. We rest assured that our house – or variable value – only changes when and where we expect.
+
+Introduction to Variable Ownership
+Welcome! Today, we will navigate the realm of variable ownership in Rust. This principle forms the crux of Rust's performance and safety. To visualize this, consider how you solely possess a book before handing it to a sibling. Rust variables adhere to a similar convention. We'll delve into Copy and non-Copy types, understand variable ownership within functions.
+
+Understanding Ownership in Rust
+Variable ownership is the star feature of Rust that differentiates it from other languages. The three rules of ownership are:
+
+Each value in Rust has a variable that’s called its owner. This means that there's always one and only one variable bound to any given piece of data. There can only be one owner at a time.
+
+When you assign the value of one variable to another, the first variable will no longer hold that value if its type does not implement the Copy trait. We could say it's a bit like passing a baton in a relay race!
+
+When the owner goes out of scope, the value will be dropped. This means once the variable that owns the data is done (like at the end of the function or a block of code), Rust automatically cleans up and frees the memory associated with that data. It's like when you're done reading a library book and return it, the book is no longer in your possession and can be borrowed by someone else.
+
+Dive into Copy Variables
+Rust features the Copy trait for types of a fixed size that can be safely duplicated. When Copy types are assigned, the data is reproduced.
+
+The following data types are Copy types:
+
+integers and floating points (i32, f64, u32, etc.)
+char
+bool
+Let's take a look at an example:
+
+fn main() {
+    let x = 5; // x, an integer, is a Copy type
+    let y = x; // y receives a copy of x's value
+    println!("x = {}, y = {}", x, y); // Here, x and y are both valid
+}
+
+In this code, y is assigned a duplicate of x’s value. Therefore, after the assignment operation, both x and y are valid. x and y each own their own value of 5.
+
+Understanding Non-Copy Variables
+Rust also encompasses non-Copy types, such as String, Vec<T>, etc. For these types, the actual data isn't copied, but the reference is. The 2nd rule of ownership dictates that when you assign the value of one variable to another, the first variable will no longer hold that value if its type does not implement the Copy trait.
+
+Consider Strings (non-Copy types) as an example:
+
+fn main() {
+    let s1 = String::from("hello"); // s1 is a String, hence it's a non-Copy data type
+    let s2 = s1; // here, s1's ownership is transferred to s2
+    println!("{}", s1); // This will result in a compile-time error
+}
+
+In this snippet, once s1 is assigned to s2, s2 becomes the owner of the value, and s1 is invalidated.
+
+Ownership and Functions
+Functions, in Rust, operate similarly. When a variable is passed to a function, its ownership is transferred.
+
+Taking Ownership
+Here's an example:
+fn main() {
+    let s = String::from("hello");
+    take_ownership(s); // s transfers ownership to `take_ownership`
+    // After this point, s becomes invalid
+}
+fn take_ownership(some_string: String) {
+    println!("{}", some_string);
+}
+
+Here's a step-by-step of what's happening:
+
+let s = String::from("hello"); - A new String object is created. The variable s becomes the owner of this String.
+
+take_ownership(s); - The s string is passed to take_ownership function. When we pass s to this function, we are transferring the ownership of s to the function's parameter some_string. Once the function takes ownership, s no longer has access to the String object.
+
+some_string: String - The function declares a parameter some_string which is of type String. This means it expects an owner to a String value.
+
+When we call println!("{}", some_string);, it will print the value of the String to the console.
+
+After the take_ownership function finishes executing, some_string goes out of scope, and Rust automatically frees up the memory some_string occupies.
+
+One important feature to note is that println! is a macro, not a function. This means passing a variable into println! does not transfer ownership.
+
+Copying a Variable
+fn main() {
+    let x = 5;
+    make_copy(x); // x is a Copy type. make_copy takes ownership of a new x value
+    // Here, x is still valid as it's a Copy type
+}
+fn make_copy(some_integer: i32) {
+    println!("{}", some_integer);
+}
+Here's a step-by-step of what's happening:
+
+let x = 5; - This line creates an integer variable x and gives it a value of 5. Integers in Rust have the Copy trait, which means that when they are used as function arguments, what is actually passed is a copy of the data, not the original data itself.
+
+make_copy(x); - The make_copy function is called with x as an argument. Because x is a type that implements the Copy trait, it is copied when passed to the function. This means the function gets its own version of x's value to work with, and the original x in main is unaffected by whatever happens to this copy inside the function. After this line, x is still perfectly valid and accessible in the main function scope.
+
+some_integer: i32 - The function takes one parameter, some_integer, which is of type i32 Like x, this is also a Copy type.
+
+println!("{}", some_integer); - The function prints the value of some_integer to the console. If make_copy changed some_integer in any way (which it doesn't in this example), it would only change its copy, not x in main.
+
+After make_copy finishes executing, some_integer goes out of scope, and Rust automatically frees up the memory some_integer occupies.
+
+
+Giving Ownership
+fn main() {
+    let s = give_ownership(); // s becomes owner of value returned by gives_ownership
+    // s is valid
+}
+fn give_ownership() -> String {
+    let s = String::from("Hello World!");
+    s
+}
+let s = give_ownership(); - In the main function, a new variable s is declared. It is set to the value returned by give_ownership(). This means that s becomes the owner of the String value that give_ownership() returns.
+fn give_ownership() -> String - This function signature tells us that give_ownership will return a String value when it's called.
+let s = String::from("Hello World!"); - Inside the function, we declare a new String variable s and initialize it with the value "Hello World!". The String variable is owned by s inside the give_ownership function
+s - The function returns the value of s, giving ownership of the String to s in the main function.
+After the call to give_ownership(), s is a valid String in the main function's scope. You can use s just like any other valid String in Rust.
+
+Taking and Giving Ownership
+fn main() {
+    let s = String::from("Hello World!");
+    let s = take_and_give(s);
+}
+
+fn take_and_give(some_string: String) {
+   some_string
+}
+This Rust code demonstrates ownership transfer to and from a function. Here is a breakdown of what happens:
+
+let s = String::from("Hello World!"); In the main function, we declare a variable s and initialize it with a String containing the text "Hello World!". The String is owned by s in the main function
+let s = take_and_give(s); - Calling take_and_give transfers ownership of the value in s to this new function. take_and_give then returns the String and s takes ownership of the String once again.
+
+Understanding these concepts will equip you to write efficient and safe code in Rust. Practice this knowledge through hands-on exercises for effective learning. The upcoming session will present problems for you to tackle, further enhancing your understanding of Rust's variable ownership rules. Happy coding!
+
+Introduction to Borrowing and References in Rust
+Welcome to this lesson on borrowing and references in Rust! Rust is known for its unique approach to memory management, which emphasizes safety and concurrency. One of the fundamental concepts in Rust is ownership, which governs how memory is allocated and deallocated. Understanding borrowing and references is crucial for writing efficient and safe Rust programs.
+
+In this lesson, we will explore:
+
+Borrowing Immutable References: How to access variables without transferring ownership.
+Borrowing Mutable References: How to modify data through references without ownership changes.
+Rules of Mutable References: The constraints Rust imposes to ensure safe modifications.
+Dangling References: How Rust prevents pointers to non-existent objects and ensures memory safety.
+By the end of this lesson, you will have a solid understanding of how to use borrowing and references in Rust to write more efficient and safer code. Let's dive in!
+
+Borrowing Immutable References
+Rust defaults to transferring a variable's ownership when it's passed to a function. If we want to pass a variable to a function without transferring ownership, Rust uses the borrowing mechanism. To do this, the function signature declares its input as a reference (in this case s: &String). To call the function, pass a reference to a variable (in this case &title).
+
+fn main() {
+    let title = String::from("Rust Programming");  // Here, we declare a new String variable title
+    borrow_reference(&title);  // We then create a reference to it and pass it to borrow_reference
+    println!("I still own the book {}", title);  // Prints "I still own the book Rust Programming"
+}
+    
+fn borrow_reference(s: &String) {  // borrow_reference takes a reference to a String
+    println!("I am borrowing {}", s);  // Prints: I am borrowing "Rust Programming"
+}  // Note, we only have a reference to s, so the owner doesn't change
+
+Here, a reference to title is borrowed via borrow_reference without transferring ownership, making title accessible post function-call.
+
+Borrowing Mutable References
+Rust also allows you to pass a mutable variable to a function without transfering ownership. Mutable references marked with &mut are modifiable pointers. Here's an example:
+fn main() {
+    let mut title = String::from("Rust");  // We have a mutable String variable
+    edit(&mut title);  // We pass a mutable reference to edit
+    println!("Edited title: {}", title);  // Once edit returns, prints "Edited title: Rust Programming"
+}
+    
+fn edit(title: &mut String) {  // edit takes a mutable reference to a String
+    title.push_str(" Programming");  // It can therefore modify the String
+}  // After the function call, the borrowed reference is dropped.
+The edit function appends the string " Programming" to title, showcasing mutable references' ability to manipulate data without transferring ownership.
+
+We will cover how push_str works in a later lesson. For now, just know that it appends " Programming" to "Rust".
+
+Rules of Mutable References
+Rust imposes two safe rules on mutable references:
+
+No limit on the number of immutable references.
+Only one mutable reference or multiple immutable references concurrently, not both.
+These rules are necessary to prevent data races. A data race is when two parts of a program try to access a piece of data at the same time. For example, if there is a mutable and immutable reference to the same piece of memory, the immutable reference might read the data before or after it has been changed by the mutable reference.
+
+Here's an example:
+fn main() {
+    let mut title = String::from("Rust");  // A mutable variable
+    let ref1 = &title;  // An immutable reference
+    let ref2 = &mut title;  // A mutable reference
+    let ref3 = &title;  // Will raise a compilation warning- violates Rust's mutable reference rule
+}
+
+The immutable references, ref1 and ref3, and the mutable one, ref2, cannot coexist, resulting in a compilation error.
+
+Dangling References
+Dangling references pertain to a non-existent object. Rust, through compile-time checks, stops dangling references from arising. Take this example:
+fn main() {
+    let title = bad_reference();  // This will cause a compile error
+}
+    
+fn bad_reference() -> &String {  // bad_reference attempts to return a reference to a local variable
+    let title = String::from("Rust Programming");  // A local variable String is created
+    &title  // We then return a reference pointing to it
+}  // The function ends here, and title gets dropped, creating an unreachable (a.k.a. dangling) reference
+In bad_reference, a reference to title is attempted to be returned. After the function is returned, Rust frees the memory that holds title, so the reference to title no longer contains the actual String. This results in a dangling reference, culminating in a compile error.
+
+// TODO: Write a function that takes a reference to a String and prints it
+fn borrow(title: &String) {
+    println!("{}", *title);
+    println!("{}", title);
+}
+
+fn main() {
+    // TODO: Create a new String variable named book_title
+    // TODO: Borrow the book_title using the function
+    // TODO: Print the book_title to show that ownership is retained
+    let book_title = String::from("Rust title");
+    borrow(&book_title);
+    println!("{}", book_title);
+}
+
+Output: 
+Rust title
+Rust title
+Rust title
+
+
+Introduction to Tuples in Rust
+Hello! Today, we will explore a unique and powerful data structure in the Rust programming language — tuples. As we dive into tuples, we'll understand their characteristics, how to create and manipulate them, and their applications.
+
+Tuples in Rust let us group together values of different data types into a single compound. They are especially useful when you want to work with heterogeneous data without relying on complex data structures. Imagine you need to store a person's name, age, and height together. A tuple is an ideal candidate for this scenario.
+
+Let's get started!
+
+Creating Tuples
+There are two ways to declare tuples in Rust. To declare a tuple with explicit data types, add the data type in parentheses, separated by commas. The values for each element in the tuple must match these explicitly declared data types. Rust can also infer the data types, eliminating the need to explicitly declare data types.
+
+Here is an example of how to create tuples in Rust:
+fn main() {
+    // Creating Tuple with Data Type
+    let person_with_type: (&str, i32, f64) = ("Alice", 30, 5.5);
+
+    // Creating Tuple without Data Type
+    let person_without_type = ("Bob", 25, 6.0);
+}
+In this example, we created two tuples: person_with_type has explicit data types for its elements, while person_without_type relies on type inference.
+
+Accessing Elements of a Tuple
+In Rust, you can access the elements of a tuple using index notation. Tuples are zero-indexed meaning the first element of the tuple is at index 0. To access the value of a tuple, use the tuple name, followed by a dot, then the index number. Here’s how you can do it:
+
+fn main() {
+    let person = ("Alice", 30, 5.5);
+    // Accessing elements using index notation
+    let name = person.0;
+    let age = person.1;
+    let height = person.2;
+    println!("Name: {}", name);  // Prints: Name: Alice
+    println!("Age: {}", age);    // Prints: Age: 30
+    println!("Height: {}", height); // Prints: Height: 5.5
+}
+
+In this example:
+
+person.0 accesses the first element of the tuple, which is "Alice".
+person.1 accesses the second element of the tuple, which is 30.
+person.2 accesses the third element of the tuple, which is 5.5.
+
+Deconstructing Tuples
+Rust allows us to deconstruct tuples to separate their elements for easier manipulation. To deconstruct a tuple, place the variable names in parentheses, followed by = then the tuple variable name. For example:
+
+fn main() {
+    let person = ("Alice", 30, 5.5);
+    let (name, age, height) = person;
+    println!("Name: {}", name);  // Prints: Name: Alice
+    println!("Age: {}", age);    // Prints: Age: 30
+    println!("Height: {}", height); // Prints: Height: 5.5
+}
+
+In this code, we deconstructed the tuple person into variables name, age, and height.
+
+Deconstructing tuples is helpful when you need to work with each element individually.
+
+Mutable Tuples
+In Rust, tuples are by default immutable. Using the mut keyword, we can modify the elements of a tuple. Keep in mind the data type of new values must be the same as the original value.
+
+To print the values of a tuple, we use {:?} in the println statement. Let's take a look:
+
+fn main() {
+    let mut person = ("Charlie", 28, 5.8);
+    println!("Before modification: {:?}", person); // Prints: ("Charlie", 28, 5.8)
+    person.1 = 29; // Modifying the age
+    println!("After modification: {:?}", person); // Prints: ("Charlie", 29, 5.8)
+}
+
+In this code, we created a mutable tuple person then modified the second element using person.1 = 29.
+
+Ownership with Tuples
+Understanding how Rust manages data copying and ownership within tuples is crucial. Recall, copy data types create a copy of the variable and do not transfer ownership. Non-copy data types move ownership of the data to the new variable.
+
+fn main() {
+    let tuple_with_copy = (42, "Hello".to_string());
+    let (num, text) = tuple_with_copy;
+    println!("Copy data in tuple - num: {}", tuple_with_copy.0); // Prints: "Copy data in tuple - num: 42"
+    println!("Moved data is {}", tuple_with_copy.1); // Ownership of "Hello" has changed, so this line causes an error.
+}
+
+Here:
+
+We created a tuple with an integer (i32) and a String.
+When deconstructing, num (i32) is copied because integers implement the Copy trait.
+The String is moved, and text now owns it.
+
+Tuples as Function Parameters
+Tuples can be passed to functions, enabling us to bundle multiple elements as a single argument. If all elements within a tuple implement the Copy trait, the tuple itself can be copied. The rules for passing tuples as function parameters are:
+
+Passing a reference to a tuple does not transfer ownership
+If all elements within a tuple implement the Copy trait, the tuple will not transfer ownership when passed to a function without using a reference.
+If at least one element in the tuple is a non-copy type, ownership is transferred when the tuple is passed to a function without using a reference.
+
+fn main() {
+    let non_copy_tuple = (10, String::from("I am not copy"));
+    display_tuple_reference(&non_copy_tuple);
+    println!("After display_tuple_reference: ({}, {})", non_copy_tuple.0, non_copy_tuple.1); // Prints: After display_tuple_reference: (10, I am not copy)
+    
+    let copyable_tuple = (10, 20);
+    display_tuple_copy(copyable_tuple);
+    println!("After display_tuple_copy: ({}, {})", copyable_tuple.0, copyable_tuple.1); // Prints: After display_tuple_copy: (10, 20)
+    
+    display_tuple_ownership(non_copy_tuple);
+    // println!("After display_tuple_ownership: ({}, {})", non_copy_tuple.0, non_copy_tuple.1); // Causes error
+}
+
+fn display_tuple_reference(tuple: &(i32, String)) {
+    println!("In display_tuple_reference: ({}, {})", tuple.0, tuple.1); // Prints: In display_tuple_reference: (10, I am not copy)
+}
+
+fn display_tuple_copy(tuple: (i32, i32)) {
+    println!("In display_tuple_copy: ({}, {})", tuple.0, tuple.1); // Prints: In display_tuple_copy: (10, 20)
+}
+
+fn display_tuple_ownership(tuple: (i32, String)) {
+    println!("In display_tuple_ownership: ({}, {})", tuple.0, tuple.1); // Prints: In display_tuple_ownership: (10, I am not copy)
+}
+
+In this code:
+
+The function display_tuple_reference takes a reference to a tuple with elements (i32, String). Referencing allows the function to read the tuple without taking ownership of its data, so it remains available in the main function.
+
+The function display_tuple_copy takes a tuple with two i32 elements. Since i32 implements the Copy trait, the data is copied when passed to the function.
+
+The function display_tuple_ownership takes ownership of a tuple with elements (i32, String). This consumes the tuple, making it unavailable for further use in the main function. Uncommenting the last println! statement in main causes an error because the tuple's ownership has been moved to the function.
+
+println! Refresher
+Recall, println! does not affect ownership of a variable in Rust. When you pass a value to println!, it borrows the value immutably just for the duration of the macro call. This means that after the println! call, the ownership of the value remains unchanged, and you can continue to use the variable as before.
+
+fn main() {
+    let non_copy_tuple = (10, String::from("Hello"));
+    println!("Ownership of {} does not change when using println!", non_copy_tuple.1);
+    let hello = non_copy_tuple.1; // Valid since println! does not transfer ownership.
+}
+
+Introduction to Arrays in Rust
+Welcome back! Today, we're diving into arrays in Rust. In our last lesson, we explored tuples, a way to group different types of data into a single compound type. Arrays are somewhat similar but come with their own unique set of characteristics and benefits.
+
+An array in Rust is a collection of elements of the same type, stored in a contiguous block of memory. This can be especially useful when you have a fixed-size collection of elements that you need to manage efficiently. Unlike tuples, every element of an array must be the same data type.
+
+Imagine a scenario where you need to store the temperatures recorded for each day of the week. An array can be an ideal candidate for this. Let's explore arrays in Rust in more detail!
+
+Creating Arrays in Rust
+There are two ways to declare arrays in Rust. To declare an array with explicit data types, specify the data type followed by a semicolon and the array's size within square brackets. The values for each element in the array must match this explicitly declared data type. Rust can also infer the data types, eliminating the need to explicitly declare data types.
+
+Here’s how you can create arrays with and without explicit data types:
+
+fn main() {
+    // Creating Array with Data Type
+    let array_with_type: [i32; 4] = [1, 2, 3, 4]; 
+    // Creating Array without Data Type (type inference)
+    let array_without_type = [5, 6, 7, 8];
+
+    println!("Array with type: {:?}", array_with_type); // Prints: [1, 2, 3, 4]
+    println!("Array without type: {:?}", array_without_type); // Prints: [5, 6, 7, 8]
+}
+
+In the code above:
+
+array_with_type is an array explicitly typed as having four elements, all of type i32.
+array_without_type relies on type inference to determine the elements’ type.
+Recall, to print the values of an array, we use {:?} in the println! statement.
+
+Accessing Elements of an Array
+In Rust, you can access the elements of an array using index notation. Arrays are zero-indexed, meaning the first element of the array is at index 0. To access the value of an array, use the array name followed by square brackets containing the index number. Here’s how you can do it:
+
+fn main() {
+    let array = [1, 2, 3, 4];
+    println!("First element: {}", array[0]); // Prints: First element: 1
+    println!("Fourth element: {}", array[3]); // Prints: Fourth element: 4
+}
+
+In this example:
+
+We accessed the first element using array[0].
+We accessed the fourth element using array[3].
+
+Mutable Arrays
+In Rust, arrays are by default immutable. Using the mut keyword, we can modify the elements of an array. Keep in mind the data type of new values must be the same as the original value.
+
+fn main() {
+    let mut mutable_array = [9, 10, 11, 12];
+    mutable_array[2] = 42; // Modifying the third element
+    println!("Mutable array: {:?}", mutable_array); // Prints: Mutable array: [9, 10, 42, 12]
+}
+
+In this code:
+
+We created a mutable array mutable_array.
+We modified the third element to 42 using mutable_array[2] = 42.
+
+Copy and Non-copy Data in Arrays
+Understanding whether data in arrays can be copied or moved is crucial for effective Rust programming. If all the elements in an array implement the Copy trait, the array itself will also implement the Copy trait. Assigning an element of a non-copy Array to a variable is not allowed. Instead, you must use a reference. Here's an example:
+
+fn main() {
+    let array_with_copy = [1, 2, 3, 4]; // Array with Copy type data
+
+    // Copy data
+    let copy_array = array_with_copy; // Elements are copied
+    println!("array_with_copy: {:?}", array_with_copy); // Prints: array_with_copy: [1, 2, 3, 4]
+    println!("copy_array: {:?}", copy_array); // Prints: copy_array: [1, 2, 3, 4]
+
+    // Non-copy data
+    let array_with_non_copy = [String::from("Hello"), String::from("World")]; // Array with data that cannot be copied
+    let first_elem = &array_with_non_copy[0]; // Creates a reference
+    println!("Accessed element by reference: {}", first_elem); // Prints: Accessed element by reference: Hello
+    let invalid_copy = array_with_non_copy[0]; // Causes an error. You cannot move ownership of array elements
+    
+    // Ownership Transfer
+    let non_copy_array = array_with_non_copy; // Ownership moves
+    println!("{:?}", array_with_non_copy); // Causes an error
+}
+
+Array with Copy Data
+
+array_with_copy is an array of integers, and since i32 implements the Copy trait, this entire array also implements the Copy trait.
+When array_with_copy is assigned to copy_array, each element is copied.
+Array with Non-Copy Data
+
+The array_with_non_copy array includes String elements, which do not implement the Copy trait and thus transfer ownership when assigned.
+The line &array_with_non_copy[0] creates a reference to the first element of the array
+The line array_with_non_copy[0] causes an error because you cannot move ownership of elements in a non-Copy array
+Ownership Transfer
+
+Ownership of array_with_non_copy is moved to non_copy_array, making array_with_non_copy invalid.
+
+Array Slices
+Slices in Rust provide a way to reference a contiguous sequence of elements from an array. They are particularly useful for working with subsections of an array without needing to create a new array. To create an array slice, use a reference to the array followed the starting index up to, but not including the ending index. To create a full slice of an array, simply place .. inside the brackets. Here’s how you can create and use slices:
+
+fn main() {
+    let array = [1, 2, 3, 4];
+    let slice = &array[1..3]; // Slicing the array
+    println!("Slice from array: {:?}", slice); // Prints: Slice from array: [2, 3]
+
+    let full_slice = &array[..]; // Full slice of the array
+    println!("Full slice of array: {:?}", full_slice); // Prints: Full slice of array: [1, 2, 3, 4]
+
+    // Modifying slice elements through a mutable slice
+    let mut array_for_slice = [10, 20, 30, 40];
+    {
+        let slice = &mut array_for_slice[1..3];
+        slice[0] = 25; // Modifying the slice
+        slice[1] = 35; // Modifying the slice
+    }
+    println!("Array after modifying slice: {:?}", array_for_slice); // Prints: Array after modifying slice: [10, 25, 35, 40]
+}
+
+In this code:
+
+We created a slice that references elements two and three of array.
+We created a full_slice that references the entire array.
+We modified a section of array_for_slice through a mutable slice.
+
+Arrays as Function Parameters
+Arrays can be passed to functions in Rust, making it possible to work with fixed-size collections efficiently. Similar to tuples, arrays can be passed by reference or by value, depending on whether you want to transfer ownership or simply allow the function to read the data. The rules for passing arrays as function parameters are:
+
+Passing a reference to an array does not transfer ownership.
+Passing an array by value copies the array if its elements implement the Copy trait.
+Arrays composed of non-copy elements transfer ownership if passed by value.
+
+fn main() {
+    let array_with_non_copy = [String::from("Hello"), String::from("World")];
+    display_array_reference(&array_with_non_copy);
+    println!("After display_array_reference: {:?}", array_with_non_copy); // Prints: After display_array_reference: ["Hello", "World"]
+
+    let array_with_copy = [1, 2, 3, 4];
+    display_array_copy(array_with_copy);
+    println!("After display_array_copy: {:?}", array_with_copy); // Prints: After display_array_copy: [1, 2, 3, 4]
+
+    display_array_ownership(array_with_non_copy);
+    // println!("After display_array_ownership: {:?}", array_with_non_copy); // Causes error
+}
+
+fn display_array_reference(arr: &[String; 2]) {
+    println!("In display_array_reference: {:?}", arr); // Prints: In display_array_reference: ["Hello", "World"]
+}
+
+fn display_array_copy(arr: [i32; 4]) {
+    println!("In display_array_copy: {:?}", arr); // Prints: In display_array_copy: [1, 2, 3, 4]
+}
+
+fn display_array_ownership(arr: [String; 2]) {
+    println!("In display_array_ownership: {:?}", arr); // Prints: In display_array_ownership: ["Hello", "World"]
+}
+
+In this code:
+
+The function display_array_reference takes a reference to an array with two String elements. This allows the function to read the array without taking ownership, so the array remains available in the main function.
+
+The function display_array_copy takes an array with four i32 elements. Since i32 implements the Copy trait, the data is copied when passed to the function.
+
+The function display_array_ownership takes ownership of an array with two String elements. This consumes the array, making it unavailable for further use in the main function. Uncommenting the last println! statement in main causes an error because the array's ownership has been moved to the function.
+
+
+fn main() {
+    let hero_names = [String::from("Iron Man"), String::from("Thor")];
+    let mut hero_powers = [2999,4500];
+
+    // TODO: Call list_names on hero_names WITHOUT transfering ownership
+    list_names(&hero_names);
+
+    // TODO: Call move_teams in order to change all power levels to 0 and transfer ownership of of hero_names array
+    move_teams(&mut hero_powers, hero_names);
+    println!("Hero powers are now: {:?}", hero_powers);
+}
+
+// TODO: Implement list_names which prints out the names of the heros without transferring ownership
+fn list_names(hero_names: &[String; 2]) {
+    println!("Hero names are: {:?}", hero_names);
+}
+
+// TODO: Implement move_teams which prints out the hero names while transfering ownership. The powers should all be set to 0 without transferring ownership.
+fn move_teams(hero_powers: &mut [i32; 2], hero_names: [String; 2]) { // why is mut required for hero_powers
+    println!("Moving {:?} to another team", hero_names);
+    hero_powers[0] = 0;
+    hero_powers[1] = 0;
+    // TODO: Set power levels to 0
+}
+
+Introduction to Vectors in Rust
+Hello! Today, we’re going to delve into one of Rust’s most versatile and powerful data structures — vectors. Just as we explored arrays in our previous lesson, vectors also store a collection of elements of the same type. However, unlike arrays, vectors are dynamic and can grow and shrink as needed.
+
+In this lesson, we'll cover the essentials of creating, modifying, and managing vectors in Rust. We’ll look into different ways of creating vectors, adding and removing elements, and understanding how Rust handles data and ownership within vectors. By the end of this lesson, you'll have a strong grasp of vectors and be ready to use them effectively in your Rust programs.
+
+Let's get started!
+
+Creating Vectors
+Vectors can be created in Rust with or without specifying the data type explicitly. If the type is not explicitly mentioned, Rust will infer it based on the values pushed into the vector. To declare a new vector explicitly use Vec followed by the data type within <>. To add new elements to a vector, use push to append the new value to the end of the vector. To implicitly declare a vector, use vec! followed by the elements inside brackets.
+
+Here are a couple of examples to illustrate this:
+
+fn main() {
+    // Creating Vector with Data Type
+    let mut vector_with_type: Vec<i32> = Vec::new();
+    vector_with_type.push(1);
+    vector_with_type.push(2);
+    vector_with_type.push(3);
+
+    // Creating Vector without Data Type (type inference)
+    let mut vector_without_type = vec![4, 5, 6];
+    vector_without_type.push(7);
+}
+
+In this example:
+
+vector_with_type is explicitly typed as a vector of i32 values. Elements are pushed into the vector using the push method.
+vector_without_type uses type inference, determining the type from the initial values provided.
+
+Accessing Elements of a Vector
+You can access elements of a vector using both the get method and direct indexing. The get method returns an Option type that can be used to handle out-of-bounds errors gracefully. The get method returns an Option<&T> where T is the type of the elements in the vector. The Option type can be Some(&element) if the index is valid, or None if the index is out of bounds.
+
+To ensure the valid access of an element, use the pattern matching construct if let Some(&element) = vector.get(index). If index is indeed a valid index, element takes on the value of the element in the vector, and the if block is executed. If index is not a valid index, element takes on the value of None, and the if block does not execute.
+
+fn main() {
+    let vector = vec![1, 2, 3];
+    if let Some(first_elem) = vector.get(0) {
+        println!("First element (using get): {:?}", first_elem); // Prints: First element (using get): 1
+    }
+    println!("Second element (using index): {}", vector[1]); // Prints: Second element (using index): 2
+}
+
+If 0 is a valid index of vector (it is), vector.get(0) returns Some(&first_elem) and binds first_elem to the value of the first element of vector.
+The if block is executed because Some(first_elem) is not None.
+vector[1] directly accesses the second element but can panic if the index is out-of-bounds.
+
+Modifying Vectors
+Vectors in Rust are immutable by default, but can be made mutable using the mut keyword. This allows you to modify their elements and change their size:
+
+fn main() {
+    let mut mutable_vector = vec![8, 9, 10];
+    mutable_vector[1] = 42; // Modifying the second element
+    println!("Updated vector: {:?}", mutable_vector); // Prints: Updated vector: [8, 42, 10]
+}
+
+We created a mutable vector mutable_vector then modified the second element using mutable_vector[1] = 42.
+
+Removing Elements from a Vector
+Rust provides methods like pop and remove to remove elements from a vector, simplifying management tasks.
+
+.pop returns the last element of the vector and removes it from the vector.
+
+The remove method is used to remove an element from a vector at a specified index. This operation shifts all elements after the specified index one position to the left, effectively reducing the vector's length by one. The method also returns the removed element.
+
+fn main() {
+    let mut vector = vec![4, 5, 6, 7];
+    println!("Popped element: {:?}", vector.pop()); // Prints: Popped element: Some(7)
+    let removed_elem = vector.remove(1); // Removes the element at index 1
+    println!("Removed Element: {}", removed_elem); // Prints: Removed Element: 5
+    println!("Updated vector: {:?}", vector); // Prints: Updated vector: [4, 6]
+}
+
+vector.pop() removes the last element and returns it wrapped in Some, or None if the vector is empty.
+vector.remove(1) removes and returns the element at index 1. If the index is out-of-bounds, this code will cause an error during runtime.
+
+Ownership and Copy Data in Vectors
+Handling ownership and the concept of copy versus non-copy data types is crucial in Rust. Vectors themselves are not Copy types in Rust. Even if the elements inside the vector are of a type that implements the Copy trait (such as i32), the vector itself does not implement the Copy trait. Like arrays, using direct indexing on a vector (vector[index]) does not move ownership of a non-copy element. You can only create a reference to the element. Here's how it works with vectors:
+
+fn main() {
+    let vector_with_copy = vec![1, 2, 3, 4];
+    
+    // Copy data
+    let first_elem_copy = vector_with_copy[0];
+    println!("first_elem_copy: {}", first_elem_copy); // Prints: first_elem_copy: 1
+    println!("vector_with_copy: {:?}", vector_with_copy); // Prints: vector_with_copy: [1, 2, 3, 4]
+
+    // Non-copy data
+    let vector_with_non_copy = vec![String::from("Hello"), String::from("World")];
+
+    let first_elem_non_copy = &vector_with_non_copy[0]; // Creates a reference
+    println!("first_elem_non_copy: {}", first_elem_non_copy); // Prints: first_elem_non_copy: Hello
+    let invalid_copy = vector_with_non_copy[0]; // Causes an error. You cannot move ownership of vector elements
+
+    // Ownership Transfer
+    let copied_vector = vector_with_copy; // Ownership moved to copied_vector
+    println!("vector_with_copy: {:?}", vector_with_copy); // Causes an error
+}
+
+Vector with Copy Data
+
+vector_with_copy contains i32 elements, which are copy types.
+vector_with_copy[0] accesses the first element, 1, which is of type i32.
+first_elem_copy is assigned the value 1. Since i32 implements the Copy trait, the value is copied rather than moved.
+Vector with Non-Copy Data
+
+vector_with_non_copy is initialized with String elements. String does not implement the Copy trait.
+The line &vector_with_non_copy[0] creates a reference to the first element of the vector
+The line vector_with_non_copy[0] causes an error because you cannot move ownership of elements in a non-Copy vector
+Ownership Transfer
+
+Ownership of vector_with_copy is moved to copied_vector, making vector_with_copy invalid.
+
+Slicing Vectors
+Slices allow you to work with portions of a vector without creating a new one. To create a vector slice, use a reference to the vector followed the starting index up to, but not including the ending index. To create a full slice of an vector, simply place .. inside the brackets. Here’s how you can create and use slices:
+
+fn main() {
+    let vector = vec![10, 20, 30, 40];
+    let slice = &vector[1..3]; // Slicing the vector
+    println!("Slice from vector: {:?}", slice); // Prints: Slice from vector: [20, 30]
+
+    let mut vector_for_slice = vec![10, 20, 30, 40];
+    {
+        let mutable_slice = &mut vector_for_slice[1..3];
+        mutable_slice[0] = 25; // Modifying the slice
+        mutable_slice[1] = 35; // Modifying the slice
+    }
+    println!("Vector after modifying slice: {:?}", vector_for_slice); // Prints: Vector after modifying slice: [10, 25, 35, 40]
+}
+
+&vector[1..3] creates an immutable slice of the vector.
+&mut vector_for_slice[1..3] creates a mutable slice, allowing modifications to the vector's elements.
+
+Vectors as Function Parameters
+Vectors can be passed to functions by reference or by value, affecting ownership and data access. The rules for passing vectors to functions are as follows:
+
+Passing a reference to an vector does not transfer ownership.
+Unlike arrays, passing a vector by value always transfers ownership, regardless of whether the elements implement the Copy trait or not.
+
+fn main() {
+    let vector1 = vec![String::from("Hello"), String::from("World")];
+    display_vector_reference(&vector1);
+    println!("After display_vector_reference: {:?}", vector1); // Prints: After display_vector_reference: ["Hello", "World"]
+
+    let vector2 = vec![1, 2, 3, 4];
+    display_vector_ownership(vector2);
+    println!("After display_vector_ownership: {:?}", vector2); // Error as ownership has been moved
+}
+
+fn display_vector_reference(vec: &Vec<String>) {
+    println!("In display_vector_reference: {:?}", vec); // Prints: In display_vector_reference: ["Hello", "World"]
+}
+
+fn display_vector_ownership(vec: Vec<i32>) {
+    println!("In display_vector_ownership: {:?}", vec); // Prints: In display_vector_ownership: [1, 2, 3, 4]
+}
+
+In this code:
+
+The function display_vector_reference takes a reference to a vector with two String elements. This allows the function to read the vector without taking ownership, so the vector remains available in the main function.
+
+The function display_vector_ownership takes ownership of a vector with two i32 elements. This consumes the vector, making it unavailable for further use in the main function. The last print statement in main causes an error because the vector's ownership has been moved to the function.
+
+fn main() {
+    // TODO: Create a mutable vector named `scores` and initialize it with elements [95, 82, 73]
+    
+    // TODO: Remove the last element of scores and print its value
+    
+    // TODO: Add a new score of 78 to the vector
+    
+    // TODO: Verify the new value was added to scores by printing out the last element
+    
+    // TODO: Modify the first element of `scores` to be 100
+    
+    // TODO: Print the whole contents of the vector
+    let mut scores = vec![95, 82, 73];
+    println!("{:?}", scores.pop());
+    scores.push(78);
+    println!("{:?}", scores.last());
+    scores[0] = 100;
+    println!("{:?}", scores);
+}
+
+fn main() {
+    let mut hero_names = vec![String::from("Iron Man"), String::from("Thor")];
+
+    let mut power_levels = vec![2999, 4500];
+    
+    // TODO: Call add_hero without transferring owernship of either vectors
+    add_hero(&mut hero_names, &mut power_levels);
+    
+    // TODO: Print updated hero_names
+    println!("{:?}", hero_names);
+    // TODO: Print updated power_levels
+    println!("{:?}", power_levels);
+}
+
+// TODO: Implement add_hero that adds a new name to hero_names and a new power level to power_levels
+// Hint: This function should take in mutable references
+fn add_hero(names: &mut Vec<String>, levels: &mut Vec<i32>) {
+    names.push(String::from("Hulk"));
+    levels.push(3200);
+}
+
+Introduction to HashSets in Rust
+Hello! Today, we are going to explore HashSets, a powerful data structure in Rust that belongs to the collections module. HashSets provide us with an efficient way to store and manage unique items. As we delve into this lesson, you'll learn how to create, manipulate, and leverage the power of HashSets to solve common programming problems.
+
+Rust's HashSet is an unordered collection that uses a hash function to manage its elements, ensuring that each element is unique. This makes HashSets incredibly useful for tasks where you need to check for membership, eliminate duplicates, or perform set operations. Let's get started!
+
+Creating a HashSet
+In Rust, creating a HashSet involves using the HashSet struct from the std::collections module. You can either create an empty HashSet and then add elements to it or create a Hashset with default values.
+
+Here's how to create a HashSet:
+
+use std::collections::HashSet;
+
+fn main() {
+    // Create an empty HashSet
+    let mut empty_set: HashSet<i32> = HashSet::new();
+    let mut set = HashSet::from([1,2,3,4]);
+}
+
+We first import the HashSet struct from the std::collections module.
+We then create an empty HashSet named empty_set, which can store i32 values.
+We then create a HashSet named set, which already contains some values.
+
+Adding and Removing Elements
+Once you have a HashSet, you can add or remove elements using the insert and remove methods.
+
+use std::collections::HashSet;
+fn main() {
+    let mut hashset: HashSet<i32> = HashSet::new();
+
+    // Add values to HashSet
+    hashset.insert(1);
+    hashset.insert(2);
+    hashset.insert(3);
+
+    // Remove values from HashSet
+    hashset.remove(&2);
+}
+
+The insert method adds a value to the HashSet. If the value already exists, it will not be added again.
+The remove method removes a value from the HashSet, if it exists. The value passed into remove must always be a reference.
+
+Checking Membership and Other Properties
+One of the key advantages of using a HashSet is the ability to quickly check if an item exists within the set. You can also check the length of the HashSet and whether it's empty.
+
+use std::collections::HashSet;
+fn main() {
+    let mut hashset: HashSet<i32> = HashSet::new();
+    
+    hashset.insert(1);
+    hashset.insert(3);
+
+    // Check membership in HashSet
+    let has_one = hashset.contains(&1);
+    let has_two = hashset.contains(&2);
+    println!("HashSet has 1: {}, has 2: {}", has_one, has_two); // Prints: "HashSet has 1: true, has 2: false"
+
+    // len() - get the number of elements
+    let length = hashset.len();
+    println!("Length of HashSet: {}", length); // Prints: "Length of HashSet: 2"
+
+    // is_empty() - check if the set is empty
+    let is_empty = hashset.is_empty();
+    println!("Is HashSet empty: {}", is_empty); // Prints: "Is HashSet empty: false"
+}
+
+The contains method checks whether a value exists in the HashSet and returns a boolean. contains always expects a reference as an input.
+The len method returns the number of elements in the HashSet.
+The is_empty method checks if the HashSet is empty.
+
+Understanding Ownership in HashSets
+As with other data structures in Rust, managing ownership and borrowing is crucial when working with HashSets. Elements added to a HashSet must adhere to Rust's ownership rules.
+
+use std::collections::HashSet;
+fn main() {
+    let s = String::from("Hello");
+    let mut set = HashSet::from([s, String::from("World")]);
+    println!("{}", s); // Causes an error
+}
+
+We create a String called s
+We create a HashSet set, containing s and another String element.
+Adding s to the Hashset transfers ownership of "Hello" from s to set
+
+HashSets as Function Parameters
+HashSets can be passed to functions as references or by value. Understanding how to pass HashSets to functions allows for more modular and reusable code. Unlike tuples and arrays, a HashSet is never copy type, even if the data held in the HashSet is copy type.
+
+use std::collections::HashSet;
+fn main() {
+    let mut hashset = HashSet::new();
+    hashset.insert(10);
+    hashset.insert(20);
+
+    display_hashset_reference(&hashset);
+    println!("After display_hashset_reference: {:?}", hashset); // Prints: "After display_hashset_reference: {10, 20}"
+
+    display_hashset_ownership(hashset); // Ownership moved to display_hashset_ownership
+    println!("After display_hashset_ownership: {:?}", hashset); // Causes error
+}
+
+fn display_hashset_reference(set: &HashSet<i32>) {
+    println!("In display_hashset_reference: {:?}", set); // Prints: "In display_hashset_reference: {10, 20}"
+}
+
+fn display_hashset_ownership(set: HashSet<i32>) {
+    println!("In display_hashset_ownership: {:?}", set); // Prints: "In display_hashset_ownership: {10, 20}"
+}
+
+display_hashset_reference takes a reference to a HashSet, so it doesn't take ownership, allowing the HashSet to remain available after the function call.
+display_hashset_ownership takes a HashSet by value. Even though the elements are a copyable data type (i32), a HashSet is not copy type, thus ownership is transferred.
+
+
+use std::collections::HashSet;
+
+fn main() {
+    // Create new HashSet
+    let mut superhero_set: HashSet<&str> = HashSet::new();
+
+    // Add superheroes to HashSet
+    superhero_set.insert("Superman");
+    superhero_set.insert("Batman");
+    superhero_set.insert("Wonder Woman");
+
+    // Remove a superhero from HashSet
+    superhero_set.remove("Batman");
+
+    // Check membership in HashSet
+    let has_superman = superhero_set.contains("Superman");
+    let has_batman = superhero_set.contains("Batman");
+    println!("HashSet has Superman: {}, has Batman: {}", has_superman, has_batman);
+
+    // len(), is_empty()
+    println!("Length of HashSet: {}", superhero_set.len());
+    println!("Is HashSet empty: {}", superhero_set.is_empty());
+}
+
+Introduction to HashMaps in Rust
+Hello! Today, we will focus on another powerful and versatile data structure in Rust's std::collections module — HashMaps. HashMaps are invaluable when you need to establish a mapping between a set of keys and a corresponding set of values.
+
+HashMaps store key-value pairs, making it easy to quickly look up values based on their associated keys. This concept is similar to dictionaries in other programming languages like Python. Let's dive in and get familiar with HashMaps!
+
+Creating a HashMap
+In Rust, creating a HashMap involves using the HashMap struct from the std::collections module. When creating a new Hashmap, add the data type of the keys and data type of the values inside <>. You can also create an empty HashMap without specifying types, and Rust will infer the types based on how you insert an element into the HashMap for the first time.
+
+use std::collections::HashMap;
+
+fn main() {
+    // Create a new HashMap with explicit types
+    let mut hashmap: HashMap<&str, i32> = HashMap::new();
+
+    // Create a new HashMap with inferred types
+    let mut hashmap_inferred = HashMap::new();
+}
+
+We first import the HashMap struct from the std::collections module.
+We then create a mutable HashMap named hashmap, which can store &str keys and i32 values.
+We create a HashMap named hashmap_inferred that will infer the data types when an element is added.
+
+Adding and Accessing Elements
+Once you have a HashMap, you can add elements using the insert method. To access a value from a Hashmap use .get followed by the key name. The .get method only accepts a reference.
+
+use std::collections::HashMap;
+
+fn main() {
+    let mut hashmap: HashMap<&str, i32> = HashMap::new();
+
+    // Add elements
+    hashmap.insert("one", 1);
+    hashmap.insert("two", 2);
+    hashmap.insert("three", 3);
+
+    // Access a value
+    let value = hashmap.get("two");
+    println!("Value under 'two': {:?}", value); // Prints: Value under 'two': Some(2)
+
+    println!("{:?}", hashmap); // Prints: {"one": 1, "two": 2, "three": 3}
+}
+
+The insert method adds key-value pairs to the HashMap.
+The get method accesses the value associated with a key and returns an Option type.
+
+
+Modifying and Removing Elements
+HashMaps provide methods to modify values and remove elements by their keys. To remove an element, use .remove by passing in a variable reference. To modify the value stored in a key, you can reinsert the key with its new value or use .get_mut. .get_mut accepts a reference to the key.
+
+use std::collections::HashMap;
+
+fn main() {
+    let mut hashmap: HashMap<&str, i32> = HashMap::new();
+    hashmap.insert("one", 5);
+    hashmap.insert("two", 2);
+    hashmap.insert("three", 4);
+
+    // Remove an element
+    hashmap.remove("two");
+
+    // Reinserting an element
+    hashmap.insert("one", 1);
+
+    // Modify an element
+    if let Some(entry) = hashmap.get_mut("three") {
+        *entry = 3;
+    }
+    
+    println!("Updated HashMap: {:?}", hashmap); // Prints: Updated HashMap: {"one": 1, "three": 3}
+}
+
+The remove method deletes the key-value pair from the HashMap.
+Re-inserting the key "one" with the value 1, overrides the original value of the key.
+The get_mut method obtains a mutable reference to the value associated with the key, which allows us to modify it.
+
+Checking for Keys
+Checking for the existence of keys in a HashMap can be easily done using the contains_key method. The value passed to contains_key must be a reference.
+
+use std::collections::HashMap;
+
+fn main() {
+    let mut squares: HashMap<i32, i32> = HashMap::new();
+    squares.insert(1, 1);
+    squares.insert(2, 4);
+
+    // Check if a key exists
+    let has_one = squares.contains_key(&1); // Passing a reference
+    let has_three = squares.contains_key(&3); // Passing a reference
+    println!("HashMap contains key 1: {}", has_one); // Prints: HashMap contains key 1: true
+    println!("HashMap contains key 3: {}", has_three); // Prints: HashMap contains key 3: false
+}
+
+The contains_key method checks whether a specified key exists in the HashMap.
+
+Understanding Ownership in HashMaps
+As with other data structures in Rust, managing ownership and borrowing is crucial when working with HashMaps. Elements added to a HashMap must adhere to Rust's ownership rules.
+
+use std::collections::HashMap;
+
+fn main() {
+    // Create an empty HashMap
+    let s = String::from("Hello");
+    let mut map = HashMap::new();
+    map.insert("key1", s); // Transfers ownership of "Hello"
+    map.insert("key2", String::from("World"));
+    println!("{}", s); // Causes an error
+}
+
+We create a String called s.
+We create a HashMap map, and insert s with a key and another String element with a different key.
+Adding s to the HashMap transfers ownership of "Hello" from s to map.
+
+HashMaps as Function Parameters
+HashMaps can be passed to functions as references or by value. Understanding how to pass HashMaps to functions allows for more modular and reusable code. Similar to vectors and Hashsets, a HashMap is never copy type, even if the data held in the HashMap is copy type.
+
+use std::collections::HashMap;
+
+fn main() {
+    let mut hashmap = HashMap::new();
+    hashmap.insert("key1", 10);
+    hashmap.insert("key2", 20);
+
+    display_hashmap_reference(&hashmap);
+    println!("After display_hashmap_reference: {:?}", hashmap); // Prints: After display_hashmap_reference: {"key1": 10, "key2": 20}
+
+    display_hashmap_copy(hashmap); // Ownership moved to display_hashmap_copy
+    // println!("After display_hashmap_copy: {:?}", hashmap); // Causes error
+}
+
+fn display_hashmap_reference(map: &HashMap<&str, i32>) {
+    println!("In display_hashmap_reference: {:?}", map); // Prints: In display_hashmap_reference: {"key1": 10, "key2": 20}
+}
+
+fn display_hashmap_copy(map: HashMap<&str, i32>) {
+    println!("In display_hashmap_copy: {:?}", map); // Prints: In display_hashmap_copy: {"key1": 10, "key2": 20}
+}
+
+display_hashmap_reference takes a reference to a HashMap, so it doesn't take ownership, allowing the HashMap to remain available after the function call.
+display_hashmap_copy takes a HashMap by value. Even though the elements are a copyable data type (i32), a HashMap is not copy type, thus ownership is transferred.
+
+use std::collections::HashMap;
+
+fn main() {
+    // Create a new hashmap
+    let mut superhero_powers: HashMap<&str, &str> = HashMap::new();
+
+    // Add elements
+    superhero_powers.insert("Superman", "Super Strength");
+    superhero_powers.insert("Batman", "High Intelligence");
+    superhero_powers.insert("Flash", "Super Speed");
+
+    // Access values
+    let power = superhero_powers.get("Batman");
+    println!("Batman's power: {:?}", power);
+
+    // Remove elements
+    superhero_powers.remove("Batman");
+
+    // Modify an element
+    if let Some(entry) = superhero_powers.get_mut("Flash") {
+        *entry = "Time Travel";
+    }
+
+    // Check if key exists
+    let has_superman = superhero_powers.contains_key(&"Superman");
+    let has_batman = superhero_powers.contains_key(&"Batman");
+    println!("Contains Superman: {}, Contains Batman: {}", has_superman, has_batman);
+}
+
+Introduction to String Data Types
+Hello! Welcome to your first lesson on String Data Types in Rust. Strings are an essential part of any programming language because they enable you to store and manipulate text. In this lesson, we'll delve into the fundamental concepts of strings in Rust, covering literals, the String type, references, and string slices. By the end of this lesson, you'll have a solid understanding of how to work with strings efficiently and effectively in Rust.
+
+String Literals
+String literals are the most basic form of strings in Rust. They are immutable and stored directly in the binary file that also holds the code. Here's a simple example:
+
+
+fn main() {
+    let greeting = "Hello, world!";
+    println!("{}", greeting); // Prints: Hello, world!
+}
+String literals are ideal for text that doesn't need to change, as they provide excellent performance and safety.
+
+String Type
+The String type in Rust is more complex and flexible than string literals. It supports mutability and is allocated in memory when the program runs. To declare a String, use String::from followed by a string in quotes. Here's an example:
+
+
+fn main() {
+    let hello = String::from("Hello");
+    println!("{}", hello); // Prints: Hello
+}
+The String type is useful when you need a growable, mutable text representation.
+
+Strings, String Literals, and References
+You might be asking, what is the difference between a String and string literal.
+
+String literals are immutable and stored directly in the program's binary. They have a static lifetime, meaning they are valid for the entire duration of the program. Assigning a variable to a string literal creates an immutable reference with a static lifetime (&'static str). Therefore, string literals are not considered Copy types. Assigning a new variable to a string literal does not transfer ownership or make a copy of the data. Instead, the new variable is just a reference to where the string literal is stored in the code binary.
+
+The String type is allocated in memory when the program runs. When you want to use a String without transfering ownership, use a reference instead by using &.
+
+
+fn main() {
+    // String Literal
+    let s1 = "Hello";
+    let s2 = s1;
+    println!("{}", s1); // Prints: Hello
+    println!("{}", s2); // Prints: Hello
+
+
+    // String type
+    let s3 = String::from("Hello");
+    let s4 = &s3; // s4 is a reference to s3
+    println!("I am a reference to {}", s4); // Prints: I am a reference to Hello
+    println!("I still own {}", s3); // Prints: I still own Hello
+
+}
+s1 is a string literal. The type of s1 here is &'static str.
+
+let s2 = s1; copies the reference of the string literal. Because s1 and s2 are both &'static str, the assignment does not transfer ownership. In other words, both s1 and s2 point to the same string literal "Hello".
+
+s3 is a String type.
+
+s4 is a reference to s3. The & symbol creates an immutable reference. The type of s4 is &String.
+
+References are powerful as they allow multiple parts of your code to read the same data without interfering with each other.
+
+String Slices
+String slices are references to parts of a string. They allow you to work with substrings without making a copy. To create a string slice from a String or string literal, use the syntax &var_name[start..end]. Just like arrays, Strings are zero indexed, and the upper bound of the range is exclusive. Let's take a look:
+
+
+fn main() {
+    // String Slices
+    let s1 = String::from("Hello, world!");
+    let hello = &s1[0..5];
+    let world = &s1[7..12];
+    println!("{} {}", hello, world); // Prints: Hello world
+
+    let s2 = "Greetings Explorer!";
+    let greeting = &s2[0..9]; 
+    println!("{}", greeting); // Prints: Greetings
+}
+In this example:
+
+We created a string s1 with the value "Hello, world!".
+We used slices to get hello (the first 5 characters) and world (characters 7 to 12).
+For s2, we converted part of the string "Greetings Explorer!" into a slice by explicitly referencing the range [0..9].
+String slices are useful for efficiently accessing parts of a string without needing to copy data.
+
+fn main() {
+    let motto1 = String::from("To infinity and beyond!");
+     // TODO: Extract "infinity" from the string
+     let infinity = &motto1[3..11];
+    println!("To {} and beyond!", infinity);
+    
+    let motto2 = "Heroes Assemble!";
+    // TODO: Extract "Heroes" from the string literal
+    let heroes = &motto2[0..6];
+    println!("{} Assemble!", heroes);
+}
+
+Introduction to String Methods and Ownership
+Hello! Welcome to this lesson on String Methods and Ownership in Rust. In the previous lesson, we explored string data types, including string literals, the String type, references, and string slices. Today, we'll delve deeper into string manipulation by learning various string methods while understanding Rust's unique ownership model. By the end of this lesson, you will have a strong grasp of how to manipulate strings and understand how ownership affects strings in Rust.
+
+String Concatenation: `push_str`
+Rust provides multiple ways to concatenate strings. The push_str method adds a string slice to the end of another String. The variable passed into push_str must be a string literal/slice or a reference to a String. Don't forget to declare the String as mutable with mut.
+
+
+fn main() {
+    let mut greeting = String::from("Hello");
+    let rust = " Rust";
+    greeting.push_str(rust);
+    println!("{}", greeting); // Prints: Hello Rust
+
+    let world = String::from(" World!");
+    greeting.push_str(&world);
+    println!("{}", greeting); // Prints: Hello Rust World!
+}
+In this example:
+
+We created a mutable String called greeting.
+We used the push_str method to append the string literal" Rust" to greeting.
+We created a String called world and concatenated it to greeting
+push_str is useful when you want to add a string slice to an existing string.
+
+String Concatenation using `+`
+Another way to concatenate strings is by using the + operator. This method is slightly different as it moves ownership of the original string. In addition, the second variable must be a reference.
+
+
+fn main() {
+    let hello = String::from("Hello, ");
+    let rust = "Rust ";
+    let explorer = String::from("Explorer!");
+    let greeting = hello + &rust + &explorer;
+    println!("{}", greeting); // Prints: Hello, Rust Explorer!
+    // println!("{}", hello); // Error: `hello` no longer owns "Hello, "
+}
+In this example:
+
+We created two String variables, hello and explorer.
+We create a string literal called rust
+We used the + operator to concatenate these strings into greeting.
+Note that after using the + operator, hello cannot be used anymore because its ownership has been moved to greeting.
+Understanding how ownership works in string concatenation is crucial. The + operator consumes the left operand's ownership, making it unavailable for further use.
+
+Determining String Length
+Rust offers the len method to determine the length of a string. This method counts the number of bytes in the string, not the number of characters. All ASCII characters are a single byte, so the number of bytes in a string of ASCII characters is equal to the number of characters in the string.
+
+
+fn main() {
+    let s1 = String::from("Hello!");
+    let s2 = "Hello, Explorer!";
+    println!("The length of s1 is: {}", s1.len()); // Prints: The length of s1 is: 6
+    println!("The length of s2 is: {}", s2.len()); // Prints: The length of s2 is: 16
+}
+Keep in mind that len returns the number of bytes. If your string contains multi-byte characters such as € or 汉, the length might be different from the number of characters.
+
+String Equality and Comparison
+Rust supports comparing strings for equality using the == operator and inequality using the != operator. These operators in Rust are designed to compare different types of strings, making it convenient to check if a string slice and a String contain the same value. Keep in mind that comparisons are case sensitive.
+
+
+fn main() {
+    let word1 = "Hello";
+    let word2 = "Hello";
+    let word3 = "HELLO";
+    let word4 = String::from("Hello");
+
+    println!("{}", word1 == word2); // Prints: true
+    println!("{}", word1 != word3); // Prints: true
+    println!("{}", word1 == word4); // Prints: true
+}
+In this example:
+
+word1 == word2 compares word1 and word2 using the == operator, which checks for equality. Since both have the value "Hello", it prints true.
+word1 != word3 compares word1 and word3 using the != operator, which checks for inequality. Since "Hello" is not equal to "HELLO" (comparison is case-sensitive), it prints true.
+word1 == word4 compares word1 (a string literal) with word4 (a String type) using the == operator. Rust allows comparison between a string literal and a String type, and since both contain the value "Hello", it prints true
+String Comparisons
+Besides equality, Rust also allows you to compare strings lexicographically. The string that comes first alphabetically is considered "less than" the one that follows. So, the string that would come earlier in the dictionary is "less than". However, it's important to note that capital letters are considered "less than" lowercase letters because of their order in the Unicode system.
+
+
+fn main() {
+    let apple = String::from("apple");
+    let banana = String::from("banana");
+
+    if apple < banana {
+        println!("'{}' comes before '{}'", apple, banana); // Prints: 'apple' comes before 'banana'
+    } else if apple > banana {
+        println!("'{}' comes after '{}'", apple, banana);
+    } else {
+        println!("'{}' and '{}' are equal", apple, banana);
+    }
+}
+In this code, "apple" is less than "banana" because "apple" comes before "banana" in the dictionary.
+
+Ownership and Functions with Strings
+Hello! Welcome to this lesson on Ownership and Functions with Strings. Now, we'll dive deeper into the heart of Rust’s memory safety model. Additionally, we'll explore how ownership plays a role when passing data to functions. Understanding these concepts is crucial as they form the foundation of Rust programming.
+
+Let’s get started!
+
+Ownership Review
+Rust's ownership model ensures memory safety without needing a garbage collector. When a variable in Rust goes out of scope, it is automatically cleaned up. This model has three main rules:
+
+Each value in Rust has a single owner.
+The value is dropped when the owner goes out of scope.
+Ownership can be transferred to another variable.
+Let's see an example:
+
+
+fn main() {
+    let s1 = String::from("Hello");
+    let s2 = s1;
+    println!("{}", s2); // Prints: Hello
+    // println!("{}", s1); // Error: value borrowed here after move
+}
+In this example:
+
+A String is created and stored in s1.
+Ownership of s1 is transferred to s2. This means s1 can no longer be used.
+This transfer (or "move") ensures that there is always one owner of the data. Attempting to use s1 after the move results in an error.
+Cloning Data
+Sometimes, instead of transferring ownership, we want to create a deep copy of the data. This is done using the clone method:
+
+
+fn main() {
+    let s1 = String::from("Hello");
+    let s2 = s1.clone();
+    println!("{}", s1); // Prints: Hello
+    println!("{}", s2); // Prints: Hello
+}
+In this code:
+
+The clone method creates a deep copy of s1 and assigns it to s2.
+Both s1 and s2 can be used independently because they own separate data.
+Functions: Transferring Ownership
+When we pass a variable to a function, we can transfer ownership to the function:
+
+
+fn main() {
+    let s = String::from("Hello");
+    takes_ownership(s); // s is moved here and can no longer be used
+    // println!("{}", s); // Error: value borrowed here after move
+}
+
+fn takes_ownership(some_string: String) {
+    println!("Taking ownership of: {}", some_string); // Prints: Taking ownership of: Hello
+}
+In this example:
+
+The function takes_ownership accepts a String.
+When s is passed to takes_ownership, its ownership is moved to the function.
+Trying to use s after the call results in an error because s no longer owns the data.
+Functions: Passing References
+To avoid moving ownership, we can pass a reference to the function:
+
+
+fn main() {
+    let s = String::from("Hello");
+    let length = calc_length(&s);
+    println!("The length of {} is {}", s, length); // Prints: The length of Hello is 5
+}
+
+fn calc_length(s: &String) -> usize {
+    s.len()
+}
+In this code:
+
+The calc_length function takes a reference to a String, denoted by &.
+calc_length borrows the reference without taking ownership.
+The original String s can still be used after the function call.
+Functions: Passing Mutable References
+Mutable references allow us to modify data without transferring ownership:
+
+
+fn main() {
+    let mut s = String::from("Hello");
+    change_string(&mut s);
+    println!("{}", s); // Prints: Hello Rust Explorer
+}
+
+fn change_string(some_string: &mut String) {
+    let rust = " Rust";
+    let explorer = String::from(" Explorer");
+    some_string.push_str(rust);
+    some_string.push_str(&explorer);
+}
+In this example:
+
+change_string takes a mutable reference to a String.
+The function modifies the String by appending more text.
+The changes are reflected in the original String s.
+
+String Conversions and Methods
+Hello! Welcome to this lesson on String Conversions and Methods in Rust. In the previous lesson, we delved into the fundamentals of Rust string methods and ownership, exploring how to handle strings efficiently. Today, we will build on that knowledge by learning how to convert data to and from strings, and how to manipulate strings using various methods. By the end of this lesson, you will have a solid understanding of these essential string operations in Rust.
+
+Let's get started!
+
+Introduction
+Rust provides robust tools for string manipulation, making it easier to convert different data types to and from strings and apply various string methods, such as changing case, trimming spaces, and handling escape characters.
+
+Let's see how Rust makes string conversions and manipulations straightforward and efficient.
+
+String Conversions
+Converting data to and from strings is a common necessity in programming, and Rust offers several utilities to perform these conversions seamlessly.
+
+Here’s an example to demonstrate how to convert to and from string literals, String`, and numbers.
+
+
+fn main() {
+    let data = "initial contents";
+    let s1 = data.to_string(); 
+    println!("String: {}", s1);  // Prints: "String: initial contents"
+
+    let s2 = String::from("Hello, world!");
+    let s2_literal = s2.as_str();
+    println!("{}", s2_literal);  // Prints: "Hello, world!"
+
+    let num = 42;
+    let num_str = num.to_string();
+    println!("String: {}", num_str);  // Prints: "String: 42"
+
+    let parsed_num: i32 = num_str.parse().unwrap();
+    println!("Number: {}", parsed_num);  // Prints: "Number: 42"
+}
+In this snippet:
+
+data.to_string() converts a string literal to a String type.
+s2.as_str() converts a String to a string literal
+num.to_string() converts an integer to a string.
+num_str.parse() converts the string back into an integer. The method unwrap is used here to handle the potential error elegantly.
+Changing Case
+Changing the case of strings is a common requirement in text processing. Rust provides methods like to_lowercase and to_uppercase for this purpose. Using these methods does not transfer ownership.
+
+Let's look at an example:
+
+
+fn main() {
+    let s = String::from("Hello, WORLD!");
+    let lower_s = s.to_lowercase();
+    println!("{}", lower_s);  // Prints: "hello, world!"
+
+    let upper_s = lower_s.to_uppercase();
+    println!("{}", upper_s);  // Prints: "HELLO, WORLD!"
+
+    println!("s still has ownership of {}", s); // Prints: "s still has ownership of Hello, WORLD!"
+}
+In this code:
+
+to_lowercase converts all characters in the string to lowercase.
+to_uppercase converts all characters to uppercase.
+Printing the value of s works because ownership has not been transfered
+Trimming Whitespace
+Often, input strings might have extra whitespace that needs to be removed. Rust’s trim method is handy for these situations. Similar to the previous methods, trim does not transfer ownership.
+
+Here's an example:
+
+
+fn main() {
+    let s = String::from("   Hello, world!   ");
+    let trimmed_s = s.trim();
+    println!("'{}'", trimmed_s);  // Prints: "'Hello, world!'"
+}
+In this snippet, the trim method removes leading and trailing whitespace from the string s.
+
+Handling Escape Characters
+Escape characters are used to represent special characters within strings. For example, to instruct Rust to treat quotes as part of the string instead of the closing quote, just prepend \ before the quotes. Rust provides functionality to handle these characters efficiently. To include a \ as part of the string, prepend \ with another \. To create a new line, use \n.
+
+Consider the following example:
+
+
+fn main() {
+    let s = "Cosmo says \"hi\"";
+    println!("{}", s);  // Prints: Cosmo says "hi"
+
+    let s_escaped = "Hello\\world!";
+    println!("{}", s_escaped);  // Prints: "Hello\world!"
+
+    let s_new_line = "Hello\nWorld!";
+    println!("{}", s_new_line); // Prints: Hello
+                               //  World!
+}
+In this code:
+
+The \"hi\" allows quotes to be part of the string
+The \\ escape character is used to include a backslash in the string.
+The \n escape character is used to insert a newline in the string
+
+
+fn main() {
+    let hero = "Iron Dude";
+    let hero_name = hero.to_string(); 
+    println!("Superhero as String: {}", hero_name);  // Prints: "Superhero as String: Iron Dude"
+
+    let shout = String::from("Heroes, assemble!");
+    let command = shout.as_str();
+    println!("Command as string literal: {}", command);  // Prints: "Command as string literal: Heroes, assemble!"
+
+    let power = 100;
+    let power_str = power.to_string();
+    println!("Power Level as String: {}", power_str);  // Prints: "Power Level as String: 100"
+
+    let parsed_power: i32 = power_str.parse().unwrap();
+    println!("Power Level as int: {}", parsed_power);  // Prints: "Power Level as int: 100"
+}
+
+Introduction
+Hello! In this lesson, we will dive into some advanced string manipulation methods in Rust. Building on the previous knowledge of basic string operations, you will learn how to find substrings, check for the presence of a substring within another string, replace parts of a string, and transform strings using splitting and joining techniques.
+
+Let's get started!
+
+Finding a Substring
+In Rust, you can use the string method .find() to locate the position of a substring within another string. This can be particularly useful when you need to determine whether a certain pattern exists in your text. The .find() method in Rust returns an Option<usize>, and it can yield two types of values:
+
+Some(index)
+This variant signifies that the substring was found within the string.
+index is the starting position (0-based index) of the first occurrence of the substring within the string.
+None
+This variant indicates that the substring was not found within the string.
+Here’s an example:
+
+
+fn main() {
+    let s = String::from("Hello, world!");
+    match s.find("world") {
+        Some(index) => println!("Found 'world' at index: {}", index),  
+        None => println!("'world' not found")
+    }
+    // Prints: "Found 'world' at index: 7"
+    
+    match s.find("Rust") {
+        Some(index) => println!("Found 'Rust' at index: {}", index),
+        None => println!("'Rust' not found")
+    }
+    // Prints: 'Rust' not found
+}
+In this code:
+
+s.find() will return either Some(index) or None
+If the value is Some(index), execute the first arm of the match statement
+If the value is None, execute the second arm of the match statement.
+Checking for Substring Presence
+Another common task is to check if a substring exists within a string using the .contains() method. It returns a boolean value, which you can use to conditionally execute parts of your code.
+
+Consider this example:
+
+
+fn main() {
+    let s = String::from("Hello, world!");
+    if s.contains("world") {
+        println!("The string contains 'world'");  // Prints: "The string contains 'world'"
+    } else {
+        println!("The string does not contain 'world'");
+    }
+}
+In this snippet:
+
+We create a String variable s.
+We use the .contains("world") method, which returns true if the substring is found, and false otherwise.
+With an if statement, we print a corresponding message based on whether the substring is present.
+Replacing Substrings
+Replacing parts of a string is another essential string operation. Rust provides the .replace() method to substitute occurrences of a substring with another value.
+
+Here’s how you can do it:
+
+
+fn main() {
+    let s = String::from("Hello, world!");
+    let new_s = s.replace("world", "Rust");
+    println!("{}", new_s);  // Prints: "Hello, Rust!"
+}
+In this example:
+
+We create a String variable s.
+The .replace("world", "Rust") method creates a new string, new_s, where all instances of "world" are replaced with "Rust".
+Splitting and Joining Strings
+Splitting and joining strings are powerful techniques for transforming textual data. The .split() method divides a string into a vector of substrings based on a delimiter, and join can be used to combine a vector of strings into a single string.
+
+Here’s an example:
+
+
+fn main() {
+    let s = String::from("apple, banana, pear");
+    let fruits: Vec<&str> = s.split(',').collect();
+    println!("{:?}", fruits);  // Prints: ["apple", " banana", " pear"]
+
+    let joined = fruits.join(" & ");
+    println!("{}", joined);  // Prints: "apple &  banana &  pear"
+}
+In this code:
+
+We create a String variable s.
+The .split(',') method splits the string at each comma, returning an iterator. The .collect() method collects the results into a vector of string slices (Vec<&str>).
+We print the resulting vector to see the individual substrings.
+The join(" & ") method combines the vector elements into a single string with " & " as the separator.
+
+
+Introduction to While Loops in Rust
+Hello! In this lesson, we will dive into while loops in Rust, a fundamental control structure used frequently in programming. Understanding while loops is crucial because they allow you to repeat a block of code as long as a specified condition is true. This makes them incredibly useful for scenarios where you don't know in advance how many times you need to repeat an operation.
+
+We'll cover the basics of while loops, their syntax, common use cases, handling infinite loops, and scope within while loops.
+
+Let's get started!
+
+Basics of While Loops
+A while loop in Rust repeatedly executes a block of code as long as a given condition evaluates to true. The general syntax looks like this:
+
+
+while condition {
+    code to execute
+}
+As long as the condition is true, the block is executed and the condition is checked again. Let's take a look at a concrete example:
+
+
+fn main() {
+    let mut count = 0;
+    while count < 5 {
+        println!("Count is: {}", count);
+        count += 1;
+    }
+}
+/* Output:
+    Count is: 0
+    Count is: 1
+    Count is: 2
+    Count is: 3
+    Count is: 4
+*/
+In this snippet:
+
+count is a mutable variable initialized to 0.
+The while loop condition checks if count is less than 5.
+The loop prints the value of count and then increments it by 1 until the condition is no longer true.
+Once count reaches 5, the condition becomes false, and the loop stops.
+Infinite Loops and Loop Control
+While loops can become infinite if their conditions never become false. Be cautious to ensure they eventually terminate. For example:
+
+
+fn main() {
+    let mut countdown = 5;
+    while countdown > 0 {
+        println!("Countdown is: {}", countdown);
+    }
+}
+This loop would never terminate because the countdown value remains unchanged, keeping the condition true. To fix this infinite loop, the countdown variable must be decremented as follows:
+
+
+fn main() {
+    let mut countdown = 5;
+    while countdown > 0 {
+        println!("Countdown is: {}", countdown);
+        countdown -= 1;
+    }
+}
+/* Output:
+    Countdown is: 5
+    Countdown is: 4
+    Countdown is: 3
+    Countdown is: 2
+    Countdown is: 1
+*/
+The loop starts with countdown set to 5.
+It prints the current value and decreases countdown by 1 in each iteration.
+The loop stops when countdown becomes 0, making the condition false.
+However, if we forget to decrement countdown within the loop, it would keep running forever
+
+Looping Through Indices
+Sometimes, you'll want to iterate over arrays or vectors using indices. While loops can help with this:
+
+
+fn main() {
+    let numbers = [1, 2, 3, 4];
+    let length = numbers.len();
+    let mut index = 0;
+    while index < length {
+        println!("Value at index {} is {}", index, numbers[index]);
+        index += 1;
+    }
+}
+/* Output:
+    Value at index 0 is 1
+    Value at index 1 is 2
+    Value at index 2 is 3
+    Value at index 3 is 4
+*/
+In this code:
+
+We defined an array numbers and calculated its length.
+The while loop prints values at each index until the index matches the length.
+Scope within While Loops
+In Rust, variable scopes are crucial to understand. Variables declared inside a while loop are not accessible outside of it:
+
+
+fn main() {
+    let mut num = 0;
+    while num < 5 {
+        let doubled = num * 2;
+        println!("{} doubled is {}", num, doubled);
+        num += 1;
+    }
+    // println!("Last doubled number is {}", doubled); // Error: doubled is out of scope
+}
+We declared doubled inside the loop.
+It's accessible only within the loop body, hence the error if we try to access it outside.
+
+Introduction to For Loops in Rust
+Hello! In this lesson, we're going to dive into for loops in Rust — a fundamental control structure used to iterate over sequences. For loops allow you to iterate over a range of numbers, items in a collection, or even characters in a string. Mastering for loops is critical for writing efficient and readable code. Let's dive in!
+
+Basic For Loop Syntax
+A for loop in Rust iterates over a range or a collection. The basic syntax looks like this:
+
+
+fn main() {
+    for var in range {
+        code to execute
+    }
+}
+The for keyword starts the loop.
+The in keyword specifies the range or collection to iterate over.
+The code block inside {} runs for each item in the specified range.
+Let's take a look at an example:
+
+
+fn main() {
+    // For loop with range
+    for number in 1..6 {
+        println!("Number is: {}", number);
+    }
+}
+/* Output
+    Number is: 1
+    Number is: 2
+    Number is: 3
+    Number is: 4
+    Number is: 5
+*/
+The syntax 1..6 is a range expression in Rust that represents a sequence of numbers starting from 1 up to, but not including, 6. It uses the .. operator to create this range. So, 1..6 generates the sequence: 1, 2, 3, 4, 5.
+
+In each iteration of the loop, the variable number takes on the specified value in the range.
+
+Iterating in Reverse
+Rust provides a convenient way to iterate in reverse using the rev method. The range includes the integers 1 up to, but not including, 6. Since the last element of the range is 5, the for loop starts at 5 and continues down to 1.
+
+
+fn main() {
+    for number in (1..6).rev() {
+        println!("Reverse number is: {}", number);
+    }
+}
+/* Output
+    Reverse number is: 5
+    Reverse number is: 4
+    Reverse number is: 3
+    Reverse number is: 2
+    Reverse number is: 1
+*/
+In this example:
+
+The rev method is called on the range 1..6.
+This makes the loop iterate from 5 down to 1.
+Using `step_by` for Custom Increments
+Sometimes, you may need to iterate with a custom step size. The step_by method allows you to specify the step size. step_by takes an integer argument that specifies the number of steps to jump.
+
+
+fn main() {
+    // Using step_by to iterate
+    for number in (1..8).step_by(2) {
+        println!("{}", number); 
+    }
+}
+/* Output
+    1
+    3
+    5
+    7
+*/
+In this example, the loop iterates over the range 1..8 with a step size of 2.
+
+Combining `rev` and `step_by`
+You can combine rev and step_by for more complex iterations:
+
+
+fn main() {
+    // Using step_by in reverse iteration
+    println!("Iterating in reverse with a step size of 2:");
+    for number in (1..10).rev().step_by(2) {
+        println!("{}", number); // Prints "9", "7", "5", "3", "1"
+    }
+}
+/* Output
+    9
+    7
+    5
+    3
+    1
+*/
+In this example:
+
+First, the range 1..10 is reversed.
+Then, the loop steps by 2, iterating backward.
+Variable Scope within For Loops
+Variables declared within a for loop's body are local to that loop. This is important to keep in mind when writing more complex code:
+
+
+fn main() {
+    // for loop scope
+    for num in 1..5 {
+        let doubled = num * 2;
+        println!("{} doubled is {}", num, doubled); 
+    }
+    // println!("{} doubled is {}", num, doubled);  // Error because `num` and `doubled` are out of scope.
+}
+In this example:
+
+Each iteration of the loop has its own instance of doubled.
+Attempting to access it outside the loop will result in a scope error.
+
+Introduction to Loop Control Flow in Rust
+Hello! In this lesson, we'll explore the powerful concept of loop control flow in Rust. Control flow in loops allows you to manage the execution of code more effectively within your while and for loops. . Specifically, we'll delve into using conditionals inside loops, the loop construct, controlling loops with break and continue statements, and understanding their significance.
+
+Control flow mechanisms are essential for building complex and functional logic in your programs. By the end of this lesson, you'll be proficient in using these tools to write more efficient and readable code.
+
+Let's get started!
+
+Conditionals Inside Loops
+Let's first explore how to incorporate conditionals inside loops. This will help you perform specific actions based on dynamic conditions evaluated during each iteration.
+
+
+fn main() {
+    let mut num = 0;
+    while num <= 10 {
+        if num % 2 == 0 {
+            println!("{} is even", num);
+        } else {
+            println!("{} is odd", num);
+        }
+        num += 1;
+    }
+}
+/* Output:
+    0 is even
+    1 is odd
+    2 is even
+    3 is odd
+    4 is even
+    5 is odd
+    6 is even
+    7 is odd
+    8 is even
+    9 is odd
+    10 is even
+*/
+In this example:
+
+We initialize num to 0.
+The while loop runs as long as num is less than or equal to 10.
+Inside the loop, we use an if statement to check if num is even or odd, then print the approprita message.
+We increment num by 1.
+`loop` and `break` to Exit Loops
+In Rust, an infinite loop can be created using the loop keyword. To stop the loop, use the break keyword to stop execution of the loop. This is useful when you want to stop a loop once a particular requirement is met. Let's take a look.
+
+
+fn main() {
+    let mut count = 0;
+    loop {
+        if count == 5 {
+            break;
+            println!("This does not get printed");
+        }
+        println!("Count is: {}", count);
+        count += 1;
+    }
+}
+/* Output:
+    Count is 0
+    Count is 1
+    Count is 2
+    Count is 3
+    Count is 4
+*/
+In this example:
+
+We initialize count to 0.
+The loop runs indefinitely until the break condition is met.
+When count equals 5, the break statement exits the loop.
+The print statement inside the if block does not get executed because the loop stop execution
+Using `continue` to Skip Iterations
+The continue statement is used to skip the rest of the loop iteration and proceed to the next iteration. This is beneficial when you need to bypass certain actions based on a condition. Let's look at an example where we want to only print odd numbers.
+
+
+fn main() {
+    for number in 1..10 {
+        if number % 2 == 0 {
+            continue;
+            println!("This does not get printed");
+        }
+        println!("Odd number: {}", number);
+    }
+}
+/* Output:
+    Odd number: 1
+    Odd number: 3
+    Odd number: 5
+    Odd number: 7
+    Odd number: 9
+*/
+In this example:
+
+The for loop iterates over the range 1..10.
+If the number is even, the continue statement skips the rest of the current iteration.
+The print statement inside the if block does not get executed because the loop skips to the next iteration
+If the number is odd, it gets printed.
+Combining Loop Control with Conditionals
+Combining break and continue with conditionals allows for complex control flow within your loops. Here’s an example of using both together:
+
+
+fn main() {
+    let mut num = 0;
+    loop {
+        if num > 10 {
+            break;
+            println!("This does not get printed");
+        }
+        if num % 2 != 0 {
+            num += 1;
+            continue;
+            println!("This does not get printed"); 
+        }
+        println!("{} is even", num);
+        num += 1;
+    }
+}
+/* Output:
+    0 is even
+    2 is even
+    4 is even
+    6 is even
+    8 is even
+    10 is even
+*/
+In this example:
+
+The num variable is initialized to 0.
+The loop runs indefinitely until the break condition is met.
+Inside the loop:
+First, it checks if num is greater than 10 with the condition if num > 10. If this condition is true, the break statement terminates the loop.
+If not, it checks if num is odd with the condition if num % 2 != 0. If this condition is true:
+num is incremented by 1.
+The continue statement skips the rest of the loop iteration, causing the loop to proceed to the next iteration.
+The println! statement after the continue statement does not get executed, as the continue statement transfers control to the beginning of the loop immediately.
+If num is even, it reaches the println! statement, which prints the even number message, and then increments num by 1.
+
+Introduction to Iterators and Enumerators in Rust
+Hello! In this lesson, we are going to explore a fundamental aspect of Rust programming: Iterators and Enumerators. Iterators are an essential tool in Rust, allowing you to traverse sequences of data efficiently. They offer a convenient and idiomatic way to manipulate collections.
+
+By the end of this lesson, you'll be proficient in iterating over arrays, vectors, strings, and hash maps. We'll break down each topic into understandable and practical steps, so you can follow along and implement them in your own code seamlessly.
+
+Let's dive in!
+
+Introducing `iter`
+Before we delve into specific examples of iterating over various types of collections, let's first introduce two fundamental methods in Rust: iter and enumerate.
+
+The iter method is commonly used to create an iterator from a collection. This method is available for arrays, vectors, and hash maps, allowing you to traverse through them element by element.
+
+
+fn main() {
+    let numbers = [1, 2, 3, 4, 5];
+
+    // Using `iter` to get an iterator over the array
+    for value in numbers.iter() {
+        println!("Value: {}", value);
+    }
+}
+/* Output:
+    Value: 1
+    Value: 2
+    Value: 3
+    Value: 4
+    Value: 5
+*/
+The code for value in numbers.iter() uses the iter method to create an iterator over the array numbers. The for loop then iterates over each element. Within the loop, each element (referred to as value) is printed. For each iteration, the placeholder {} is replaced with the current value.
+
+Pairing `iter` and `enumerate`
+The enumerate method builds upon the base iterator to provide a sequence of pairs, where each pair consists of an index and a reference to the value at that index. This is particularly useful when you need to keep track of the position of each item within the collection. Let's take a look.
+
+
+fn main() {
+    // Defining an array
+    let numbers = [1, 2, 3, 4, 5];
+
+    // Using `iter().enumerate()` on the array
+    for (index, value) in numbers.iter().enumerate() {
+        println!("Index: {}, Value: {}", index, value);
+    }
+}
+/* Output
+    Index: 0, Value: 1
+    Index: 1, Value: 2
+    Index: 2, Value: 3
+    Index: 3, Value: 4
+    Index: 4, Value: 5
+*/
+for (index, value) in numbers.iter().enumerate() uses both the iter and enumerate methods. iter creates an iterator over the array, and enumerate transforms this iterator into one that yields pairs of (index, value), where index is the position of the element in the array and value is the reference to the element.
+
+Iterating Over a Vector
+Vectors are similar to arrays, but their size can change dynamically. They are more flexible for most situations that involve collections. The syntax for iter and enumerate are the same for both vectors and arrays.
+
+
+fn main() {
+    // Defining a vector
+    let vec = vec![1, 2, 3, 4, 5];
+
+    // Iterating over the vector using .iter()
+    for value in vec.iter() {
+        println!("{}", value);
+    }
+
+    // Iterating with enumeration to access indices
+    for (index, value) in vec.iter().enumerate() {
+        println!("Index: {}, Value: {}", index, value); // Prints index and value pairs
+    }
+}
+Iterating Over a String
+For string data types, we use .chars() to iterate over each character in a string.
+
+
+fn main() {
+    // Defining a string slice
+    let s = "hello";
+
+    // Iterating over the string using .chars()
+    for ch in s.chars() {
+        println!("{}", ch); // Prints each character on a new line
+    }
+}
+To access both the index and character of each element, use .chars().enumerate()
+
+
+fn main() {
+    let s = "rust";
+    // Iterating with enumeration to access indices
+    for (index, ch) in s.chars().enumerate() {
+        println!("Index: {}, Char: {}", index, ch);
+    }
+}
+/* Output
+    Index: 0, Char: r
+    Index: 1, Char: u
+    Index: 2, Char: s
+    Index: 3, Char: t
+*/
+Iterating Over a HashMap
+HashMaps store key-value pairs and provide efficient lookup. There are two ways to iterate over the key/value pairs of a HashMap. Rust's standard library offers the .iter() method to iterate over these pairs. In addition, you can pass a reference to the HashMap, and Rust automatically calls the iter method on the reference. HashMaps are unordered collections, so the order in which key/value pairs are iterated over is not guaranteed.
+
+
+use std::collections::HashMap; 
+
+fn main() {
+
+    // Defining a HashMap
+    let mut map = HashMap::new();
+    map.insert("a", 1);
+    map.insert("b", 2);
+    map.insert("c", 3);
+
+    // Iterating over the HashMap using iter
+    println!("Iterating over a HashMap:");
+    for (key, value) in map.iter() {
+        println!("Key: {}, Value: {}", key, value);
+    }
+
+    // Iterating over the HashMap using reference
+    for (key, value) in &map {
+        println!("Key: {}, Value: {}", key, value); 
+    }
+}
+/* Possible Outputs for Each Loop
+    Key: a, Value: 1
+    Key: b, Value: 2
+    Key: c, Value: 3
+*/
+The outputs might differ in the order elements are printed since HashMaps are unordered collections.
+
+
+Introduction to Nested Loops in Rust
+Greetings! In this lesson, we're going to delve into another essential concept in Rust programming: Nested Loops. You've learned the fundamentals of looping structures in previous lessons, including the usage of for, while, and loop. Now, we're going to layer these loops to handle more complex scenarios and data manipulations.
+
+Nested loops allow us to perform iterations within iterations. Think of it as another level of repetition where one loop runs inside another loop. This capability is vital for tasks such as multidimensional array processing, creating patterns, and more complex data manipulations.
+
+Let's get started!
+
+Basic Nested For Loops
+Nested for loops are a powerful tool for iterating over multidimensional arrays or creating patterns. Here’s a basic example to get you started:
+
+
+fn main() {
+    // Start of outer loop
+    for i in 1..4 {
+        println!("Outer loop iteration {}", i);
+        // Start of inner loop
+        for j in 1..4 {
+            println!("i: {}, j: {}", i, j);
+        }
+    }
+}
+/* Output
+    Outer loop iteration 1
+    i: 1, j: 1
+    i: 1, j: 2
+    i: 1, j: 3
+    Outer loop iteration 2
+    i: 2, j: 1
+    i: 2, j: 2
+    i: 2, j: 3
+    Outer loop iteration 3
+    i: 3, j: 1
+    i: 3, j: 2
+    i: 3, j: 3
+*/
+In this example:
+
+The outer loop runs with i ranging from 1 to 3.
+The inner loop runs with j ranging from 1 to 3 for each iteration of the outer loop.
+Basic Nested While Loops
+Nested while loops offer similar functionality.
+
+
+fn main() {
+    let mut i = 1;
+    // Start of outer loop
+    while i < 4 {
+        println!("Outer loop iteration {}", i);
+        let mut j = 1;
+        // Start of inner loop
+        while j < 4 {
+            println!("i: {}, j: {}", i, j);
+            j += 1;
+        }
+        i += 1;
+    }
+}
+/* Output
+    Outer loop iteration 1
+    i: 1, j: 1
+    i: 1, j: 2
+    i: 1, j: 3
+    Outer loop iteration 2
+    i: 2, j: 1
+    i: 2, j: 2
+    i: 2, j: 3
+    Outer loop iteration 3
+    i: 3, j: 1
+    i: 3, j: 2
+    i: 3, j: 3
+*/
+In this example:
+
+We initialized i and j outside the loops.
+The outer while loop iterates while i is less than 4.
+Inside the outer loop, we have another while loop iterating while j is less than 4, printing the values of i and j.
+Advanced Nested For Loops
+For more advanced funcationality, the inner loop can use a range dependant on the outer loop variable. The syntax 0..=i creates a range from 0 up to and including i.
+
+
+fn main() {
+    for i in 0..5 {
+        // Inner loop iterates from 0 up to and including i
+        for j in 0..=i {
+            print!("{} ", j);
+        }
+        println!();
+    }
+}
+/* Output
+    0 
+    0 1 
+    0 1 2 
+    0 1 2 3 
+    0 1 2 3 4 
+*/
+In this example:
+
+The outer loop runs with i ranging from 0 to 4.
+For each iteration of the outer loop, the inner loop runs with j ranging from 0 to i.
+Advanced Nested While Loops
+Similar to nested for loops, nested while loops can also create advanced patterns or manipulate data:
+
+
+fn main() {
+    let mut i = 5;
+    while i > 0 {
+        let mut j = i;
+        while j > 0 {
+            print!("{} ", j);
+            j -= 1;
+        }
+        println!();
+        i -= 1;
+    }
+}
+/* Output
+    5 4 3 2 1 
+    4 3 2 1 
+    3 2 1 
+    2 1 
+    1 
+*/
+In this example:
+
+The outer loop iterates with i decrementing from 5 to 1.
+The inner loop starts with j taking on the value of i, decrementing j until it reaches 0.
+Combining For Loops and While Loops
+You can mix for loops with while loops to leverage the strengths of both constructs:
+
+
+fn main() {
+    for i in 1..4 {
+        let mut j = i;
+        while j > 0 {
+            println!("i: {}, j: {}", i, j);
+            j -= 1;
+        }
+    }
+}
+/* Output
+    i: 1, j: 1
+    i: 2, j: 2
+    i: 2, j: 1
+    i: 3, j: 3
+    i: 3, j: 2
+    i: 3, j: 1
+*/
+In this example:
+
+The outer for loop runs with i ranging from 1 to 3.
+The inner while loop starts with j taking on the value of i, decrementing j until it reaches 0.
+
+Introduction to Structs
+Hello! In this lesson, we will dive into one of Rust's fundamental features — structs. Structs are a powerful way to package related data together, making your code more organized and easier to manage.
+
+In this lesson, we will cover how to define structs, create instances, access and modify their fields. By the end of this lesson, you will have a solid understanding of Rust structs and will be ready to use them in your own projects.
+
+Let's get started!
+
+Aside: Is Rust an Object Oriented Language?
+Rust supports many features associated with object-oriented programming (OOP), but it doesn't strictly adhere to traditional OOP principles as seen in languages like Java or C++. Let's take a look at some common features of OOP.
+
+Objects and Classes
+Rust does not have a concept of classes or objects as seen in other programming languages. However, Rust allows the grouping of data and functionality into a single data structure called a struct, similar to an object.
+
+Encapsulation
+Rust also supports another OOP paradigm known as encapsulation. The concept of encapsulation helps in managing complexity by hiding the internal state of the object from the outside world and exposing only what is necessary through a defined interface.
+
+Inheritance
+Rust does not support inheritance. Inheritance allows a class to derive properties and behavior (methods) from another class. The class that inherits is called the "subclass," and the class being inherited from is called the "superclass." Rust does not have any features that allow a struct to inherit fields or methods from other structs.
+
+Polymorphism Rust supports polymorphism using traits and generics which we will cover later in this course. Polymorphism allows objects of different types to be treated as objects of a common supertype.
+
+Defining a Struct
+A struct (short for "structure") in Rust is a custom data type that allows you to group together related data. Imagine you are writing a program to manage a library. You will need to keep track of various information about each book, such as its title, author, and the number of pages. Instead of using separate variables for each attribute, Rust allows you to group these related pieces of data into a single, cohesive unit called a struct. Let's explore how to define a struct using the book analogy.
+
+In Rust, a struct is defined using the struct keyword, followed by the struct's name and a block of fields. Each field has a name and a type. Here’s an example to illustrate:
+
+
+// Defining a struct
+struct Book {
+    title: String,
+    author: String,
+    pages: u32,
+}
+In this code, we defined a struct named Book with three fields: title, author, and pages. Each field has a specific type: String for title and author, and u32 for pages. Note that when defining a struct, the last field can optionally end with a comma, and no semicolon is needed after the definition.
+
+Creating an Instance of a Struct
+Now that we have defined the Book struct, we can create an instance of it. To do this, we declare a variable and assign a value to each of the fields. We can then access each field using dot notation. Let's take a look.
+
+
+fn main() {
+    // Creating an instance of a struct
+    let book1 = Book {
+        title: String::from("Rust Programming"),
+        author: String::from("John Doe"),
+        pages: 250,
+    };
+
+    // Accessing fields
+    println!("Title: {}", book1.title);  // Prints: Title: Rust Programming
+    println!("Author: {}", book1.author); // Prints: Author: John Doe
+    println!("Pages: {}", book1.pages);   // Prints: Pages: 250
+}
+In this example:
+
+We create an instance named book1 with specific values for title, author, and pages.
+We access the fields using dot notation (e.g., book1.title) and print their values.
+Mutable Struct Fields
+Struct fields in Rust are immutable by default. To change their values, we need to create a mutable instance of the struct. Just like other data structures, we use the mut keyword to make the struct mutable. Here’s how it’s done:
+
+
+fn main() {
+    // Create a mutable instance of Book
+    let mut book2 = Book {
+        title: String::from("Rust for Beginners"),
+        author: String::from("John Doe"),
+        pages: 300,
+    };
+
+    // Modify the author field
+    book2.author = String::from("Cosmo");
+    println!("Book 2 Author: {}", book2.author); // Prints: Book 2 Author: Cosmo
+}
+In this example:
+
+We use the mut keyword to make book2 mutable.
+We change the value of the author field and print the updated value.
+Ownership of Struct Instances
+Each piece of data in Rust has a variable that is its owner.
+
+The variable assigned to the struct owns the entire struct.
+Each field in the struct does not "own" its data; instead, the struct instance as a whole owns all of its fields.
+When you assign the value of one variable to another, the first variable will no longer hold that value if its type does not implement the Copy trait.
+
+Structs do not implement the Copy trait, even if all of their fields are Copy.
+If a field in the struct holds data that implements the Copy trait, assigning a variable to the value of that field will copy that field's data instead of transferring ownership.
+If a field holds non-Copy data, assigning a variable to the value in that field transfers ownership of that field's data.
+Once ownership of a struct is transferred, it is no longer valid to use the original variable, even though other fields are technically still valid within the new owner.
+
+struct Book {
+    title: String,
+    author: String,
+    pages: u32,
+}
+
+fn main() {
+    let book1 = Book {
+        title: String::from("Rust Programming"),
+        author: String::from("John Doe"),
+        pages: 250,
+    };
+    
+    let book2 = book1; // Transfer ownership of Book struct to book2
+
+    // println!("Title: {}", book1.title); // Causes an error because book1 no longer owns the data
+
+    let book_author = book2.author; // Transfer ownership of the "author" field ("John Doe") from book2 to book_author
+
+    // println!("Book author: {}", book2.author); // Causes error, book2 no longer owns the author field
+
+    let num_pages = book2.pages; // book2 still owns the pages field because pages is u32 (copy type)
+    println!("Number of pages: {}", book2.pages); // Prints: Number of pages: 250
+
+
+    let book_title = &book2.title; // Borrow the "title" field from book2 without transferring ownership.
+
+    println!("Book title: {}", book2.title); // Prints: Book title: Rust Programming
+
+    // let book3 = book2; // Causes error because book2 no longer owns the "author" field
+}
+Let's break this code down:
+
+When book1 is assigned to book2, ownership of the Book struct is moved to book2. Therefore, book1 can no longer be used.
+Attempting to access book1.title after this point results in a compile-time error because book1 no longer owns the data.
+The author field of book2 is moved to book_author. As a result, book2 can no longer access its author field and will cause an error.
+The pages field of book2 is a u32, a type that implements the Copy trait. Therefore, num_pages gets a copy of the pages field, and book2 still retains its pages.
+Borrowing the title field of book2 with &book2.title allows access without transferring ownership.
+Attempting to reassign book2 to book3 would cause a compile-time error because book2 would no longer own one of its fields (author).
+Strings as Field Types
+In the course, we will only use the String data type to represent textual data in structs. Using string literals or string slices is allowed, but requires the use of lifetimes, a topic beyond the scope of this course.
+
+Adding Functionality with Methods
+Hello! In this lesson, we will explore how to add functionality to your structs using methods in Rust. Just as you use functions to encapsulate behavior in your programs, methods allow you to encapsulate behavior within a struct. This lesson will cover defining methods, creating constructors, and using mutable methods to add functionality to structs.
+
+Let's get started!
+
+What are Methods?
+Methods in Rust are similar to functions, but they are associated with an instance of a struct and can operate on its data. Think of methods as actions that instances of structs can perform. Let's use a Rectangle struct as an analogy to understand this concept better.
+
+Imagine we have a Rectangle struct, and we want this rectangle to perform certain actions, such as calculating its area or changing its dimensions. Methods allow us to define these actions directly so the rectangle "knows" how to perform these actions on its own.
+
+Defining Methods for Structs
+In Rust, methods are defined within an impl block, connecting them to a specific struct. This enables us to associate behavior with the struct. The first parameter of a method must always be &self. The self keyword refers to the instance of the struct. We use & to prevent the method from taking ownership of the instance. After defining a method, call it using dot syntax on the desired instance of the struct. The instance of the struct automatically gets passed as the self parameter. Let's take a look:
+
+
+// Define a struct
+struct Rectangle {
+    width: f32,
+    height: f32,
+}
+
+// Implement methods for the struct
+impl Rectangle {
+
+    // Method to calculate the area
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+}
+
+fn main() {
+    // Create an instance of Rectangle
+    let rect = Rectangle {
+        width: 30.5,
+        height: 50.1,
+    };
+
+    // Call the area method
+    let rect_area = rect.area();
+    println!("Area: {}", rect_area); // Prints: Area: 1528.0499
+}
+In this example:
+
+We defined a struct named Rectangle with two fields: width and height, both of type f32.
+Inside the impl block, we defined a method area that borrows the instance of the struct using &self. This method calculates and returns the area of the rectangle.
+We then created an instance of Rectangle, called rect
+We use rect.area() to call the area method. rect automatically gets passed as the self parameter.
+Creating a Constructor
+Associated functions in Rust are functions that are defined within the impl block but are not associated with an instance of the struct. These functions do not take &self as a parameter. This is because they are called on the struct data type itself rather than an instance of the struct.
+
+Associated functions are often used to create constructors for a struct. The take in the necessary data to instantiate the struct and return an instance of the struct containing this data. Let's take a look at the syntax to create a constructor for our Rectangle struct.
+
+
+// Define a struct
+struct Rectangle {
+    width: f32,
+    height: f32,
+}
+
+impl Rectangle {
+
+    // Method to calculate the area
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+
+    // Associated function to create a new Rectangle instance
+    fn new(width: f32, height: f32) -> Rectangle {
+        Rectangle { width: width, height: height }
+    }
+}
+
+fn main() {
+    // Create an instance using the associated function
+    let rect = Rectangle::new(30.5, 50.1);
+
+    // Call methods on the struct
+    println!("Area: {}", rect.area()); // Prints: Area: 1528.0499
+}
+In this example:
+
+We added an associated function new that takes width and height as parameters and returns a new instance of Rectangle.
+In the main function, we used Rectangle::new to create a new instance, passing the width and height as parameters.
+We then call the area method and print the result.
+Adding Mutable Methods
+Sometimes, we need to modify the fields of a struct. In such cases, methods can be defined to take a mutable reference to self. Let's add a method called change_dims to change the dimensions of our rectangle.
+
+
+// Define a struct
+struct Rectangle {
+    width: f32,
+    height: f32,
+}
+
+impl Rectangle {
+
+    // Method to calculate the area
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+
+    // Associated function to create a new Rectangle instance
+    fn new(width: f32, height: f32) -> Rectangle {
+        Rectangle { width: width, height: height }
+    }
+
+    // Method to change the dimensions of the rectangle
+    fn change_dims(&mut self, width: f32, height: f32) {
+        self.width = width;
+        self.height = height;
+    }
+}
+
+fn main() {
+    // Create an instance using the associated function
+    let mut rect = Rectangle::new(30.5, 50.1);
+
+    // Call methods on the struct
+    println!("Area: {}", rect.area()); // Prints: Area: 1528.0499
+
+    // Change dimensions and print the new area
+    rect.change_dims(20.0, 30.3);
+    println!("New Area: {}", rect.area()); // Prints: New Area: 606
+}
+In this example:
+
+We added a mutable method change_dims that takes &mut self, width, and height.
+The method updates the width and height fields using self.width and self.height.
+In the main function, we created a mutable instance of Rectangle and called change_dims to modify its dimensions.
+We then calculated and printed the new area of the rectangle.
+
+Introduction to Modules and Encapsulation
+Hello! In this lesson, we will explore an essential aspect of Rust programming and OOP — modules and encapsulation. This lesson welcomes you into the world of Rust's modularity and the principles of encapsulation, key features in writing maintainable and scalable code.
+
+Modules in Rust help organize code into separate namespaces, making it easier to manage and navigate larger projects. Encapsulation allows you to restrict access to parts of your code, promoting safer and more intentional interactions with your data structures.
+
+In this lesson, we will:
+
+Introduce the concept and syntax of modules
+Learn to control visibility with pub
+Implement encapsulated data using struct methods
+Let's dive in!
+
+Creating Modules
+Modules in Rust are like containers that organize your functions, structs, traits, and methods. They allow you to create structs and methods while using encapsulation to control access to a structs methods and fields.
+
+Here's a simple example to create a module in Rust:
+
+
+mod bank {
+    struct BankAccount {
+        balance: f32,
+        name: String,
+    }
+}
+In this example:
+
+We defined a module named bank using the mod keyword
+Inside the bank module, we created a BankAccount struct with two fields
+Using Modules
+Now that we have created a module, let's explore how to use it! By default, any structs or methods defined in a module are private and cannot be accessed by code outside the module. To allow access to code inside the module, we use the pub keyword, making the code public. In this section we make the BankAccount public, create a public constructor, and create a new BankAccount instance.
+
+
+mod bank {
+    pub struct BankAccount {
+        balance: f32,
+        name: String,
+    }
+
+    impl BankAccount {
+        pub fn new(balance: f32, name: String) -> BankAccount {
+            BankAccount { balance: balance, name: name }
+        }
+    }
+}
+
+fn main() {
+    let my_account = bank::BankAccount::new(1000.0, String::from("Cosmo"));
+}
+Adding the pub keyword to the BankAccount struct allows code in the main function to access the struct
+We added a public associated function for the BankAccount struct called new that creates a new instance of a BankAccount
+Inside main, we created an instance of a BankAccount
+The syntax to access the new method is <module name>::<struct name>::<struct method>(<input parameters>)
+Implementing Encapsulation
+Let's take a deeper dive into encapsulation with the pub keyword. Continuing with the BankAccount example, currently both fields of the struct are private.
+
+We want users to be allowed to check the balance and deposit money, but not allow them to directly access the balance field. To do this, we will create a public deposit method to change the balance field and a public get_balance method.
+
+Additionally, we want the name associated with the account to be accessed by anyone, so we make it public. Let's take a look:
+
+
+mod bank {
+    pub struct BankAccount {
+        balance: f32,
+        pub name: String,
+    }
+
+    impl BankAccount {
+        pub fn new(balance: f32, name: String) -> BankAccount {
+            BankAccount { balance: balance, name: name }
+        }
+
+        pub fn deposit(&mut self, amount: f32) {
+            self.balance += amount;
+        }
+
+        pub fn get_balance(&self) -> f32 {
+            self.balance
+        }
+    }
+}
+
+fn main() {
+    let mut my_account = bank::BankAccount::new(1000.0, String::from("Cosmo"));
+
+    my_account.deposit(500.0);
+    println!("Balance: ${}", my_account.get_balance()); // Prints: Balance: $1500
+    //println!("Account balance is {}", my_account.balance); // Causes error because balance field is private
+
+    println!("Account belongs to {}", my_account.name); // Prints: Account belongs to Cosmo
+}
+Let's break this code down step by step.
+
+Inside the bank module, we've changed the name field to be public
+We've created a public method deposit that takes in a mutable reference to self
+We've created a public method get_balance that returns the account balance.
+In the main function
+
+We create a new instance of BankAccount called my_account
+The deposit and get_balance methods are public, so we can call them and print the results.
+When we try to access my_account.balance, we will get an error because the balance field is private
+We can directly access the name field because it is public
+The Importance of Encapsulation
+To make the importance of encapsulation more clear we will allow users to withdraw money, ensuring the account balance does not become negative.
+
+Adding onto the code from the previous section:
+
+
+mod bank {
+    pub struct BankAccount {
+        balance: f32,
+        pub name: String,
+    }
+
+    impl BankAccount {
+        pub fn new(balance: f32, name: String) -> BankAccount {
+            BankAccount { balance: balance, name: name }
+        }
+
+        pub fn deposit(&mut self, amount: f32) {
+            self.balance += amount;
+        }
+
+        pub fn get_balance(&self) -> f32 {
+            self.balance
+        }
+
+        pub fn withdraw(&mut self, amount: f32) -> String {
+            if self.balance >= amount {
+                self.balance -= amount;
+                String::from("Account balance: $") + &self.balance.to_string()
+            } else {
+                String::from("Insufficient Funds")
+            }
+        }
+    }
+}
+
+fn main() {
+    let mut my_account = bank::BankAccount::new(1000.0, String::from("Cosmo"));
+
+    println!("{}", my_account.withdraw(300.5)); // Prints: Account balance: $1199.5
+    println!("{}", my_account.withdraw(2000.0)); // Prints: Insufficient Funds
+
+    // my_account.balance -= 2000.0 // Causes error since `balance` is private
+
+    println!("Final balance: ${}", my_account.get_balance()); // Prints: Final balance: $1199.5
+}
+The withdraw method ensures that amount can be withdrawn from the balance without the account becoming negative.
+
+The code shows the successful withdrawal of $300.50 and an unsuccessful withdrawal of $2000.
+
+The attempt to directly modify my_account.balance causes an error because the balance field is private. If users could directly modify the balance field, they could withdraw more money than they actually have.
+
+mod company {
+    pub struct Employee {
+        salary: f32,
+        pub name: String,
+        is_great: bool,
+    }
+
+    impl Employee {
+        pub fn new(salary: f32, name: String, is_great: bool) -> Employee {
+            Employee { salary: salary, name: name, is_great: is_great }
+        }
+        
+        // TODO: Implement a public method request_raise
+            // The method takes in &mut self and amount
+            // If the employee is_great field is true, call update_salary and print the new salary
+            // If not, print "Raise denied."
+            // Don't return anything
+        pub fn request_raise(&mut self, amount: f32) {
+            if self.is_great {
+                self.update_salary(amount);
+            } else {
+                println!("{}", "Raise denied");
+            }
+        }
+
+        
+        // TODO: Implement a private method update_salary
+            // The method takes in &mut self and amount (f32)
+            // Increase the salary by amount
+            // Don't return anything
+        fn update_salary(&mut self, amount: f32) {
+            self.salary += amount;
+        }
+        
+        pub fn get_salary(&self) -> f32 {
+            self.salary
+        }
+        
+    }
+}
+
+fn main() {
+    let mut employee = company::Employee::new(50000.0, String::from("Cosmo"), true);
+    
+    println!("Employee name: {}", employee.name); // Prints: Employee name: Cosmo
+    
+    employee.request_raise(5000.0); // Expected: Raise approved! Salary is now $55000
+    println!("{}", employee.get_salary());
+}
+
+// TODO: Create a module named game
+mod game {
+    pub struct GameCharacter {
+        pub name: String,
+        pub health: u32,
+        inventory: u32,
+    }
+    impl GameCharacter {
+        pub fn new(name: String, health: u32, inventory: u32) -> GameCharacter {
+            GameCharacter { name: name, health: health, inventory: inventory }
+        }
+        
+        pub fn add_item(&mut self, quantity: u32) {
+            if self.inventory + quantity > 50 {
+                println!("{}", "Inventory full");
+            } else {
+                self.inventory += quantity;
+            }
+        }
+        
+        pub fn get_inventory(&self) -> u32 {
+            self.inventory
+        }
+    }
+
+
+// TODO: Create a struct named GameCharacter with public field "name" (String), public field "health" (u32), and private field "inventory" (u32)
+
+// TODO: Add a constructor that returns a GameCharacter instance
+
+// TODO: Create a public add_item method that takes in a quantity (u32)
+    // If adding the quantity to inventory exceeds 50, print "Inventory Full"
+    // If there is room in the inventory, add quantity to the inventory field
+
+// TODO: Create a public get_inventory method that returns the current inventory
+
+}
+
+
+fn main() {
+    // TODO: Create an instance of GameCharacter with name "Cosmo", health 100, and inventory 0
+    let mut game = game::GameCharacter::new(String::from("Cosmo"), 100, 0);
+
+    // TODO: Change the character name to Hero and print the updated name
+    game.name = String::from("Hero");
+    println!("{}", game.health);
+
+    // TODO: Print the current inventory
+    println!("{}", game.get_inventory());
+
+    // TODO: Call add_item, ensuring that inventory size does not exceed 50
+    game.add_item(25);
+
+    // TODO: Print the current inventory
+    println!("{}", game.get_inventory());
+
+    // TODO: Call add_item with a quantity that exceeds the inventory limit
+    game.add_item(50);
+
+    // TODO: Print the characters current health
+    println!("current health {}", game.health);
+
+    // TODO: The character takes 10 damage. Update the characters health accordingly
+    game.health -= 10;
+
+    // TODO: Print the new health
+    println!("health {}", game.health);
+
+}
+
+Introduction to Traits
+Hello! In this unit, we will explore an advanced and powerful feature of the Rust programming language — Traits. As we delve into traits, we'll understand how they enable polymorphism and code reuse in Rust, making our programs more modular and elegant.
+
+Traits in Rust let us define shared behavior in an abstract way, similar to interfaces in other programming languages. They are essential for achieving polymorphism, allowing different types to be treated uniformly based on shared behavior.
+
+Let's get started!
+
+What are Traits?
+Traits are a way to define shared behavior in Rust. They are somewhat similar to interfaces in languages like Java or abstract base classes in C++. A trait defines a set of methods that a type must implement. By defining traits, you can write functions that can operate on any type that implements a particular trait.
+
+Here's an example to illustrate how traits work:
+
+
+// Define a trait named `Area`
+trait Area {
+    fn area(&self) -> f32;
+}
+We defined a trait named Area with a single method area that returns a f32.
+Any struct that wants to implement the Area trait must have a method with the signature fn area(&self) -> f32
+Implementing Traits for Structs
+Now that we've defined a trait, let's implement the trait for 2 different shapes
+
+
+// Define a trait named `Area`
+trait Area {
+    fn area(&self) -> f32;
+}
+
+// Define a struct for `Rectangle`
+struct Rectangle {
+    width: f32,
+    height: f32,
+}
+
+// Implement the `Area` trait for `Rectangle`
+impl Area for Rectangle {
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+}
+
+// Define a struct for `Circle`
+struct Circle {
+    radius: f32,
+}
+
+// Implement the `Area` trait for `Circle`
+impl Area for Circle {
+    fn area(&self) -> f32 {
+        3.14159 * self.radius * self.radius
+    }
+}
+In this code:
+
+We created a Rectangle struct and a Circle struct
+We implemented the trait for each structure using the syntax impl Area for Rectangle and impl Area for Circle
+Now that both Rectangle and Circle implement the Area trait, our code ensures that any instance of Rectangle and Circle can use .area() to get the area of the respective shape.
+
+Using Traits
+Using the code from the previous section, we can now create shapes and get their area.
+
+
+fn main() {
+    // Create an instance of `Rectangle`
+    let rect = Rectangle { width: 10.0, height: 20.0 };
+    println!("Rectangle Area: {}", rect.area()); // Prints: Rectangle Area: 200.0
+
+    // Create an instance of `Circle`
+    let circ = Circle { radius: 5.0 };
+    println!("Circle Area: {}", circ.area()); // Prints: Circle Area: 78.53975
+}
+
+// TODO: Define a CharacterStats trait 
+trait CharacterStats {
+  fn take_damage(&mut self, damage: u32) ;
+  fn attack_power(&self) -> u32 ;
+}
+
+// Define a struct for `Warrior`
+struct Warrior {
+    strength: u32,
+    weapon_damage: u32,
+    health: u32,
+}
+
+// TODO: Implement the `CharacterStats` trait for `Warrior`
+impl CharacterStats for Warrior {
+    fn take_damage(&mut self, damage: u32) {
+        self.health -= damage;
+    }
+    fn attack_power(&self) -> u32 {
+        self.strength + self.weapon_damage
+    }
+}
+
+// Define a struct for `Mage`
+struct Mage {
+    magic_power: u32,
+    staff_damage: u32,
+    health: u32,
+}
+
+impl CharacterStats for Mage {
+    fn take_damage(&mut self, damage: u32) {
+        self.health -= damage;
+        self.magic_power += 10;
+    }
+    fn attack_power(&self) -> u32 {
+        self.magic_power + self.staff_damage
+    }
+}
+// TODO: Implement the `CharacterStats` trait for `Mage`
+
+fn main() {
+    // Create an instance of `Warrior`
+    let mut warrior = Warrior { strength: 50, weapon_damage: 30, health: 100 };
+    println!("Warrior Attack Power: {}", warrior.attack_power()); // Expected: Warrior Attack Power: 80
+    warrior.take_damage(40);
+    println!("Warrior Health after damage: {}", warrior.health); // Expected: Warrior Health after damage: 60
+
+    // Create an instance of `Mage`
+    let mut mage = Mage { magic_power: 70, staff_damage: 20, health: 80 };
+    println!("Mage Attack Power: {}", mage.attack_power()); // Expected: Mage Attack Power: 90
+    mage.take_damage(30);
+    println!("Mage Health after damage: {}", mage.health); // Expected: Mage Health after damage: 50
+    println!("Mage Attack Power after damage: {}", mage.magic_power); // Expected: Mage Attack Power after damage: 80
+}
+
+Exploring Polymorphism with Traits
+Hello! In this lesson, we will explore the concept of polymorphism in Rust using traits. Polymorphism is a core concept in object-oriented programming that allows you to define a single interface and have multiple implementations. In Rust, traits let us achieve polymorphism, enabling different types to be treated uniformly based on shared behavior.
+
+Our journey will involve defining traits, implementing them for different structs, and leveraging these traits to perform polymorphic operations. This lesson will build upon your understanding of traits from the previous lesson and elevate your ability to design flexible and reusable code in Rust.
+
+Let's get started!
+
+Default Methods in Traits
+Default methods in traits define method behavior that should be used when a struct that implements the trait does not have a required method. For example, let's say we want to create a new trait named Shape. Any struct that implements the Shape trait should have an area method and print method. However, if a struct that implements Shape does not have a print method, we can provide a default print method within the trait declaration. If the struct does have a print method, that method is used instead of the default method provided in the trait. Let's take a look:
+
+
+// Define a trait named `Shape`
+trait Shape {
+    fn area(&self) -> f32;
+    fn print(&self) { 
+        println!("This is the default shape method"); 
+    }
+}
+Any struct that implements the Shape trait must provide an implementation for area, but if they do not provide an implementation for print, a default is provided.
+
+Creating structs using Default Methods
+Now let's see how these default methods work in action. We'll start by creating a Circle and Rectangle struct. Both will implement the Shape trait by having the required area method. However, we will not give the Circle struct a print method, so it must use the default method. For the Rectangle struct, we use a concept called method overriding. The print method for Rectangle is said to "override" the default print method.
+
+
+// Define a trait named `Shape`
+trait Shape {
+    fn area(&self) -> f32;
+    fn print(&self) { 
+        println!("This is the default shape method"); 
+    }
+}
+
+// Define a struct for Circle
+struct Circle {
+    radius: f32,
+}
+
+// Define a struct for Rectangle
+struct Rectangle {
+    width: f32,
+    height: f32,
+}
+
+// Implement the Shape trait for Circle
+impl Shape for Circle {
+    fn area(&self) -> f32 {
+        3.14159 * self.radius * self.radius
+    }
+}
+
+// Implement the Shape trait for Rectangle
+impl Shape for Rectangle {
+    fn area(&self) -> f32 {
+        self.width * self.height
+    }
+
+    fn print(&self) {
+        println!("Rectangle with width = {} and height = {}", self.width, self.height);
+    }
+}
+We've defined a trait named Shape with two methods: area and print. The print method has a default implementation
+We also defined two structs, Circle and Rectangle that implement the Shape trait
+The Circle struct contains an area method but not a print method
+The Rectangle struct contains an area method and a print method
+Let's take a look at these methods in action:
+
+
+fn main() {
+    let circle = Circle { radius: 10.0 };
+    let rectangle = Rectangle { width: 10.0, height: 20.0 };
+    
+    circle.print(); // Prints: This is the default shape method
+    rectangle.print(); // Prints: Rectangle with width = 10 and height = 20
+    
+    let circle_area = circle.area();
+    let rectangle_area = rectangle.area();
+    
+    println!("Circle area = {}", circle_area); // Prints: Circle area = 314.159
+    println!("Rectangle area = {}", rectangle_area); // Prints: Rectangle area = 200
+}
+Generics, Traits, and Functions
+Now that we have Circle and Rectangle that both implement the Shape trait, let's see the power of polymorphism. Suppose we have a function called get_area that takes in any instance of a struct that implements the Shape trait. Since the input parameter implements the Shape trait, we know we can safely called the .area() method on that input. However, how can we ensure that the input to get_area implements Shape? We can use a concept called generics. Generics in Rust allow for code reuse by enabling functions, structs, and traits to operate on different data types while ensuring type safety. Let's take a look at how to define a function using generics:
+
+
+fn get_area<T: Shape>(shape: &T) -> f32 {
+    shape.area()
+}
+In Rust, the T (stands for Type) in a generic type declaration is a placeholder for a type that will be specified later.
+The syntax <T:Shape> declares that the function will take in a data type that implements the Shape trait
+In parentheses, we define the input parameter shape that is a reference to a value of type T
+Inside the function, we can safely call .area(), as whatever data type shape is, we know it has an area method
+Let's take a look at how it works:
+
+
+// Using Circle, Rectangle, and Shape defined earlier
+fn main() {
+    let circle = Circle { radius: 10.0 };
+    let rectangle = Rectangle { width: 10.0, height: 20.0 };
+
+    let circle_area = get_area(&circle);
+    let rectangle_area = get_area(&rectangle);
+    println!("Circle area = {}", circle_area); // Prints: Circle area = 314.159
+    println!("Rectangle area = {}", rectangle_area); // Prints: Rectangle area = 200
+}
+
+
+// TODO: Define a trait named `Character` with a required method `strength` and a default method `print_details`
+
+// TODO: Define a struct for Warrior with a field `base_strength` of type u32
+
+// TODO: Define a struct for Mage with fields `level` of type u32 and `strength_per_level` of type u32
+
+// TODO: Implement the Character trait for Warrior, providing an implementation for the `strength` method. The Warrior struct should use the default `print_details` method.
+
+// TODO: Implement the Character trait for Mage, providing an implementation for the `strength` method 
+// TODO: Override the `print_details` method for the Mage struct to print a custom message
+
+// TODO: Write a generic function get_strength that takes any type implementing the Character trait and calls the `strength` method
+trait Character {
+    fn strength(&self) -> u32;
+    fn print_details(&self) {
+        println!("Calling from default method");
+    }
+}
+
+struct Warrior {
+    base_strength: u32,
+    
+}
+impl Warrior {
+    fn new(base_strength: u32) -> Warrior {
+        Warrior { base_strength: base_strength }
+    }
+}
+impl Character for Warrior {
+    fn strength(&self) -> u32 {
+        self.base_strength
+    }
+    
+}
+
+struct Mage {
+    level: u32,
+    strength_per_level: u32,
+}
+
+impl Mage {
+    fn new(level: u32, strength_per_level: u32) -> Mage {
+        Mage { level : level, strength_per_level: strength_per_level }
+    }
+}
+impl Character for Mage {
+    fn strength(&self) -> u32 {
+        self.strength_per_level * self.level
+    }
+    fn print_details(&self) {
+        println!("Calling from Mage method");
+    }
+}
+fn get_strength<T: Character>(character: &T) -> u32 {
+    character.strength()
+}
+
+fn main() {
+    // TODO: Create an instance of Warrior with a `base_strength` of 100
+    // TODO: Create an instance of Mage with `level` of 20 and `strength_per_level` of 5
+
+    // TODO: Call the `print_details` method for both Warrior and Mage
+    // TODO: Use the `get_strength` function to print out the strengths of Warrior and Mage
+    
+    let warrior = Warrior::new(100);
+    let mage = Mage::new(20, 5);
+    
+    warrior.print_details();
+    mage.print_details();
+    
+    println!("warrior {}", get_strength(&warrior));
+    println!("mage {}", get_strength(&mage));
+}
+
