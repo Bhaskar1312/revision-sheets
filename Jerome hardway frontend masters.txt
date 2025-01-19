@@ -1,0 +1,54 @@
+Big Three
+HTML Semantic Web, SEO,
+CSS Grid Flex
+javascript (how to turn jquery to javascript)
+
+grid is less efficient than flex
+css tricks website
+how to center a div without display: Flex
+justify-content-center
+
+link :css
+
+things that give you edge
+Design systems(SMACSS, BEM)
+web accessibility
+usage of APIs
+
+w3c AA, AAA CWAG accessibility
+
+https://github.com/Vets-Who-Code/api-list
+
+strongest keywords
+
+https://davidwalsh.name/
+
+bootcamp - without constant guidance
+extract soft skills in non related roles
+vounteering - built and maintained , tools used, economic impact of $$
+
+Portfolio
+
+plugins
+Github readme stats
+profile views counter 
+
+github.com/usmcamgrimm
+jason.af 
+contact form instead of email or secondary website 
+
+
+codepen
+https://chriscoyier.net/
+newsletter design challenges
+
+https://m.twitch.tv/codehustle/videos
+
+youtube
+https://www.youtube.com/@TraversyMedia
+https://www.youtube.com/@WesBos
+https://www.youtube.com/@JamesQQuick
+
+responsive design = mobile/tablet 
+https://x.com/CodeNewbies
+https://x.com/ThePracticalDev
