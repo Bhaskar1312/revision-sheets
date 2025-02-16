@@ -1,0 +1,10 @@
+1. for (const el of array)
+2. shift() to remove from start()
+3. Number.isNaN(somestring/2) Always check for isNaN, it pollutes
+4. Use new() for Object(), Array(), function(), Date(), RegExp(), Error()
+5. Dont use new() for string(), Number(), Boolean(), when we call with String(), it changes into the type
+6. if(num1 < num2) if at least one of them is number, they are auto converted to numbers. If both strings, alphanumeric comparision
+7. Types/coercion, scope/closures, this/prototypes
+8. == allows type coercion, === disallows type coercion, null==undefined
+9. https://github.com/getify/You-Dont-Know-JS
+10. https://benalman.com/news/2010/11/immediately-invoked-function-expression/
