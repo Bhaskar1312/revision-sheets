@@ -1,0 +1,222 @@
+Awesome—since you’re around 1200, here’s a focused 10-week, topic-wise ladder to push your fundamentals fast and build contest speed. Each week has concrete problems from AtCoder and Kattis (many are ICPC-sourced), plus 1–2 optional IOI problems (on OJ.UZ) for stretch. Aim for 8–12 problems/week and upsolve anything you skip.
+Week 1 — Implementation warm-up, math, brute force
+	• AtCoder 
+		○ ABC 081B – Shift Only
+		○ ABC 085C – Otoshidama
+		○ ABC 086C – Traveling
+		○ ABC 049C – Daydream
+		○ ABC 075B – Minesweeper
+	• Kattis (ICPC-style basics) 
+		○ apaxiaaans
+		○ bijele
+		○ filip
+		○ pet
+		○ cetvrta
+		○ trik
+	• Optional IOI 
+		○ None (focus on speed this week)
+Week 2 — Prefix sums, two pointers, binary search on answer
+	• AtCoder 
+		○ ABC 124D – Handstand (sliding window)
+		○ ABC 098D – Xor Sum 2 (two pointers)
+		○ ABC 130D – Enough Array (two pointers)
+		○ ABC 146C – Buy an Integer (binary search)
+	• Kattis 
+		○ freefood (interval union/counting)
+		○ modulo (set + arithmetic)
+		○ basicprogramming1 (grab-bag of simple tasks)
+		○ primesieve (sieve + queries)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2000 – Palindrome (classic DP; if too tough, skip and return later)
+Week 3 — Graphs I: BFS/DFS, grids, connected components
+	• AtCoder 
+		○ ABC 168D – … (BFS parent reconstruction from 1)
+		○ ABC 176D – Wizard in Maze (0–1 BFS)
+		○ ABC 126D – Even Relation (tree parity via DFS)
+	• Kattis (ICPC-sourced) 
+		○ grid (shortest path on grid)
+		○ 10kindsofpeople (multi-source BFS/DSU)
+		○ knightjump (BFS)
+		○ fire (multi-source BFS)
+		○ reachableroads (components)
+		○ weakvertices (triangle check per vertex)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2012 – Race (tree + centroid technique; stretch)
+Week 4 — Shortest paths and MST
+	• AtCoder 
+		○ ABC 176D already done; add a review or re-implement Dijkstra template
+	• Kattis (ICPC-sourced) 
+		○ shortestpath1 (Dijkstra)
+		○ allpairspath (Floyd–Warshall with negative edges check)
+		○ islandhopping (MST via Prim/Kruskal)
+		○ humancannonball (graph modeling + Dijkstra)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2007 – Training (shortest-path modeling; optional)
+Week 5 — DSU, offline tricks, tree sums
+	• AtCoder 
+		○ ACL Practice: A – Disjoint Set Union
+		○ ABC 120D – Decayed Bridges (DSU offline)
+		○ ABC 157D – Friend Suggestions (DSU + sets)
+		○ ABC 138D – Ki (tree propagation, DFS)
+	• Kattis 
+		○ assigningworkstations (greedy with priority queue; ICPC NWERC)
+		○ reachableroads (if not done; components warm-up)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2009 – Regions (trees/components; optional)
+Week 6 — DP I: 1D/2D classics
+	• AtCoder (Educational DP Contest – EDPC) 
+		○ A – Frog 1, B – Frog 2, C – Vacation, D – Knapsack 1, E – Knapsack 2, F – LCS
+	• Kattis 
+		○ knapsack (0/1 knapsack; confirm constraints and choose method)
+		○ teque (not DP but good implementation drill on deques)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2005 – Birthday (CHT/aliens trick; stretch—read editorial after trying)
+Week 7 — DP II: DAG DP, probabilities, bitmask intro
+	• AtCoder (EDPC continuation) 
+		○ G – Longest Path (DAG DP)
+		○ H – Grid 1 (count paths with obstacles)
+		○ I – Coins (probability DP)
+		○ J – Sushi (expected value DP)
+		○ K – Stones (game DP)
+		○ Optional: S – Digit Sum (digit DP intro)
+	• Kattis 
+		○ humancannonball2 (if available; DP/geometry variant) or pick another light DP from Kattis “dp” tag
+	• Optional IOI 
+		○ OJ.UZ: IOI 2011 – Harmonious Garden (combinatorial DP; optional)
+Week 8 — Strings I: hashing basics, pattern DP, maps
+	• AtCoder 
+		○ ABC 150B – Count ABC (pattern counting)
+		○ ABC 135D – Digits Parade (DP on modulo states)
+		○ ABC 137C – Green Bin (group anagrams by sorted string)
+		○ ABC 104C – All Green (bitmask DP)
+	• Kattis 
+		○ drmmessages (string rotation/partition)
+		○ anagramcounting (multiset counting; big integers or factorials with multiplicities)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2011 – Scrivener (persistent strings; advanced—pure stretch)
+Week 9 — Greedy and priority queues (scheduling, counting, sieves)
+	• AtCoder 
+		○ ABC 137D – Summer Vacation (scheduling with heap)
+		○ ABC 141D – Powerful Discount Tickets (max-heap)
+		○ ABC 171D – Replacing (counts/frequencies)
+		○ ABC 170D – Not Divisible (sieve + frequency)
+	• Kattis (ICPC-sourced) 
+		○ kattisquest (multiset/priority)
+		○ millionairemadness (binary search + path feasibility or Dijkstra)
+		○ closingtheloop (greedy; NAQ)
+	• Optional IOI 
+		○ OJ.UZ: IOI 2002 – Utopia Divided (geometry/partition; skip if off-topic)
+Week 10 — Mixed review + mini-virtuals (integration week)
+	• AtCoder 
+		○ EDPC L – Deque (interval DP)
+		○ EDPC M – Candies (prefix sums optimization)
+		○ EDPC N – Slimes (classic interval DP, Knuth-opt hint for later)
+	• Kattis (run a 2–3 hour “virtual” from an ICPC set; pick 3 problems) 
+		○ Choose a Kattis ICPC set (e.g., NAQ/NWERC year) and solve 3 problems suited to your strengths
+	• IOI (choose one stretch aligned to your favorite topic) 
+		○ OJ.UZ: IOI 2012 – Race (if not done), or IOI 2005 – Birthday (revisit after learning)
+How to use this ladder
+	• Weekly cadence: 2–3 days topic study + solves, 1 day review/upsovle, 1 “virtual” block.
+	• Timeboxing: 30–45 minutes attempt → 1 hint → editorial → full re-implementation next day.
+	• Library growth: by Week 6 you should have tested templates for BFS/0–1 BFS, Dijkstra, DSU, Fenwick, simple segment tree, and a clean DP scaffold.
+Notes and sourcing
+	• AtCoder: search by “ABC xyz [letter]” or “EDPC [letter]” on AtCoder.
+	• Kattis: use slugs listed (e.g., https://open.kattis.com/problems/10kindsofpeople). Many are ICPC regional problems mirrored on Kattis.
+	• IOI: use OJ.UZ and search by contest/year/title (e.g., “IOI 2012 Race” on oj.uz).
+
+
+
+
+=====
+Weeks 11–16 to round out core CS, push you toward 1700–1900 strength, and prep you for harder ARC/ICPC sets. Format stays the same: 8–12 core problems/week, plus 1–2 stretch IOI tasks on OJ.UZ and one ICPC-style virtual on Kattis.
+Week 11 — Number theory and combinatorics fundamentals Focus: sieve + factorization, gcd/lcm, modular arithmetic, simple combinatorics
+	• AtCoder 
+		○ ABC 169 D – Div Game (prime factorization)
+		○ ABC 142 D – Disjoint Set of Common Divisors (gcd + prime factors)
+		○ ABC 178 D – Redistribution (combinatorics DP, mod)
+		○ ABC 173 E – Multiplication 4 (sign + modular greedy)
+		○ ABC 125 C – GCD on Blackboard (prefix/suffix gcd)
+	• Kattis (ICPC-style) 
+		○ primesieve (fast sieve + queries)
+		○ factovisors (divisibility via prime factorization)
+		○ different (big integer subtraction handling)
+		○ modulararithmetic (mod operations, inverse conditions)
+	• Optional IOI (stretch) 
+		○ OJ.UZ: IOI 2002 – Utopia Divided (number/geometry flavor; stretch)
+	• Mini-virtual 
+		○ Kattis: try an easy regional set (e.g., NAQ 2020) and solve A–C in 90–120 minutes
+Week 12 — Fenwick and Segment Trees (range queries) Focus: point update/range query; basic range update tricks
+	• AtCoder 
+		○ AtCoder Library Practice (ALPC): Fenwick Tree (point add/prefix sum)
+		○ ALPC: Segment Tree (range op, point update)
+		○ ABC 185 F – Range Xor Query (seg tree)
+		○ ABC 157 E – Simple String Queries (BIT/26-segtrees)
+	• Kattis 
+		○ inversions (count inversions with BIT)
+		○ moneymatters (DSU warm-up for sets/components)
+		○ almostunionfind (augmented DSU operations)
+	• Optional IOI (stretch) 
+		○ OJ.UZ: JOI 2019 Final – Partition (range structures; stretch)
+	• Mini-virtual 
+		○ Kattis: NWERC 2016 virtual, target A–C
+Week 13 — SCC, topological order, DAG DP Focus: Kosaraju/Tarjan, condensation DAG, longest path on DAG
+	• AtCoder 
+		○ ALPC: Strongly Connected Components
+		○ ALPC: Topological Sort
+		○ ABC 223 F – Parenthesis Checking (segment tree alt; optional)
+		○ Typical DP (EDPC): G – Longest Path (DAG DP, if not done)
+	• Kattis (ICPC-style) 
+		○ dominos (SCC + count source components)
+		○ tordering (topological ordering)
+		○ installation (DAG/greedy scheduling variant)
+	• Optional IOI (stretch) 
+		○ OJ.UZ: IOI 2012 – Race (tree + centroid; revisit if earlier was tough)
+	• Mini-virtual 
+		○ Kattis: NWERC 2018 virtual, aim for A–C (D if time)
+Week 14 — Matching and max flow modeling Focus: bipartite matching, Dinic/Hopcroft–Karp, simple min-cut models
+	• AtCoder 
+		○ ALPC: Maximum Flow (Dinic)
+		○ ALPC: Bipartite Matching
+		○ ARC-level bipartite/matching task of your choice (pick an ARC with matching in editorial)
+	• Kattis (ICPC-style) 
+		○ kattisquest (multiset/greedy; warm-up)
+		○ cats (bipartite matching formulation; if not available, pick any “matching” tagged problem)
+		○ evacuation (flow/min-cut style; pick a Kattis flow-tagged regional problem)
+	• Optional IOI (stretch) 
+		○ OJ.UZ: IOI 2009 – Regions (graph + components; modeling practice)
+	• Mini-virtual 
+		○ Kattis: NAQ 2019 virtual, aim for 3 problems including one graph/matching
+Week 15 — Geometry basics Focus: orientation, segments, polygon area, convex hull, sweeping intros
+	• AtCoder 
+		○ ABC 168 C – Colon (geometry basics)
+		○ ABC 151 F – Enclose All (circles/geometry; optional)
+		○ ABC 197 E or F if geometry flavored (pick based on editorial tags)
+	• Kattis (ICPC-style) 
+		○ polygonarea (shoelace formula)
+		○ pointinpolygon (ray casting/winding)
+		○ convexhull (Andrew’s monotone chain)
+		○ closestpair (if available; divide and conquer stretch)
+	• Optional IOI (stretch) 
+		○ OJ.UZ: APIO/IOI geometry task of your choice (pick a simpler one like “Triangle” if listed)
+	• Mini-virtual 
+		○ Kattis: NCPC 2017/2018 virtual, target 3 problems with at least one geometry
+Week 16 — Mixed mastery + ICPC-style simulation Focus: integrate DS + graph + DP; speed and robustness
+	• AtCoder 
+		○ EDPC L – Deque (interval DP review)
+		○ EDPC M – Candies (prefix optimization review)
+		○ Typical 90: pick 2 medium problems outside your comfort zone (e.g., bitset, math)
+	• Kattis (ICPC-style) 
+		○ getshorty (Dijkstra with multiplicative weights)
+		○ millionairemadness (binary search + path feasibility or Dijkstra)
+		○ closingtheloop (greedy)
+		○ sortofsorting (implementation/sorting stability)
+	• Optional IOI (stretch) 
+		○ OJ.UZ: IOI 2016 – Aliens (CHT DP) — read editorial after a timed attempt; re-implement next day
+	• Mini-virtual (3–5 hours) 
+		○ Kattis: Choose a full regional set (e.g., NWERC 2019). Goal: solve 4 problems and upsolve 2 within 48 hours
+How to run Weeks 11–16 effectively
+	• Cadence: 3 topic days (solve 2–3 problems/day), 1 review/upsolve day, 1 virtual day
+	• Timeboxing: 30–45 minutes solving → 1 hint → editorial → cold re-solve next day
+	• Library adds by Week 16: clean templates for BIT, segtree (lazy optional), SCC, topo, Dinic/Hopcroft–Karp, geometry primitives (Point struct, cross, orientation), Dijkstra/0–1 BFS
+	• Tracking: keep a log of wrong answers/timeouts and what invariant or optimization you missed
+
