@@ -1,0 +1,285 @@
+brew install redis
+brew services start redis
+/opt/homebrew/opt/redis/bin/redis-server /opt/homebrew/etc/redis.conf
+brew services info redis
+brew services stop redis
+redis-server
+redis-cli
+ping
+SET name Bhaskar
+GET name
+
+# Redis doesn't deal with numbers
+
+127.0.0.1:6379> incr counter
+(integer) 1
+127.0.0.1:6379> incr counter 2
+(error) ERR wrong number of arguments for 'incr' command
+127.0.0.1:6379> decr counter
+(integer) 0
+127.0.0.1:6379> incrby counter 4
+(integer) 4
+127.0.0.1:6379> decrby  counter 4
+(integer) 0
+127.0.0.1:6379> STRLEN city_country
+(integer) 13
+127.0.0.1:6379> APPEND city_country ", Earth"
+(integer) 20
+127.0.0.1:6379> GET city_country
+"Madrid, Spain, Earth"
+127.0.0.1:6379> APPEND series:1234567 0001
+(integer) 4
+127.0.0.1:6379> APPEND series:1234567 0100
+(integer) 8
+127.0.0.1:6379> APPEND series:1234567 0110
+(integer) 12
+127.0.0.1:6379> APPEND series:1234567 0111
+(integer) 16
+127.0.0.1:6379> STRLEN series
+(integer) 0
+127.0.0.1:6379> STRLEN series:1234567
+(integer) 16
+127.0.0.1:6379> GET series:1234567
+"0001010001100111"
+127.0.0.1:6379> GETRANGE series:1234567 4 7
+"0100"
+https://redis.io/docs/latest/commands/
+HashMaps for objects
+127.0.0.1:6379> HSET loggedUser:123 name 'Bhaskar Bantupalli' avatar "https://github.com/Bhaskar1312" role "Developer"
+(integer) 3
+127.0.0.1:6379> HGET loggedUser:123 name
+"Bhaskar Bantupalli"
+127.0.0.1:6379> HMGET loggedUser:123 name avatar
+1) "Bhaskar Bantupalli"
+2) "https://github.com/Bhaskar1312"
+HashMaps very good for storing products in cart with key+id 
+127.0.0.1:6379> HSET cart:123 prod:1:name 'Oranges' prod:1:price "2,23" prod:1:amount "1" prod:2:name Apples prod:2:amount "3,40"
+(integer) 5
+127.0.0.1:6379> HGET cart:123 prod:1:name
+"Oranges"
+127.0.0.1:6379> HINCRBY cart:123 prod:1:amount 2
+(integer) 3
+127.0.0.1:6379> HGETALL cart:123
+ 1) "prod:1:name"
+ 2) "Oranges"
+ 3) "prod:1:price"
+ 4) "2,23"
+ 5) "prod:1:amount"
+ 6) "3"
+ 7) "prod:2:name"
+ 8) "Apples"
+ 9) "prod:2:amount"
+10) "3,40"
+127.0.0.1:6379> lpush mylist "first ele" "second ele" "final ele"
+(integer) 3
+127.0.0.1:6379> LPOP mylist
+"final ele"
+127.0.0.1:6379> RPOP mylist
+"first ele"
+127.0.0.1:6379> LPOP mylist
+"second ele"
+127.0.0.1:6379> rpush mylist "first ele" "second ele" "final ele"
+(integer) 3
+127.0.0.1:6379> RPOP mylist
+"final ele"
+127.0.0.1:6379> RPOP mylist
+"second ele"
+
+list only accepts strings. or else you have to use index for obj, and do thru code
+
+127.0.0.1:6379> linsert mylist AFTER "first ele" "insert ele"
+(integer) 2
+127.0.0.1:6379> LLEN mylist
+(integer) 2
+127.0.0.1:6379> SADD myset "Adam Smith"
+(integer) 1
+127.0.0.1:6379> SADD myset 'Elizabeth Hurley' 'Adam Turing'
+(integer) 2
+127.0.0.1:6379> SMEMBERS myset
+1) "Adam Smith"
+2) "Elizabeth Hurley"
+3) "Adam Turing"
+127.0.0.1:6379> SREM myset 'Adam Smith'
+(integer) 1
+127.0.0.1:6379> SMEMBERS myset
+1) "Elizabeth Hurley"
+2) "Adam Turing"
+
+127.0.0.1:6379> ZADD leaderboard 304 "Doris"
+(integer) 1
+127.0.0.1:6379> ZADD leaderboard 1000 Sandra
+(integer) 1
+127.0.0.1:6379> ZADD leaderboard 860 Nicholas
+(integer) 1
+127.0.0.1:6379> ZADD leaderboard 600 Sheryl
+(integer) 1
+127.0.0.1:6379> ZADD leaderboard 100 Bria
+(integer) 1
+127.0.0.1:6379> ZADD leaderboard 100 Brian
+(integer) 1
+127.0.0.1:6379> ZRANGE leaderboard
+(error) ERR wrong number of arguments for 'zrange' command
+127.0.0.1:6379> ZRANGE leaderboard 0 5
+1) "Bria"
+2) "Brian"
+3) "Doris"
+4) "Sheryl"
+5) "Nicholas"
+6) "Sandra"
+127.0.0.1:6379> ZRevrANGE leaderboard 0 5
+1) "Sandra"
+2) "Nicholas"
+3) "Sheryl"
+4) "Doris"
+5) "Brian"
+6) "Bria"
+127.0.0.1:6379> zincrby leaderboard 300 Brain
+"300"
+127.0.0.1:6379> ZRANGE leaderboard 0 5
+1) "Bria"
+2) "Brian"
+3) "Brain"
+4) "Doris"
+5) "Sheryl"
+6) "Nicholas"
+127.0.0.1:6379> ZREM leaderboard Brain
+(integer) 1
+127.0.0.1:6379> ZRANGE leaderboard 0 5
+1) "Bria"
+2) "Brian"
+3) "Doris"
+4) "Sheryl"
+5) "Nicholas"
+6) "Sandra"
+127.0.0.1:6379> zincrby leaderboard 300 0 5
+(error) ERR wrong number of arguments for 'zincrby' command
+127.0.0.1:6379> zincrby leaderboard 1100 Doris
+"1404"
+127.0.0.1:6379> ZRANGE leaderboard 0 5
+1) "Bria"
+2) "Brian"
+3) "Sheryl"
+4) "Nicholas"
+5) "Sandra"
+6) "Doris"
+127.0.0.1:6379>
+
+Pub/Sub in Redis Fire and Forget(Subscriber to subscribe, else will lose messages)
+PUBLISH <CHANNEL NAME> <message>
+SUBSCRIBE <CHANNEL NAME>
+
+Streams
+127.0.0.1:6379> XADD myevents * user Fernando event_type 'left click' x_coord  32
+"1743948119793-0"
+127.0.0.1:6379> XADD myevents * user Fernando event_type 'right click' x_coord  35
+"1743948133771-0"
+127.0.0.1:6379> XADD myevents * user Fernando event_type 'right click' x_coord  36
+"1743948136969-0"
+
+XRANGE <key> <start-id timestamp> <end timestamp >
+
+127.0.0.1:6379> xrange myevents - +
+1) 1) "1743948119793-0"
+   2) 1) "user"
+      2) "Fernando"
+      3) "event_type"
+      4) "left click"
+      5) "x_coord"
+      6) "32"
+2) 1) "1743948133771-0"
+   2) 1) "user"
+      2) "Fernando"
+      3) "event_type"
+      4) "right click"
+      5) "x_coord"
+      6) "35"
+3) 1) "1743948136969-0"
+   2) 1) "user"
+      2) "Fernando"
+      3) "event_type"
+      4) "right click"
+      5) "x_coord"
+      6) "36"
+	  
+-, + are min/max possible timestamps
+
+XRANGE <key> <starting id> <last id> COUNT <limit>
+
+127.0.0.1:6379> xrevrange myevents + - COUNT 2
+1) 1) "1743948136969-0"
+   2) 1) "user"
+      2) "Fernando"
+      3) "event_type"
+      4) "right click"
+      5) "x_coord"
+      6) "36"
+2) 1) "1743948133771-0"
+   2) 1) "user"
+      2) "Fernando"
+      3) "event_type"
+      4) "right click"
+      5) "x_coord"
+      6) "35"
+
+XREAD [COUNT x] [BLOCK Y] STREAMS <key...>  <id...>
+COUNT optional to limit the number of results
+BLOCK optional to tell the client to wait until a new message arrives
+
+XREAD BLOCK 0 STREAMS myevents $
+
+on other client 
+XADD myevents * user Bhaskar event_type 'scroll'
+
+127.0.0.1:6379> XREAD BLOCK 0 STREAMS myevents $
+1) 1) "myevents"
+   2) 1) 1) "1743948937214-0"
+         2) 1) "user"
+            2) "Bhaskar"
+            3) "event_type"
+            4) "scroll"
+(10.12s)
+
+
+key space notifications
+user sign in status on every request, and see if session is still valid
+
+on client-1
+redis-cli --csv psubscribe '__key*__:expired'
+
+➜ redis-cli --csv psubscribe '__key*__:expired'
+"psubscribe","__key*__:expired",1
+
+on client-2
+127.0.0.1:6379> SET logged_in_user_1234 2188232 EX 5
+OK
+expire in 5 seconds
+
+
+127.0.0.1:6379> set key some-val
+OK
+127.0.0.1:6379> expire key 5
+(integer) 1
+127.0.0.1:6379> get key
+"some-val"
+127.0.0.1:6379> get key
+(nil)
+
+127.0.0.1:6379> set key-1 100 ex 10
+OK
+127.0.0.1:6379> get key-1
+(nil)
+127.0.0.1:6379> set key-1 100 ex 10
+OK
+127.0.0.1:6379> get key-1
+"100"
+127.0.0.1:6379> get key-1
+"100"
+127.0.0.1:6379> get key-1
+(nil)
+ex - sets time to live for the key
+
+xx - dont add if not exists
+127.0.0.1:6379> set key-1 100 ex 10 xx
+(nil)
+127.0.0.1:6379> get key-1
+(nil)
