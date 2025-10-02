@@ -175,6 +175,21 @@ logQL, grafana ui, cli
 
    limits_config:
   
+  promtail.yaml
+  
+   pipeline_stages:
+      - cri: {}
+      - match:
+          selector: '{app="api"}'
+          stages:
+            - json:
+                expressions:
+                  log:
+            - json:
+                source: log
+                expressions:
+                  code: code
+                  method: method
 
    tracing:
      enabled: false
