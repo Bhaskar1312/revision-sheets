@@ -180,9 +180,10 @@ logQL, grafana ui, cli
      enabled: false
    
    What is the main component of Loki's architecture responsible for collecting logs?
-
    Promtail
 
    Which component is responsible for collecting logs from individual applications and forwarding them to Loki in the context of Loki's architecture?
-
    Loki Agent
+
+   What is the purpose of a Promtail pipeline in Loki?
+To process and enrich logs before sending them to Loki
