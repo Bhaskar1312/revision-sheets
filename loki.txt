@@ -1,0 +1,188 @@
+L
+
+
+Loki - log aggregation system designed to store and query logs
+designed to be cost effective and easy to operate
+Loki doesn't index full text from logs (only indexes just labels/metadata) unlike elasticsearch
+
+Loki can work with agents like promtail(created for loki), fluentd, logstash
+
+logQL, grafana ui, cli
+
+1  helm
+    2  helm repo add https://grafana.github.io/heml-charts
+    3  helm repo add grafana https://grafana.github.io/helm-charts
+    4  helm repo update
+    5  helm search repo loki
+    6  helm show values grafana/loki-stack
+    7  helm show values grafana/loki-stack > values.yaml
+   11  vi values.yaml 
+   12  helm install --values values.yaml
+   13  helm install --values values.yaml loki grafana/loki-stack
+   14  history
+   
+   kubectl port-forward pod/loki-grafana-d997b7c57-tnwnx 3000:3000
+   
+   controlplane ~ ➜  kubectl get secrets
+   NAME                         TYPE                 DATA   AGE
+   loki                         Opaque               1      6m22s
+   loki-grafana                 Opaque               3      6m22s
+   loki-promtail                Opaque               1      6m22s
+   sh.helm.release.v1.loki.v1   helm.sh/release.v1   1      6m22s
+
+   controlplane ~ ➜  kubectl describe secrets loki-grafana 
+   Name:         loki-grafana
+   Namespace:    default
+   Labels:       app.kubernetes.io/instance=loki
+                 app.kubernetes.io/managed-by=Helm
+                 app.kubernetes.io/name=grafana
+                 app.kubernetes.io/version=10.3.3
+                 helm.sh/chart=grafana-6.43.5
+   Annotations:  meta.helm.sh/release-name: loki
+                 meta.helm.sh/release-namespace: default
+
+   Type:  Opaque
+
+   Data
+   ====
+   admin-password:  40 bytes
+   admin-user:      5 bytes
+   ldap-toml:       0 bytes
+
+   controlplane ~ ➜  kubectl get  secrets loki-grafana  
+   NAME           TYPE     DATA   AGE
+   loki-grafana   Opaque   3      7m54s
+
+   controlplane ~ ➜  kubectl get  secrets loki-grafana -o yaml
+   apiVersion: v1
+   data:
+     admin-password: STRFUmlHd3JuS2dQa1NvWUFpUkFId25nMzBLbWVRQlkxbktNUFdLSA==
+     admin-user: YWRtaW4=
+     ldap-toml: ""
+   kind: Secret
+   metadata:
+     annotations:
+       meta.helm.sh/release-name: loki
+       meta.helm.sh/release-namespace: default
+     creationTimestamp: "2025-10-02T09:28:24Z"
+     labels:
+       app.kubernetes.io/instance: loki
+       app.kubernetes.io/managed-by: Helm
+       app.kubernetes.io/name: grafana
+       app.kubernetes.io/version: 10.3.3
+       helm.sh/chart: grafana-6.43.5
+     name: loki-grafana
+     namespace: default
+     resourceVersion: "9162"
+     uid: d8bab735-fbd9-4cd7-86a2-6a11c9943f89
+   type: Opaque
+
+   controlplane
+
+   controlplane ~ ✖ kubectl get  secrets loki-grafana -o jsonpath="{.data.admi
+   n-password}"
+   STRFUmlHd3JuS2dQa1NvWUFpUkFId25nMzBLbWVRQlkxbktNUFdLSA==
+   controlplane ~ ➜  kubectl get  secrets loki-grafana -o jsonpath="{.data.admin-password}" | base64 -d
+   I4ERiGwrnKgPkSoYAiRAHwng30KmeQBY1nKMPWKH
+   
+   controlplane ~ ✖ kubectl get secret loki-promtail -o=jsonpath="{.data.promtail\.yaml}" | base64 -d
+   server:
+     log_level: info
+     log_format: logfmt
+     http_listen_port: 3101
+  
+
+   clients:
+     - url: http://loki:3100/loki/api/v1/push
+
+   positions:
+     filename: /run/promtail/positions.yaml
+
+   scrape_configs:
+     # See also https://github.com/grafana/loki/blob/master/production/ksonnet/promtail/scrape_config.libsonnet for reference
+     - job_name: kubernetes-pods
+       pipeline_stages:
+         - cri: {}
+       kubernetes_sd_configs:
+         - role: pod
+       relabel_configs:
+         - source_labels:
+             - __meta_kubernetes_pod_controller_name
+           regex: ([0-9a-z-.]+?)(-[0-9a-f]{8,10})?
+           action: replace
+           target_label: __tmp_controller_name
+         - source_labels:
+             - __meta_kubernetes_pod_label_app_kubernetes_io_name
+             - __meta_kubernetes_pod_label_app
+             - __tmp_controller_name
+             - __meta_kubernetes_pod_name
+           regex: ^;*([^;]+)(;.*)?$
+           action: replace
+           target_label: app
+         - source_labels:
+             - __meta_kubernetes_pod_label_app_kubernetes_io_instance
+             - __meta_kubernetes_pod_label_instance
+           regex: ^;*([^;]+)(;.*)?$
+           action: replace
+           target_label: instance
+         - source_labels:
+             - __meta_kubernetes_pod_label_app_kubernetes_io_component
+             - __meta_kubernetes_pod_label_component
+           regex: ^;*([^;]+)(;.*)?$
+           action: replace
+           target_label: component
+         - action: replace
+           source_labels:
+           - __meta_kubernetes_pod_node_name
+           target_label: node_name
+         - action: replace
+           source_labels:
+           - __meta_kubernetes_namespace
+           target_label: namespace
+         - action: replace
+           replacement: $1
+           separator: /
+           source_labels:
+           - namespace
+           - app
+           target_label: job
+         - action: replace
+           source_labels:
+           - __meta_kubernetes_pod_name
+           target_label: pod
+         - action: replace
+           source_labels:
+           - __meta_kubernetes_pod_container_name
+           target_label: container
+         - action: replace
+           replacement: /var/log/pods/*$1/*.log
+           separator: /
+           source_labels:
+           - __meta_kubernetes_pod_uid
+           - __meta_kubernetes_pod_container_name
+           target_label: __path__
+         - action: replace
+           regex: true/(.*)
+           replacement: /var/log/pods/*$1/*.log
+           separator: /
+           source_labels:
+           - __meta_kubernetes_pod_annotationpresent_kubernetes_io_config_hash
+           - __meta_kubernetes_pod_annotation_kubernetes_io_config_hash
+           - __meta_kubernetes_pod_container_name
+           target_label: __path__
+  
+  
+
+   limits_config:
+  
+
+   tracing:
+     enabled: false
+   
+   What is the main component of Loki's architecture responsible for collecting logs?
+
+   Promtail
+
+   Which component is responsible for collecting logs from individual applications and forwarding them to Loki in the context of Loki's architecture?
+
+   Loki Agent
