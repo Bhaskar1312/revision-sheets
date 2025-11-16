@@ -1,0 +1,923 @@
+man man # to see command's section numbers
+man 1 printf 
+apropos director (for directory/ies - search in short descriptions) - it also list sections to be used for man pages
+sudo mandb
+apropos -s 1,8 director ( to look at sections 1 and 8)
+systemctl (TAB + TAB to list sub commands)
+
+cd # take to user's home dir
+
+
+Inode ->  permission and access data instead of name and actual data, Pointers to the disk blocks where file data is stored
+Hard link instead of creating a copy -> A hard link is an additional directory entry (filename) that points to the same inode as another file.
+ln path_to_target_file path_to_link_file
+Once everyone deletes, the links =0, then data itself will get marked as unused for deletion
+You can only hard-link to files, not directories. create files on the same file system.
+# useradd -a -G family aaron
+
+Soft links
+# ln -s path_to_target_file path_to_soft_link_file
+ls -l
+lrwxrwxrwx 1 Aaron Arron family_dog.jpg -> /home/Aaron/Pictures.. #only shows some part if long
+L for link, - regular file, c character device, s socket file, p pipe, b block device
+Alternative
+readlink family_dog_shortcut.jpg
+
+If we ever change directory, the soft link will break
+
+chgrp group_name file/directory # change to groupwhat user belongs
+groups # to list the groups, so we can use those groups in chrgrp command
+sudo chown user_name file_name
+chgrp sudo family_dog.jpg
+
+ls -l
+-r--rw---- Aaron family family_dog.jpg
+Aaron can write to file even though he is part of family group as permissions are evaluated from Left To Right 
+
+chmod u=x,o+x,u-rwx,g= file_name
+
+suid - special perm to allow users to run an executable <file> with perms of user
+sgid - both files and directories
+Sticky bit - special perm on directories. Restrict file deletion
+
+chmod 4644 file_name #set suid and not execute permission
+-rwSrw-r-- 1 Jeremy Jeremy 0 May 8 01:22 file_name
+
+chmod 4744 file_name #set suid and execute permission
+-rwsrw-r-- 1 Jeremy Jeremy 0 May 8 01:22 file_name
+
+chmod 2664 file_name #set sgid and not execute permission
+-rw-rwSr-- 1 Jeremy Jeremy 0 May 8 01:22 file_name
+
+
+chmod 2674 file_name #set sgid and execute permission
+-rw-rwsr-- 1 Jeremy Jeremy 0 May 8 01:22 file_name
+
+chmod u+s,g+s,o+t datadir/ #setuid, setgid, and sticky bit
+
+Find files with sgid bit set(2), if suid then 4
+ find . -perm /2000 
+
+chmod 6664 both
+
+Set sticky bit
+	chmod +t sticky_dir/
+drwtrwxr-x sticky_dir
+
+(T for non exec perm)
+
+Find
+	find /lib64/ -size +10M #files larger then 10MB
+	find /dev/ -mmin -1 # modified less than minute ago modified minute
+	find # skip directory, means cwd
+	find iname Felix #case insensitive
+	-mmin +5	More than 5 minutes ago	Before 10:05
+	-mmin -5	Less than 5 minutes ago	After 10:05
+	-mmin 5		Exactly 5 minutes ago	Between 10:04 and 10:05
+	-mtime # 24h units
+ 	-size 10c #kMG byte
+	find -name 'f*' -o -size 512k # name starts with f or size 512kb
+	find -not -name 'f*' # not op, can use \! -name otherwise bash interprets different
+	-perm 664 
+	-perm -664 # at least these permissions
+	-perm /664 # any of these permissions
+	-perm u=rw,g=r
+	find /var/log/ -perm -g=w -not -perm /o=rw #others can not read or write, group can write
+
+	tac file_name #to view in reverse order of lines
+	sed -i "50,100s/enabled/disabled/gi" file #lines 50-100
+	cut -d ',' -f 2 names.txt 
+	sort countries | uniq
+	diff f1 f2
+	diff -I f1 f2 #ignore case
+	diff -c large_file1 large_file2 #context
+	diff -y f1 f2 # side by side
+	sdiff f1 f2 
+	
+	vim
+	/find\c # case insensitive search
+	:line_no
+Command mode
+	yy # copy entire line
+	p #paste
+	dd #cut the line
+
+	grep -nri -v -o 
+Egrep 
+	egrep -r '/dev/[a-z]*[0-9]?' /etc/
+
+Tar tape archive
+tar.gz compressed archive
+--list --file 
+(hyphen optional in shorthand)
+	tar -tf tar.gz
+	file1 file2
+--create 
+	tar -cf archive.tar file1
+Give relative path if giving folders, otherwise it will extract to that exact folder not relative
+--append
+	tar rf archive.tar file2
+--extract
+	tar xf archive.tar
+--directory
+	tar xf archive.tar -C /tmp/
+
+tar cfP logs.tar /var/log/
+tar cfzP logs.tar.gz /var/log/
+tar acf  archive.tar.gz dir1
+Sudo to create file with other user permission 
+
+Compression (automatically deletes original by default, -k or --keep )
+Gzip, bzip2, xz
+
+	gzip file1 
+	bzip2 file2
+	xz file3
+	gunzip file1.gz
+	bunzip file2.bz2
+	unxz file3.xz
+Or --decompress to original commands
+
+Zip -r archive.zip Pictures/
+
+tar --create --gzip(z)/--bzip2(j)/--xz(J) --file archive.tar.gz/.bz2/.xz file1
+
+rsync -a Pictures/ aaron@9.9.9.9:/home/aaron/Pictures/
+
+disk imaging
+sudo dd if=/dev/vda of=diskimage.raw bs=1M status=progress
+if=input file, of=output file, bs=block size 
+
+input-o/p redirection
+sort file > sorted_file
+sort -f #for ignore case
+uniq -i # for ignore case
+use 1> to redirect successful output redirection, error redirection 2>/dev/null or 2>&1
+< for input redirection
+use >> to append
+
+heredoc here string
+sort <<EOF
+1
+2
+4
+3
+> EOF
+
+bc <<< 1+2+4+3
+
+grep -v '^#' /etc/login.defs | sort | column -t # put it in columnar format
+
+openssl
+man openssl req
+openssl req -newkey rsa:2048 -keyout key.pem -out req.pem #key file, csr
+
+openssl req -x509 -noenc -newkey rsa:4096 -days 365 -keyout 365 myprivate.key -out mycertificate.crt 
+openssl x509 -in mycertificate.crt -text 
+
+systemctl reboot
+sudo systemctl poweroff
+sudo systemctl reboot --force
+sudo systemctl poweroff --force
+sudo systemctl reboot --force --force
+sudo systemctl poweroff --force --force
+sudo shutdown 02:00
+sudo shutdown +15 #in 15min
+sudo shutdown -r +15
+sudo shutdown -r +1 'Scheduled restart shutdown wall message wall message' 
+
+systemctl get-default
+graphical.target
+
+sudo systemctl set-default multi-user.default
+sudo systemctl isolate graphical.target
+emergency.target
+rescue.target
+
+help
+help if
+help test
+
+status code, 0 if successful
+
+cat /etc/cron.monthly/0anacron
+
+systemctl cat sshd.service
+ExecStart, ExecReload
+sudo systemctl edit --full ssh.service
+
+to revert to factory
+sudo systemctl revert ssh.service
+Loaded: loaded(/etc/systemd/system/ssh.service;----<<enabled - means systemd will start the app when system starts >>----;vendor preset)
+
+sudo systemctl start/stop/restart/reload/status ssh.service
+reload-or-restart login
+sudo systemctl disable ssh.service
+systemctl is-enabled ssh.service
+sudo systemctl enable ssh.service
+sudo systemctl start ssh.service
+sudo systemctl enable --now ssh.service (enable + start)
+sudo systemctl disable --now ssh.service
+
+sudo systemctl mask atd.service #masked service cant be enabled or started
+sudo systemctl unmask atd.service
+
+sudo systemctl list-units --type service --all  # list all services (sockets, )
+man systemd.service
+
+KillMode=process or controlgroup(kill child processes too)
+
+man ps
+ps aux (all, user oriented format)
+ps -U jeremy (started by jeremy)
+ps u 1 (proc 1 in user oriented format)
+ps -aef 
+pgrep -a syslog (process grep process with names syslog)
+top
+
+nice -n [NICE VALUE -20 more priority to 19 less priority, for-ve use sudo] [command]
+renice <NICE> <PID>
+ps -l (to include nice val)
+ps fax (parent forest)
+ps faux
+renice [new nice value, sudo if you lower nice] <PID>
+kill -L
+9) SIGKILL
+kill -SIGHUP 1457 (cant kill processes by other user, unless root)
+pgrep -a bash (instead of ps | grep)
+pkill -KILL bash
+
+CTRL + Z (stopped)
+fg
+sleep 100 & (run in bg)
+jobs (to see bg jobs)
+fg 1 (to put in fg)
+bg 1 (put in bg)
+lsof -p <PID> (files, dir proc is using, use with sudo)
+sudo lsof /var/log/auth.log (you dont get error without sudo which is misleading)
+
+write with sudo
+:w !sudo tee %
+
+su --login
+sudo --login
+
+grep -r /var/log ssh
+rsyslog
+which sudo
+journalctl /usr/bin/sudo
+journalctl -u ssh.service
+journalctl -e (end option)
+journalctl -f (follow mode)
+journalctl -p info/warning/err/crit/alert/debug/notice/emerg
+journalctl -p info -g '^b' (g for grep)
+journalctl -S 02:00 -U 21:00 (since 24 hour format or date '2024-03-03 01:00:00', U for until)
+journalctl -b 0 (current boot, -1 for previous boot)
+
+sudo mkdir /var/log/journal/ (existence of dir, tells to save journal logs)
+last (to see who logged into the system, newest at top)
+lastlog 
+
+backup using cron, anacron, at
+crontab -l (use sudo for root user)
+sudo crontab -e -u username (edit user cron)
+0 0 * * * /usr/bin/script
+crontab -r (to remove a cron job)
+
+sudo cp script /etc/cron.hourly/
+sudo apt install anacron (max 1 daily, weekly, hourly)
+sudo vim /etc/anacrontab
+10(days) 5(minutes) job_id command
+anacron -T
+sudo apt install at
+at '15:00'
+ctrl+d
+
+at 'August 20 2024'
+at '2:30 Agust 20 2025'
+at 'now + 30 minutes'
+atq (at queue)
+at -c 1 (cat command)
+atrm <JOBIDfrom atq> (remove at job)
+
+sudo apt update (updates local db of packages)
+sudo apt upgrade 
+sudo apt install nginx -y
+dpkg --listfiles nginx
+dpkg --search /usr/sbin/nginx
+apt show <name-of-pkg>
+apt search --names-only nginx
+apt search nginx module image (search using multiple words)
+sudo apt remove nginx (deps still left around)
+sudo apt autoremove nginx (deps not needed also removed)
+
+apt search  "apache http server"
+
+
+sudo vim /etc/apt/sources.list
+add: deb <url> <focal/..> main; and run sudo apt update
+components: main restricted universe multiverse
+
+sudo ./autogen.sh
+sudo ./configure
+sudo make
+sudo make install
+
+gpg --dearmor docker.key
+sudo mv docker.key.gpg /etc/apt/keyrings
+
+deb [signed-by=/etc/apt/keyrings/docker.key.gpg] downlaod_url noble stable
+ppas 
+
+df # disk free
+df -h #human readable
+du #disk usage
+du -sh /usr/ # -s summarize
+free -h #free,available
+uptime #cpu cores 
+lscpu # details of cpu
+lspci #other hardware details
+Redhat - xfs, ubuntu - ext4 file system
+sudo xfs_repair -v /dev/vdb1
+sudo fsck.ext4 -v -f -p /dev/vdb2 #to check and repair, -p preen auto-repair for small problem
+systemctl list-dependencies
+
+kernel runtime params in use
+sudo sysctl -a
+sudo sysctl -w net.ipv6.conf.default.disable_ipv6=1
+sudo sysctl net.ipv6.conf.default.disable_ipv6
+
+/etc/sysctl.d/<>.conf
+man sysctl.d
+sudo vim /etc/sysctl.d/anyfile.conf
+vm.swapiness=20
+
+sudo sysctl -p /etc/sysctl.d/anyfile.conf #apply now instead of a next reboot
+sudo vim /etc/sysctl.conf
+
+SELinux, Redhat/Centos have enabled by default
+ls -Z #selinux-user:role:type:level
+ps axZ
+unconfined_u/r/t unrestricted
+id -Z
+sudo semanage login -l
+sudo semanage user -l
+getenforce #Enforcing/Permissive/Disabled
+
+sudo systemctl stop apparmor.service #ubuntu default sec mgr
+sudo systemctl disable apparmor.service #disble, so doesnt start automatically
+sudo apt install selinux-basics auditd
+sestatus
+sudo selinux-activate
+
+cat /etc/default/grub #boot-loader
+GRUB_CMDLINE_LINUX=" security=selinux"
+ls -a /
+.autorelabel
+sudo reboot
+sestatus or getenforce
+sudo audit2why --all | less 
+ps -eZ | grep sshd_t
+ls -Z /usr/sbin/sshd
+
+sudo audit2allow --all -M mymodule
+sudo semodule -i mymodule.pp
+sudo sefenforce 1
+sudo vi /etc/selinux/config 
+selinux=enforcing # even after reboot, it will now load with enforcing mode
+sudo chcon -u unconfined_u /var/log/auth.log # change context
+sudo chcon -r object_r /var/log/auth.log # change context
+sudo chcon -r user_home_t /var/log/auth.log # change context
+seinfo -u
+
+sudo chcon --reference=/var/log/dmesg /var/log/auth.log
+sudo restorecon -R /var/www/ #type param
+sudo restorecon -F -R /var/www/ #force restore user, role and type
+
+sudo semanage fcontext --add --type var_log_t /var/www/10 # now relabelling/restorecon wont delete our applied labels
+sudo semanage fcontext --list
+sudo semanage fcontext --add --type nfs_t "/nfs/shares(/.*)?"
+sudo mkdir -p /nfs/shares/
+sudo restorecon -R /nfs/
+
+sudo semanage boolean --list
+sudo setsebool virt_use_nfs 1
+getsebool virt_use_nfs
+sudo semanage port --list
+sudo semanage port --list | grep ssh #port 22 allowed
+sudo semanage port --add --type ssh_port_t --proto tcp 2222
+sudo semanage port --delete --type ssh_port_t --proto tcp 2222
+
+
+sudo yum install -y policycoreutils selinux-policy-targeted selinux-policy
+sudo sed -i 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+getenforce
+
+semanage user -l
+
+add user to docker group, logout and log back in, else use sudo
+docker search nginx
+man docker start
+--restart=always
+
+QEMU-KVM
+sudo apt install virt-manager
+virsh define testmachine.xml
+virsh list
+virsh list --all
+virsh start 'Test Machine'
+virsh reset 'Test Machine'
+virsh shutdown 'Test Machine'
+virsh destroy 'Test Machine' #hard power-off
+virsh undefine 'Test Machine'
+virsh autostart 'Test Machine' #start VM when actual machine starts
+virsh autostart --disable 'Test Machine' 
+virsh dominfo 'Test Machine' 
+virsh setvcpus virsh autostart 'Test Machine'  2 #next time VM boots
+virsh setmaxmem TestMachine 2048M --config
+virsh setmem TestMachine 2048M --config
+
+qemu-img info ubuntu-24.04.img 
+qemu-img resize ubuntu-24.04.img 10G
+
+virt-install --osinfo list
+virt-install --osinfo ubuntu24.04 --name ubuntu1 --memory 3072 --vcpus 1 --import --disk /var/lib/libvirt/images/ubuntu-24.04-minimal-clouding-amd64.img --graphics none
+or detect=on instead of  ubuntu24.04
+
+sudo virt-customize -a /var/lib/libvirt/images/ubuntu-24.04-minimal-clouding-amd64.img --root-password password:password123
+virsh start ubuntu1
+sudo apt install libosinfo-bin
+osinfo-query os
+
+
+sudo adduser john
+sudo adduser --shell /bin/othershell --home /home/otherdirectory/ john
+sudo adduser --uid 1100 smith
+ls -a /etc/skel
+sudo passwd john 
+sudo deluser john
+sudo deluser --remove-home john
+cat /etc/passwd
+ls -ln /home/ #see user no and group no
+sudo adduser --system --no-create-home sysacc # create sys acc
+sudo usermod --home /home/otherdir --move-home john
+sudo usermod -d /home/otherdir -m john
+sudo usermod -l jane john #rename user
+sudo usermod --lock jane #locks acc, cant login -L
+sudo usermod --unlock jane -U
+sudo usermod -e '2025-12-31' jane #--expiredate
+sudo usermod -e '' jane #remove expirationdate
+sudo chage --lastday 0 jane #sudo chage -d 0 jane immediately set passwd as expired
+sudo chage -d -1 jane #unexpire passwd
+sudo chage --maxdays 30 jane #expire in 30 days
+sudo chage --maxdays -1 jane #never expire
+
+sudo groupadd developers
+sudo gpasswd --add john developers (#add john to developers)
+sudo gpasswd -a john developers
+groups john
+sudo gpasswd --delete john developers (or -d)
+sudo usermod -g developers john (change primary login group or --gid)
+sudo groupmod --new-name programmers developers (or -n)
+sudo groupdel programmers
+sudo usermod --gid john john
+
+printenv
+env
+HISTSIZE=1000
+echo $HOME
+cat .bashrc #every user
+sudo vi /etc/profile.d/lastlogin.sh (doesn't need shebang, gets executed for any user that logs in to the system)
+sudo vi /etc/skel/README #the files in the /etc/skel directory get copied into the user's home
+
+The /etc/environment file can be used to set the globally available environment variables in a Linux-based system.
+sudo su - bob (login again)
+
+sudo vi /etc/security/limits.conf
+<domain> <type><item> <value>
+trinity hard nproc 30
+@group soft/- fsize 4096
+fsize 1024 means 1024 kB
+
+sudo -iu trinity
+-i real login -u user to login as
+ulimit -a #real limits
+ulimit -u 5000 #lower limit to 5000 proc
+can raise limits only once when there are soft/hard limits.once raised cant be raised again
+groups
+aaron family sudo
+sudo gpasswd -a trinity sudo #add trinity to sudo group
+sudo gpasswd -d trinity sudo
+/etc/sudoers
+sudo visudo  
+sudo visudo /etc/sudoers
+%sudo ALL=(ALL:ALL) ALL
+host = (run_as_users:run_as_groups) command_list
+trinity ALL=ALL ALL
+%developers ALL=(ALL) ALL
+sudo -u trinity ls /home/trinity
+trinity ALL=(aaron, john) ALL 
+trinity ALL=(ALL) /bin/ls, /bin/stat
+%sudo ALL= NOPASSWD:ALL
+
+check again export EDITOR=vim in ~/.bashrc
+
+sudo --login
+sudo -i
+user wants to login as root, knows passwd, not in sudoers
+sudo -l (type password of root user instead of current user)
+su -
+su --login
+
+sudo passwd root #if root never had passwd
+sudo passwd --unlock root = sudo passwd -u root
+su -
+sudo passwd --lock root = sudo passwd -l root
+
+lxc init
+lxc import ldap-server.tar.gz
+lxc list
+lxc start ldap-server
+sudo apt install libnss-ldapd
+
+cat /etc/nsswitch.conf
+sudo cat /etc/nslcd.conf
+getent passwd
+getent passwd --service ldap
+getent group --service ldap
+
+sudo pam-auth-update
+create home dir on login
+sudo login john
+
+192.168.1.101/24 - first 24 bits are prefix
+
+timezone>> sudo ln -s  /usr/share/zoneinfo/Australia/Melbourne /etc/localtime
+date
+
+# show network devices/interfaces
+ip link
+ip address or ip addr or ip a 
+ip -c a #color important bits
+sudo ip link set dev enp0s8 up 
+sudo ip addr add 10.0.0.40/24 dev enp0s8 #dev is for device
+sudo ip addr add fe80::5054:ff:fe1f:8050/64 dev enp0s8
+sudo ip addr remove fe80::5054:ff:fe1f:8050/64 dev enp0s8
+sudo ip link set dev enp0s8 down
+
+sudo netplan get #dhcp4 - 4 refers to ipv4
+ls /etc/netplan/*.yaml
+addresses: 
+  - "10.0.0.9/24"
+nameservers:
+routes: to: via:
+  sudo netplan try or with --timeout 30
+  ip route
+  ip route show
+  resolvectl status
+or set nameservers for all devices
+sudo vim /etc/systemd/resolved.conf
+cat /etc/resolv.conf
+DNS = 1.1.1.1 9.9.9.9
+sudo systemctl restart systemd-resolved.service
+resolvectl dns
+
+sudo vi /etc/hosts
+127.0.0.1 localhost
+127.0.123.123 dbserver
+
+ping dbserver
+man netplan
+
+ls /usr/share/doc/netplan/examples
+cat /usr/share/doc/netplan/examples/dhcp.yaml or static.yaml
+
+sudo ss -ltunp #listen, tcp, udp, numeric value instead of svc, process(for process, need sudo)
+ss --help
+systemctl status ssh.service (ssh on ubuntu, sshd on redhat d for daemon)
+
+ps 679
+sudo lsof -p 679 #files open by this process
+
+sudo netstat -natp
+
+bridges and bonds
+squid
+sudo apt install squid -y
+sudo vi /etc/squid/squid.conf
+http_port
+acl allowed_ips 10.0.0.0/24
+http_access allow connect allowed_ips
+http_access deny all
+acl vpn src 203.0.110.5
+http_access allow vpn
+acl facebook dstdomain .facebook.com
+http_access deny facebook
+
+sudo systemctl enable squid
+sudo systemctl restart squid
+
+curl -x http://10.0.0.2:3128 -L https://www.kodekloud.com
+
+sudo tail -f /var/log/squid/access.log
+
+http_port 443 accel defaultsite=kodekloud.com
+cache_peer 127.0.0.1 parent 8080 0 no-query originserver
+
+sudo ufw status
+add one rule to allow ssh traffic, otherwise it blocks all traffic
+sudo ufw allow 22 # allow both tcp and udp
+sudo ufw allow 22/tcp
+sudo ufw enable 
+sudo ufw status verbose
+ss -tn #active tcp connections
+sudo ufw allow from 10.0.0.192 to any port 22 
+sudo ufw status numbered
+sudo ufw delete 1 # number 1rule from above
+sudo ufw delete allow 22
+sudo ufw allow from 10.0.0.0/24 to any port #all port
+sudo ufw insert 1 deny from 10.0.0/37 
+
+ping -c 4 8.8.8.8
+sudo ufw deny out on enp0s3 to 8.8.8.8 # to outgoing data
+sudo ufw allow in on enp0s3 from 10.0.0.192 to 10.0.0.100 proto tcp
+
+
+port redirection and network address translation
+
+/etc/sysctl.conf /etc/sysctl.d/99-sysctl.conf
+net.ipv4.ip_forward=1
+net.ipv6.conf.all.forwarding=1
+
+reload
+  sudo sysctl --system
+sudo sysctl -a | grep forward
+ip r
+nft
+sudo iptables -t nat -A PREROUTING -i enp1s0 -s 10.0.0.0/24 -p tcp --dport 8080 -j DNAT --to-destination 192.168.0.5:80
+sudo iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o enp6s0 -j MASQUERADE
+sudo nft list ruleset
+sudo apt install iptables-persistent
+sudo netfilter-persistent save
+sudo ufw route allow from 10.0.0.0/24 to 192.168.0.5
+man ufw-framework
+sudo iptables --list-tables --table nat
+sudo iptables --flush --table nat
+
+NTP
+timedatectl list-timezones
+sudo timedatectl set-timezone America/Los_Angeles 
+timedatectl
+# if syncing fails
+sudo apt install systemd-timesyncd
+sudo systemctl set-ntp true
+systemctl status systemd-timesyncd.service
+sudo vi /etc/systemd/timesyncd.conf
+NTP=0.us.pool.ntp.org 1.us.pool.ntp.org
+sudo systemctl restart systemd-timesyncd
+timedatectl show-timesync
+
+sudo vi /etc/ssh/sshd_config
+Port 22
+man sshd_config
+AddressFamily (inet, inet6)
+
+vi .ssh/config
+Host ubunut-vm
+  HostName 10.0.0.186
+  Port 22
+  User jeremy
+chmod 600 ~/.ssh/config
+ssh ubuntu-vm
+
+PermitRootLogin prohitbit-password
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+X11Forwarding yes
+Match user aaron
+  PasswordAuthentication yes
+
+
+sudo systemtctl reload ssh.service
+
+vi /etc/ssh/ssh_config
+vi /etc/ssh/ssh_config.d/99-our-settings.conf
+ssh-keygen
+ssh-copy-id jeremy@10.0.0.173
+ssh-keygen -R 10.0.0.173
+
+windows - ntfs, ubuntu - ext4
+lsblk #list block devices
+sda # s comes from sata device, if nvme then n
+sudo fdisk --list /dev/sda #fdisk is preinstalled partioning utility
+
+sudo cfdisk /dev/sdb
+gpt new or mbr masterbootrecord
+8GB for os, 2gb for swap space
+
+for boot partition, efi filesystem; for swap fs, linux swap, most other linux fs
+
+swapon --show
+sudo mkswap /dev/vdb3 #this is temporary, lost on reboot
+sudo mkswap --verbose /dev/vdb3
+sudo swapoff /dev/vdb3
+sudo dd if=/dev/zero of=/swap bs=1M count=128 #if-inputfile, of =outputfile, bs=blocksize
+sudo dd if=/dev/zero of=/swap bs=1M count=128 status=progress
+#regular users shouldn't be given access to this swap file as potentially gives them access to memory contents other people might be using
+sudo chmod 600 /swap
+sudo mkswap /swap
+sudo swapon --verbose /swap
+sudo swapon --show
+
+fdisk /dev/vdb
+Command (m for help): n
+Select (default p):  <just-leave-it-default-and-press-enter>
+Partition number (1-4, default 1): <just-leave-it-default-and-press-enter>
+First sector (2048-2097151, default 2048):  <just-leave-it-default-and-press-enter>
+Last sector, +sectors or +size{K,M,G,T,P} (2048-2097151, default 2097151): +10M
+Command (m for help): w
+
+fdisk /dev/vdb
+Command (m for help): d
+Partition number (1-3, default 3): 1
+Command (m for help): p
+Command (m for help): w
+
+mkswap /dev/vdb2
+swapon /dev/vdb2
+
+Resize the /dev/vdb3 partition (which you created earlier) to 21MB.
+cfdisk /dev/vdb
+If the user is not root, you need to use the command with sudo.
+
+
+You will see some details as below (it can vary from one system to another):
+Device             Boot                  Start            End        Sectors         Size        Id Type
+>>  Free space                                2048          22527          20480          10M                             
+    /dev/vdb2                                22528          65535          43008          21M        83 Linux
+    /dev/vdb3                                65536         108543          43008          15M        83 Linux
+    Free space                              108544        2097151        1988608         971M
+
+Using arrow keys, select the partition you want to resize. In our case, it's /dev/vdb3. At the bottom, you will see some options as below:
+[Bootable]  [ Delete ]  [ Resize ]  [  Quit  ]  [  Type  ]  [  Help  ]  [  Write ]  [  Dump  ]
+Using arrow keys, select the Resize option and press Enter, adjust the size as needed. For example, in our case, we will set it to 21M and then press Enter again.
+New size: 21M
+Now, using arrow keys, select the Write option and press Enter. It will ask for the confirmation, so enter Yes and press Enter.
+Are you sure you want to write the partition table to disk? yes
+Now, using arrow keys, select the Quit option and press Enter. You are done!!
+
+sudo mkfs.xfs /dev/sdb1 #format using redhat fs
+man mkfs.xfs
+sudo fdisk -l
+sudo mkfs -L "BackupVolume" /dev/sdb1
+sudo mkfs.xfs -i size=512 /dev/sdb1
+sudo mkfs.xfs -f -i size=512 /dev/sdb1 #force format
+sudo xfs_admin -l /dev/sdb1
+sudo xfs_admin -L "newFSLabel" /dev/sdb1
+
+sudo mkfs.ext4 /dev/sdb2
+sudo mkfs.ext4 -N 500000 /dev/sdb2 #if we run of inodes on ext4, we cant create new files/dir
+sudo tune2fs -l /dev/sdb2 
+
+mount
+ls /mnt/
+sudo mount /dev/vdb1 /mnt/
+sudo touch /mnt/testfile
+sudo umount /mnt/
+
+#what should be mounted automatically when system boots up
+sudo vi /etc/fstab
+/dev/vda2 /boot ext4 defaults 0 1
+/dev/vdb3 none swap defaults 0 0
+sudo systemctl daemon-reload
+
+sudo systemctl reboot
+lsblk
+UUID=ec--20 /boot ext4 defaults 0 1
+/dev/disk/by-uuid/ec--20 /boot ext4 defaults 0 1
+#as linux orders vda vdb based on order of connecting to motherboard
+sudo blkid /dev/vdb1
+
+findmnt
+findmnt -t xfs,ext4
+sudo mount -o ro /dev/vdb2 /mnt
+sudo mount -o ro,noexec,nosuid /dev/vdb2 /mnt 
+sudo mount -o remount,rw,noexec,nosuid /dev/vdb2 /mnt 
+man xfs # look for MOUNT OPTIONS xfs specific
+
+sudo vi /etc/fstab
+/dev/vdb1 /mybackups xfs ro,noexec 0 2
+sudo systemctl reboot
+
+server
+sudo apt install nfs-kernel-server
+sudo vi /etc/exports
+/etc *.example.com(ro,sync,no_subtree_check)
+no_root_squash
+sudo exportfs -v
+man exports
+sudo exportfs -r
+systemctl restart nfs-server
+
+client
+sudo apt install nfs-common
+sudo mount IP_OR_HOST_NAME_OF_SERVER:/path/to/remote/dir /path/to/local/dir
+vi /etc/fstab
+127.0.0.1:/home /mnt nfs defaults 0 0
+
+network block device
+server
+sudo apt install nbd-server
+sudo vi /etc/nbd-server/config
+allowList = true
+[partition2]
+  exportname=/dev/sda1
+sudo systemctl restart nbd-server.service
+man 5 nbd-server
+
+client 
+sudo apt install nbd-client
+sudo modprobe nbd #current boot extend nbd functionality
+sudo vi /etc/modules-load.d/modules.conf
+nbd 
+sudo nbd-client 127.0.0.1 -N partition2
+sudo mount /dev/nbd0 /mnt
+ls /mnt
+sudo umount /mnt
+lsblk
+sudo nbd-client -d /dev/nbd0
+sudo nbd-client localhost -N partition2 
+sudo nbd-client -l localhost (allow-list true added)
+
+LVM
+sudo apt install lvm2
+PV physcial volumes, VG, LV, PE
+
+sudo lvmdiskscan
+sudo pvcreate /dev/sdc /dev/sdd
+sudo pvs
+vgcreate [NAME_OF_GROUP] [NAME_OF_PVS_TO_USE]
+sudo vgcreate my_volume /dev/sdc /dev/sdd
+sudo vgextend my_volume /dev/sde
+sudo vgs
+sudo vgreduce my_volume /dev/sde
+sudo pvremove /dev/sde
+sudo lvcreate --size 2G --name partition1 my_volume 
+sudo lvs
+sudo lvresize --extents 100%VG my_volume/partion1
+sudo lvdisplay
+  --- Logical volume ---
+  LV Path                /dev/volume1/smalldata
+  LV Name                smalldata
+  VG Name                volume1
+sudo mkfs.ext4 /dev/my_volume/partition1
+sudo lvresize --resizefs --size 3G my_volume/partition1 #Use --resizefs when: You want to resize both the logical volume and the filesystem at the same time.
+man lvm
+sudo lvremove volume1/smalldata
+
+monitoring cpu top, process htop
+sudo apt install sysstat
+iostat, pidstat
+iostat -d #show only device utilization
+dd if=/dev/zero of=DELETEME bs=1M count=1000000 oflag=dsync &
+iostat 1
+pidstat -d #look at pid
+pistat -d 1 # every 1 sec
+sudo dmsetup info /dev/dm-0
+lsblk
+
+iostat -h #to MB Gb etc
+pidstat -d --human
+iostat -p ALL
+iostat -p sda
+
+acl
+sudo apt install acl #on newer versions of ubuntu
+
+sudo setfacl -m (--modify) user:jeremy:rw file3
+ls (shows +)
+-rw-rw-r--+ 1 alex staff 19 May 25 06:23 file3
+getfacl file3
+sudo setfacl --modify mask:r file3
+sudo setfacl --modify group:sudo:rw file3
+sudo setfacl --modify user:jeremy:--- file3
+sudo setfacl --remove user:jeremy file3
+sudo setfacl --remove-all file3
+mkdir dir1/
+setfacl --recursive -m user:jeremy:rwx dir1/
+append-only (needs sudo)
+sudo chattr +a newfile
+echo "This si new content" >> newfile
+sudo chattr -a newfile
+sudo chattr +i newfile (cant rename, edit, delete; even root user cant delete the file)
+lsattr neewfile
+----i------e------- newfile
+sudo chattr -i newfile
+some attributes are not supported like +c (on ext4 )
+
+Disks grouped in level 1 RAID is also called a mirrored array.
+The /proc/mdstat file contains the summary status of the RAID arrays, so you can use the cat /proc/mdstat command to view a summary status of your RAID arrays.
+Create a level 1 RAID array, at /dev/md0, with two devices: /dev/vdb and /dev/vdc.
+sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/vdb /dev/vdc
+
+==============
