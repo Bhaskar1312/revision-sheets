@@ -124,7 +124,8 @@ Give relative path if giving folders, otherwise it will extract to that exact fo
 
 tar cfP logs.tar /var/log/
 tar cfzP logs.tar.gz /var/log/
-tar acf  archive.tar.gz dir1
+#important -a, --auto-compress
+tar -acf  archive.tar.gz dir1
 Sudo to create file with other user permission 
 
 Compression (automatically deletes original by default, -k or --keep )
@@ -202,7 +203,7 @@ status code, 0 if successful
 
 cat /etc/cron.monthly/0anacron
 
-systemctl cat sshd.service
+cat sshd.service
 ExecStart, ExecReload
 sudo systemctl edit --full ssh.service
 
@@ -210,7 +211,7 @@ to revert to factory
 sudo systemctl revert ssh.service
 Loaded: loaded(/etc/systemd/system/ssh.service;----<<enabled - means systemd will start the app when system starts >>----;vendor preset)
 
-sudo systemctl start/stop/restart/reload/status ssh.service
+sudo systemctl start/stop/restart/reload/status/reload_or_restart ssh.service
 reload-or-restart login
 sudo systemctl disable ssh.service
 systemctl is-enabled ssh.service
@@ -222,13 +223,20 @@ sudo systemctl disable --now ssh.service
 sudo systemctl mask atd.service #masked service cant be enabled or started
 sudo systemctl unmask atd.service
 
-sudo systemctl list-units --type service --all  # list all services (sockets, )
+sudo systemctl list-units --type service --all  # list all services (sockets, timers, )
+Echo "my app started" | systemd-cat -t MyApp -p info/err
 man systemd.service
+Ls /lib/systemd/system/ #already existing service
+Sudo cp /lib/systemd/system/ssh.service /etc/systemd/system/myapp.service
 
 KillMode=process or controlgroup(kill child processes too)
+Journalctl -f
+Man systemd.exec
+
 
 man ps
 ps aux (all, user oriented format)
+top 
 ps -U jeremy (started by jeremy)
 ps u 1 (proc 1 in user oriented format)
 ps -aef 
@@ -242,6 +250,7 @@ ps fax (parent forest)
 ps faux
 renice [new nice value, sudo if you lower nice] <PID>
 kill -L
+Sigstop, process stops till sigcont
 9) SIGKILL
 kill -SIGHUP 1457 (cant kill processes by other user, unless root)
 pgrep -a bash (instead of ps | grep)
@@ -259,13 +268,14 @@ sudo lsof /var/log/auth.log (you dont get error without sudo which is misleading
 write with sudo
 :w !sudo tee %
 
-su --login
-sudo --login
+su --login # password of root
+sudo --login # password of current user
+Sudo less /var/log/auth.log # login details
 
 grep -r /var/log ssh
 rsyslog
 which sudo
-journalctl /usr/bin/sudo
+journalctl /usr/bin/sudo #logs of specific command
 journalctl -u ssh.service
 journalctl -e (end option)
 journalctl -f (follow mode)
@@ -278,23 +288,28 @@ sudo mkdir /var/log/journal/ (existence of dir, tells to save journal logs)
 last (to see who logged into the system, newest at top)
 lastlog 
 
+
+Cat /etc/crontab #system wide cron table
 backup using cron, anacron, at
-crontab -l (use sudo for root user)
-sudo crontab -e -u username (edit user cron)
+crontab -l (list for current user, use sudo for root user)
+sudo crontab -e -u username (edit user cron using root)
 0 0 * * * /usr/bin/script
 crontab -r (to remove a cron job)
+0-8/4 at hour field means, 0th,4th,8th hour
+Crontab -e # edit current user cron (no user name in user cron)
 
+Alternatively run scripts daily at /etc/cron.daily/ (don't use .sh extension)
 sudo cp script /etc/cron.hourly/
 sudo apt install anacron (max 1 daily, weekly, hourly)
 sudo vim /etc/anacrontab
 10(days) 5(minutes) job_id command
-anacron -T
+anacron -T (test option)
 sudo apt install at
 at '15:00'
 ctrl+d
 
 at 'August 20 2024'
-at '2:30 Agust 20 2025'
+at '2:30 August 20 2025' # save it by pressing CTRL+D.
 at 'now + 30 minutes'
 atq (at queue)
 at -c 1 (cat command)
@@ -303,10 +318,10 @@ atrm <JOBIDfrom atq> (remove at job)
 sudo apt update (updates local db of packages)
 sudo apt upgrade 
 sudo apt install nginx -y
-dpkg --listfiles nginx
+dpkg --listfiles coreutils  #de-package
 dpkg --search /usr/sbin/nginx
 apt show <name-of-pkg>
-apt search --names-only nginx
+apt search --names-only nginx # name nginx in package names
 apt search nginx module image (search using multiple words)
 sudo apt remove nginx (deps still left around)
 sudo apt autoremove nginx (deps not needed also removed)
@@ -316,6 +331,7 @@ apt search  "apache http server"
 
 sudo vim /etc/apt/sources.list
 add: deb <url> <focal/..> main; and run sudo apt update
+deb http://us.archive.ubuntu.com/ubuntu/ focal main
 components: main restricted universe multiverse
 
 sudo ./autogen.sh
@@ -329,18 +345,26 @@ sudo mv docker.key.gpg /etc/apt/keyrings
 deb [signed-by=/etc/apt/keyrings/docker.key.gpg] downlaod_url noble stable
 ppas 
 
-df # disk free
+df # disk free, space used on a disk 
 df -h #human readable
-du #disk usage
-du -sh /usr/ # -s summarize
-free -h #free,available
+du #disk usage for specific directory
+du -sh /usr/ # -s summarize(otherwise all subdirectories)
+free -h #free,available memory utilized
+Free --mega #to see MB, instead of MiB
 uptime #cpu cores 
 lscpu # details of cpu
 lspci #other hardware details
+
+To check filesystem for errors, first unmount it, if it is mounted
 Redhat - xfs, ubuntu - ext4 file system
 sudo xfs_repair -v /dev/vdb1
 sudo fsck.ext4 -v -f -p /dev/vdb2 #to check and repair, -p preen auto-repair for small problem
+
 systemctl list-dependencies
+Sudo pkill atd
+Systemctl status atd.service
+Sudo systemctl start atd.service
+Journalctl -u atd.service
 
 kernel runtime params in use
 sudo sysctl -a
@@ -382,12 +406,13 @@ ls -Z /usr/sbin/sshd
 
 sudo audit2allow --all -M mymodule
 sudo semodule -i mymodule.pp
-sudo sefenforce 1
+sudo setenforce 1
+# 0 for permissive, 1 for enforcing
 sudo vi /etc/selinux/config 
 selinux=enforcing # even after reboot, it will now load with enforcing mode
 sudo chcon -u unconfined_u /var/log/auth.log # change context
 sudo chcon -r object_r /var/log/auth.log # change context
-sudo chcon -r user_home_t /var/log/auth.log # change context
+sudo chcon -t user_home_t /var/log/auth.log # change context
 seinfo -u
 
 sudo chcon --reference=/var/log/dmesg /var/log/auth.log
@@ -416,23 +441,29 @@ getenforce
 semanage user -l
 
 add user to docker group, logout and log back in, else use sudo
-docker search nginx
+docker search nginx #look for official image in the terminal
 man docker start
 --restart=always
+nc localhost 8080 #netcat 
+GET /
+Man docker-run
+/restart policy
+--restart always
 
 QEMU-KVM
 sudo apt install virt-manager
 virsh define testmachine.xml
 virsh list
 virsh list --all
+virsh create /opt/testmachine2.xml
 virsh start 'Test Machine'
 virsh reset 'Test Machine'
 virsh shutdown 'Test Machine'
-virsh destroy 'Test Machine' #hard power-off
-virsh undefine 'Test Machine'
+virsh destroy 'Test Machine' #hard power-off, not actual destroy
+virsh undefine 'Test Machine' #destroy
 virsh autostart 'Test Machine' #start VM when actual machine starts
 virsh autostart --disable 'Test Machine' 
-virsh dominfo 'Test Machine' 
+virsh dominfo 'Test Machine'  # verify memory settings, etc..
 virsh setvcpus virsh autostart 'Test Machine'  2 #next time VM boots
 virsh setmaxmem TestMachine 2048M --config
 virsh setmem TestMachine 2048M --config
@@ -443,6 +474,9 @@ qemu-img resize ubuntu-24.04.img 10G
 virt-install --osinfo list
 virt-install --osinfo ubuntu24.04 --name ubuntu1 --memory 3072 --vcpus 1 --import --disk /var/lib/libvirt/images/ubuntu-24.04-minimal-clouding-amd64.img --graphics none
 or detect=on instead of  ubuntu24.04
+
+--import #skip os installation
+--osinfo detect=on #based on OS file
 
 sudo virt-customize -a /var/lib/libvirt/images/ubuntu-24.04-minimal-clouding-amd64.img --root-password password:password123
 virsh start ubuntu1
@@ -482,13 +516,16 @@ sudo groupmod --new-name programmers developers (or -n)
 sudo groupdel programmers
 sudo usermod --gid john john
 
+echo "jane:1234" | sudo chpasswd #set the password for jane to 1234.
+
 printenv
 env
 HISTSIZE=1000
 echo $HOME
 cat .bashrc #every user
+Sudo vim /etc/environment # env vars system wide
 sudo vi /etc/profile.d/lastlogin.sh (doesn't need shebang, gets executed for any user that logs in to the system)
-sudo vi /etc/skel/README #the files in the /etc/skel directory get copied into the user's home
+sudo vi /etc/skel/README #the files in the /etc/skel directory get copied into the every new user's home
 
 The /etc/environment file can be used to set the globally available environment variables in a Linux-based system.
 sudo su - bob (login again)
@@ -498,13 +535,16 @@ sudo vi /etc/security/limits.conf
 trinity hard nproc 30
 @group soft/- fsize 4096
 fsize 1024 means 1024 kB
+man limits.conf
 
 sudo -iu trinity
--i real login -u user to login as
+# -I real login -u user to login as
 ulimit -a #real limits
 ulimit -u 5000 #lower limit to 5000 proc
 can raise limits only once when there are soft/hard limits.once raised cant be raised again
 groups
+
+
 aaron family sudo
 sudo gpasswd -a trinity sudo #add trinity to sudo group
 sudo gpasswd -d trinity sudo
@@ -520,16 +560,21 @@ trinity ALL=(aaron, john) ALL
 trinity ALL=(ALL) /bin/ls, /bin/stat
 %sudo ALL= NOPASSWD:ALL
 
+sudo update-alternatives --config editor
+Choose vim.basic
+sudo  EDITOR=vim visudo
+sudo  EDITOR=vim vi a.txt
+
 check again export EDITOR=vim in ~/.bashrc
 
-sudo --login
-sudo -i
-user wants to login as root, knows passwd, not in sudoers
-sudo -l (type password of root user instead of current user)
-su -
-su --login
+sudo --login or sudo -i #logged in as root
 
-sudo passwd root #if root never had passwd
+user wants to login as root, knows passwd, not in sudoers
+su --login or su -l or su - (type password of root user instead of current user, user knows password of root, but no shudders)
+
+When root is logged, we can still use sudo --login (password is locked for root, so can't use su -)
+
+sudo passwd root #if root never had passwd, choose new password
 sudo passwd --unlock root = sudo passwd -u root
 su -
 sudo passwd --lock root = sudo passwd -l root
@@ -557,13 +602,16 @@ date
 
 # show network devices/interfaces
 ip link
+1. lo - loopback interface(connect to itself), enp0s3 (interface representing real device, ethernet card), 
+
 ip address or ip addr or ip a 
 ip -c a #color important bits
-sudo ip link set dev enp0s8 up 
+sudo ip link set dev enp0s8 up #make the down link to up
 sudo ip addr add 10.0.0.40/24 dev enp0s8 #dev is for device
 sudo ip addr add fe80::5054:ff:fe1f:8050/64 dev enp0s8
-sudo ip addr remove fe80::5054:ff:fe1f:8050/64 dev enp0s8
+sudo ip addr delete fe80::5054:ff:fe1f:8050/64 dev enp0s8
 sudo ip link set dev enp0s8 down
+#ip addr command changes are temporary, lost on reboot
 
 sudo netplan get #dhcp4 - 4 refers to ipv4
 ls /etc/netplan/*.yaml
@@ -574,7 +622,8 @@ routes: to: via:
   sudo netplan try or with --timeout 30
   ip route
   ip route show
-  resolvectl status
+
+  resolvectl status # show dns servers for each link
 or set nameservers for all devices
 sudo vim /etc/systemd/resolved.conf
 cat /etc/resolv.conf
@@ -587,12 +636,14 @@ sudo vi /etc/hosts
 127.0.123.123 dbserver
 
 ping dbserver
+
 man netplan
 
 ls /usr/share/doc/netplan/examples
 cat /usr/share/doc/netplan/examples/dhcp.yaml or static.yaml
 
 sudo ss -ltunp #listen, tcp, udp, numeric value instead of svc, process(for process, need sudo)
+ss -tunlp
 ss --help
 systemctl status ssh.service (ssh on ubuntu, sshd on redhat d for daemon)
 
@@ -625,6 +676,7 @@ http_port 443 accel defaultsite=kodekloud.com
 cache_peer 127.0.0.1 parent 8080 0 no-query originserver
 
 sudo ufw status
+Sudo ufw enable
 add one rule to allow ssh traffic, otherwise it blocks all traffic
 sudo ufw allow 22 # allow both tcp and udp
 sudo ufw allow 22/tcp
@@ -649,28 +701,78 @@ port redirection and network address translation
 net.ipv4.ip_forward=1
 net.ipv6.conf.all.forwarding=1
 
-reload
+reload sysctl config changes
   sudo sysctl --system
 sudo sysctl -a | grep forward
-ip r
-nft
+
+
+nft is new but complex, but most OS is configured to work with nft and iptables too
+ip r # see default route via, useful for sending when destination is external instead of what is is in `ip a`
+
 sudo iptables -t nat -A PREROUTING -i enp1s0 -s 10.0.0.0/24 -p tcp --dport 8080 -j DNAT --to-destination 192.168.0.5:80
 sudo iptables -t nat -A POSTROUTING -s 10.0.0.0/24 -o enp6s0 -j MASQUERADE
+# -t nat -> translation to change routes, -A append, -I input device(apply on this input interface), -s source ip, -p tcp/udp(mandatory for port rules), -dport(destination port), -j jump packets
+# -o output interface, -j MASQUERADE(no need for ip address this time, as NAT magic with masquerade)
 sudo nft list ruleset
-sudo apt install iptables-persistent
-sudo netfilter-persistent save
-sudo ufw route allow from 10.0.0.0/24 to 192.168.0.5
-man ufw-framework
-sudo iptables --list-tables --table nat
-sudo iptables --flush --table nat
+sudo apt install iptables-persistent # These ip rules with iptables are temporary, to make them permanent 
+sudo netfilter-persistent save #save them after adding iptables, nft rules
+sudo ufw route allow from 10.0.0.0/24 to 192.168.0.5 # to allow the forwarding
+man ufw-framework #to See examples of iptables <IMPORTANT>
+sudo iptables --list-tables --table nat # to see the rules
+sudo iptables --flush --table nat # empty table if you made mistake
+
+Reverse proxy
+To switch traffic to our new server in an instant, instead of updating domain name to new ip, and dns propogation
+Load balancing to number of servers, filtering web traffic, caching pages
+
+Sudo apt install nginx
+Sudo vim /etc/nginx/sites-available/proxy.conf #to configure as reverse proxy(proxy.conf, name is not mandatory
+# it fetches from another web server,(it is also a web server, it doesn't generate, so making it reverse proxy)
+
+server {
+listen 80;
+location / { #match example.com/ example.com/admin example.com/images/dog.jpg
+# change / to /images, to match only /images/
+proxy_pass http://1.1.1.1; # ip addr, or host or domain name to pass the requests to another server proxy_pass http://1.1.1.1:8081;
+include proxy_params; # cat /etc/nginx/proxy_params
+}
+}
+
+ /etc/nginx/sites-enabled #only sites-available applies only to those in sites-enabled
+Sudo ln -s  /etc/nginx/sites-available/proxy.conf /etc/nginx/sites-enabled/proxy.conf
+Sudo rm  /etc/nginx/sites-enabled/default # disable default
+Sudo nginx -t # test settings
+Sudo systemctl reload nginx.service
+
+Creating a load balancer
+Sudo rm /etc/nginx/sites-enabled/proxy.conf
+Sudo vim /etc/nginx/sites-enabled/lb.conf
+
+upstream mywebservers { #this is currently round-robin
+	least_conn; # if not added, then round robin, now least connections load balancing
+	server 1.2.3.4:8081 weight 3 down; #down when maintenance 3 times other server 
+	server 5.6.7.8;
+	server 10.20.30.40 backup; #backup when one breaks down
+}
+
+server {
+	listen 80;
+	location / {
+	proxy_pass http://mywebservers;
+	}
+}
+Sudo ln -s /etc/nginx/sites-available/lb.conf /etc/nginx/sites-enabled/lb.conf
+Sudo nginx -t
+Sudo systemctl reload nginx.service
 
 NTP
+Ubuntu = systemd-timesyncd
 timedatectl list-timezones
 sudo timedatectl set-timezone America/Los_Angeles 
-timedatectl
+timedatectl #if NTP service is shown as inactive, then install systemd-timesyncd
 # if syncing fails
 sudo apt install systemd-timesyncd
-sudo systemctl set-ntp true
+sudo systemctl set-ntp true #turn on synchronization with ntp server
 systemctl status systemd-timesyncd.service
 sudo vi /etc/systemd/timesyncd.conf
 NTP=0.us.pool.ntp.org 1.us.pool.ntp.org
@@ -683,7 +785,7 @@ man sshd_config
 AddressFamily (inet, inet6)
 
 vi .ssh/config
-Host ubunut-vm
+Host ubuntu-vm
   HostName 10.0.0.186
   Port 22
   User jeremy
@@ -702,17 +804,22 @@ sudo systemtctl reload ssh.service
 
 vi /etc/ssh/ssh_config
 vi /etc/ssh/ssh_config.d/99-our-settings.conf
+Port 229
+PasswordAuthentication yes
+
+
 ssh-keygen
 ssh-copy-id jeremy@10.0.0.173
 ssh-keygen -R 10.0.0.173
 
 windows - ntfs, ubuntu - ext4
-lsblk #list block devices
+lsblk #list block devices, partitions(TYPE part)
 sda # s comes from sata device, if nvme then n
-sudo fdisk --list /dev/sda #fdisk is preinstalled partioning utility
+sudo fdisk --list /dev/sda #fdisk is preinstalled partioning utility, show partitions on this device
 
 sudo cfdisk /dev/sdb
 gpt new or mbr masterbootrecord
+Dos == mbr in cfdisk to choose mbr 
 8GB for os, 2gb for swap space
 
 for boot partition, efi filesystem; for swap fs, linux swap, most other linux fs
@@ -721,11 +828,11 @@ swapon --show
 sudo mkswap /dev/vdb3 #this is temporary, lost on reboot
 sudo mkswap --verbose /dev/vdb3
 sudo swapoff /dev/vdb3
-sudo dd if=/dev/zero of=/swap bs=1M count=128 #if-inputfile, of =outputfile, bs=blocksize
+sudo dd if=/dev/zero of=/swap bs=1M count=128 #if-inputfile, of =outputfile, bs=blocksize #first write that space with binary zeros before we make it as swap(mkswap, swapon)
 sudo dd if=/dev/zero of=/swap bs=1M count=128 status=progress
 #regular users shouldn't be given access to this swap file as potentially gives them access to memory contents other people might be using
 sudo chmod 600 /swap
-sudo mkswap /swap
+sudo mkswap /swap # to format it as swap
 sudo swapon --verbose /swap
 sudo swapon --show
 
@@ -757,7 +864,7 @@ Device             Boot                  Start            End        Sectors    
     /dev/vdb2                                22528          65535          43008          21M        83 Linux
     /dev/vdb3                                65536         108543          43008          15M        83 Linux
     Free space                              108544        2097151        1988608         971M
-
+s
 Using arrow keys, select the partition you want to resize. In our case, it's /dev/vdb3. At the bottom, you will see some options as below:
 [Bootable]  [ Delete ]  [ Resize ]  [  Quit  ]  [  Type  ]  [  Help  ]  [  Write ]  [  Dump  ]
 Using arrow keys, select the Resize option and press Enter, adjust the size as needed. For example, in our case, we will set it to 21M and then press Enter again.
@@ -766,7 +873,7 @@ Now, using arrow keys, select the Write option and press Enter. It will ask for 
 Are you sure you want to write the partition table to disk? yes
 Now, using arrow keys, select the Quit option and press Enter. You are done!!
 
-sudo mkfs.xfs /dev/sdb1 #format using redhat fs
+sudo mkfs.xfs /dev/sdb1 #format partition using redhat fs
 man mkfs.xfs
 sudo fdisk -l
 sudo mkfs -L "BackupVolume" /dev/sdb1
@@ -789,21 +896,27 @@ sudo umount /mnt/
 sudo vi /etc/fstab
 /dev/vda2 /boot ext4 defaults 0 1
 /dev/vdb3 none swap defaults 0 0
-sudo systemctl daemon-reload
+partition_or_storage dir_to_mount_our_filesystem filesystem_type mount_options dump=0-backup disabled,1=enabled error_detected=0=never_scanned_for_errors,1=scanned_first_forerrors,2=after1gotscanned
+the last field in the /etc/fstab entry (the pass number) should be 1 for the root filesystem or 2 for other filesystems you want checked. 
+sudo systemctl daemon-reload # reload important changes
+Man fstab
 
 sudo systemctl reboot
 lsblk
 UUID=ec--20 /boot ext4 defaults 0 1
 /dev/disk/by-uuid/ec--20 /boot ext4 defaults 0 1
 #as linux orders vda vdb based on order of connecting to motherboard
-sudo blkid /dev/vdb1
+sudo blkid /dev/vdb1 #check uuid of block device
 
-findmnt
+findmnt # to see mounts, fstype, mountoptions, only shows what is mounted
 findmnt -t xfs,ext4
 sudo mount -o ro /dev/vdb2 /mnt
-sudo mount -o ro,noexec,nosuid /dev/vdb2 /mnt 
-sudo mount -o remount,rw,noexec,nosuid /dev/vdb2 /mnt 
+ df -h | grep '/mnt'  
+sudo mount -o ro,noexec,nosuid /dev/vdb2 /mnt #android photos safe malware can't be executed
+sudo mount -o remount,rw,noexec,nosuid /dev/vdb2 /mnt #remount so that mount doesn't complain already mounted
 man xfs # look for MOUNT OPTIONS xfs specific
+Sudo mount -o allocsize=32K /dev/vdb1 /mybackups
+Sudo mount -a # to check /etc/fstab is giving error or not
 
 sudo vi /etc/fstab
 /dev/vdb1 /mybackups xfs ro,noexec 0 2
@@ -818,6 +931,7 @@ sudo exportfs -v
 man exports
 sudo exportfs -r
 systemctl restart nfs-server
+Exportfs -v #check
 
 client
 sudo apt install nfs-common
@@ -849,68 +963,77 @@ sudo nbd-client -d /dev/nbd0
 sudo nbd-client localhost -N partition2 
 sudo nbd-client -l localhost (allow-list true added)
 
-LVM
+LVM #lvm will present two partitions as regular continuous, so that resize is easier and other stuff too
 sudo apt install lvm2
-PV physcial volumes, VG, LV, PE
+PV physical volumes, VG volume group, LV logical volume, PE physical extent
 
-sudo lvmdiskscan
+sudo lvmdiskscan # view disks and partitions available 
 sudo pvcreate /dev/sdc /dev/sdd
 sudo pvs
+Sudo pvremove /dev/vdc
 vgcreate [NAME_OF_GROUP] [NAME_OF_PVS_TO_USE]
 sudo vgcreate my_volume /dev/sdc /dev/sdd
 sudo vgextend my_volume /dev/sde
 sudo vgs
-sudo vgreduce my_volume /dev/sde
+sudo vgreduce my_volume /dev/sde # to remove from volume group
 sudo pvremove /dev/sde
+# logical volume is similar to an partition in LVM
 sudo lvcreate --size 2G --name partition1 my_volume 
 sudo lvs
+# data in lv is divided into multiple PEs
 sudo lvresize --extents 100%VG my_volume/partion1
+# path to lv is /dev/volGroup/logicalVolName
 sudo lvdisplay
   --- Logical volume ---
   LV Path                /dev/volume1/smalldata
   LV Name                smalldata
   VG Name                volume1
 sudo mkfs.ext4 /dev/my_volume/partition1
-sudo lvresize --resizefs --size 3G my_volume/partition1 #Use --resizefs when: You want to resize both the logical volume and the filesystem at the same time.
+sudo mkfs.xfs /dev/volume1/smalldata
+sudo lvresize --resizefs --size 3G my_volume/partition1 #Use --resizefs when: You want to resize both the logical volume and the filesystem at the same time, otherwise only lv is resized, not fs
+# also some fs can't be shrieked
 man lvm
-sudo lvremove volume1/smalldata
+sudo lvremove volume1/smalldata # press y to confirm
+
 
 monitoring cpu top, process htop
 sudo apt install sysstat
 iostat, pidstat
-iostat -d #show only device utilization
+iostat -d #show only storage evice utilization, not process utilization, hence inflated for smaller transfers block size large and all
 dd if=/dev/zero of=DELETEME bs=1M count=1000000 oflag=dsync &
-iostat 1
+iostat 1 #refresh every 1s
 pidstat -d #look at pid
 pistat -d 1 # every 1 sec
+What is dm-0 device mapper created by lvm
 sudo dmsetup info /dev/dm-0
 lsblk
 
 iostat -h #to MB Gb etc
 pidstat -d --human
-iostat -p ALL
-iostat -p sda
+iostat -p ALL # all partitions and devices
+iostat -p sda # on sda dev
 
 acl
 sudo apt install acl #on newer versions of ubuntu
 
-sudo setfacl -m (--modify) user:jeremy:rw file3
+sudo setfacl -m (--modify) user:jeremy:rw file3 # sudo need when user doesn't own the file
 ls (shows +)
 -rw-rw-r--+ 1 alex staff 19 May 25 06:23 file3
 getfacl file3
-sudo setfacl --modify mask:r file3
+sudo setfacl --modify mask:r file3 
+#effective r in all
 sudo setfacl --modify group:sudo:rw file3
 sudo setfacl --modify user:jeremy:--- file3
 sudo setfacl --remove user:jeremy file3
 sudo setfacl --remove-all file3
 mkdir dir1/
 setfacl --recursive -m user:jeremy:rwx dir1/
-append-only (needs sudo)
+append-only -a (needs sudo) and immutable -I
 sudo chattr +a newfile
 echo "This si new content" >> newfile
 sudo chattr -a newfile
 sudo chattr +i newfile (cant rename, edit, delete; even root user cant delete the file)
-lsattr neewfile
+lsattr newfile
 ----i------e------- newfile
 sudo chattr -i newfile
 some attributes are not supported like +c (on ext4 )
