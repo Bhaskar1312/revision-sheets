@@ -1044,3 +1044,21 @@ Create a level 1 RAID array, at /dev/md0, with two devices: /dev/vdb and /dev/vd
 sudo mdadm --create /dev/md0 --level=1 --raid-devices=2 /dev/vdb /dev/vdc
 
 ==============
+find /opt/findme/ -perm /u=x -type f | sudo tee /opt/foundthem.txt
+sudo find /opt/findme/ -type f -perm /u=s -exec rm {} \;
+sudo find /opt/findme/ -type f -size +1k -exec cp {} /opt/ \;
+
+sudo fallocate -l 1024M /swfile
+sudo chmod 600 /swfile
+sudo mkswap /swfile
+
+To identify the process with high TPS and the partition it is using, follow the steps below:
+
+Run the sudo dstat --top-io --top-bio command to get the process name with I/O activity.
+Run the pgrep python3 command to get the PID of the process.
+Run sudo lsof -p <PID> to list the open files by the process.
+Run sudo lsof -p <PID> | awk '{print $9}' | while read file; do df $file; done to get the device details.
+Find the actual partition used by running the pvs command and store the actual device name in /opt/devname.txt.
+Run the command below to get the PID of the process with high kB_read/s:
+
+   sudo pidstat -d 1
