@@ -1070,3 +1070,5 @@ sudo apt install iptables-persistent
 
 
 openssl x509 -in file* -noout -text
+
+docker run -d -p 8080:80 --restart=on-failure:3 --name mycontainer httpd
