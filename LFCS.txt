@@ -1,10 +1,21 @@
 man man # to see command's section numbers
+# 1(end user commands), 5(configuration files), 8(administrator/root commands) are important sections
+# some have USAGE EXAMPLES
+press g to to the top in vim, shift+g to go to end
+man -k (or apropos) to search mandb(runs as cron everyday)
+# ctrl+A in command line to start of line, ctrl+e to end of the line
+
 man 1 printf 
 apropos director (for directory/ies - search in short descriptions) - it also list sections to be used for man pages
 sudo mandb
 apropos -s 1,8 director ( to look at sections 1 and 8)
 systemctl (TAB + TAB to list sub commands)
-
+man ls
+ info '(coreutils) ls invocation'
+ pinfo '(coreutils) ls invocation' #pinfo is text based browser
+/usr/share/doc/ # additional help for some commands
+tldr # relatively new, shows examples
+tldr iptables
 cd # take to user's home dir
 
 
@@ -270,7 +281,13 @@ write with sudo
 
 su --login # password of root
 sudo --login # password of current user
-Sudo less /var/log/auth.log # login details
+sudo less /var/log/auth.log # login details
+
+sudo member of wheel(redhat) and sudo(ubuntu) groups 
+sudo ls /root #home dir of root, prompted for user password if part of sudo group
+Alternatively `su -` can be used to open sheel as another user 
+without args, prompted for root password, if no password is set, u cant login as root
+when used with username as arg, a user shell is opened
 
 grep -r /var/log ssh
 rsyslog
@@ -483,6 +500,8 @@ virsh start ubuntu1
 sudo apt install libosinfo-bin
 osinfo-query os
 
+passwd --help
+sudo passwd <account-name>
 
 sudo adduser john
 sudo adduser --shell /bin/othershell --home /home/otherdirectory/ john
@@ -602,7 +621,8 @@ date
 
 # show network devices/interfaces
 ip link
-1. lo - loopback interface(connect to itself), enp0s3 (interface representing real device, ethernet card), 
+1. lo - loopback interface(connect to itself, internal)
+2. enp0s3 (interface representing real device, ethernet card), we should be looking for 2nd interface
 
 ip address or ip addr or ip a 
 ip -c a #color important bits
