@@ -4,6 +4,7 @@ man man # to see command's section numbers
 press g to to the top in vim, shift+g to go to end
 man -k (or apropos) to search mandb(runs as cron everyday)
 # ctrl+A in command line to start of line, ctrl+e to end of the line
+#ctrl+u wipe the entire command line
 
 man 1 printf 
 apropos director (for directory/ies - search in short descriptions) - it also list sections to be used for man pages
@@ -18,6 +19,25 @@ tldr # relatively new, shows examples
 tldr iptables
 cd # take to user's home dir
 
+directories 
+
+/usr where you find the commands
+/var different services use for dynamically creating files
+/etc config files
+regular users have write perm to 
+/home
+/tmp
+man hier # filesystem hierarchy
+/bin /sbin binary system binary
+/dev devices hardware
+/mnt connect device to directory
+/opt optional directory not always used
+/proc provided interface to what kernel is doing
+/run if a process creates files dynamically, it can do in private environment in /run
+/sys for managing hardware
+/tmp where everyone can write
+/usr/local
+/var/log #processes are writing logs to
 
 Inode ->  permission and access data instead of name and actual data, Pointers to the disk blocks where file data is stored
 Hard link instead of creating a copy -> A hard link is an additional directory entry (filename) that points to the same inode as another file.
@@ -29,6 +49,26 @@ You can only hard-link to files, not directories. create files on the same file 
 Soft links
 # ln -s path_to_target_file path_to_soft_link_file
 ls -l
+ls -ld # to see properties, not contents of directory
+ls -lrt /var/log 
+# on ubuntu, syslog is last written
+wild cards
+ls a?
+ls a[nm]* -d
+ls -d a[b-e]* #-d otherwise, ls will list contents of matched directory
+touch file{1..100}
+mkdir /data/{sales,account} #fails if /data doesn;t exist, sudo is needed
+cp /dir/somefile /somedir #to copy file
+cp /dir/somefile /somedir/ #to copy into directory
+cp -a #to copy including hidden, but use .* wildcard
+cp -a ~/.* /tmp/ #tar is much better at archiving hidden files
+cp -R #recursively copying
+rm -i # provide confirmation for every single file
+rm -r 
+rm -rf 
+rm -rf / --no-preserve-root will remove absolutely everything as root
+
+tree /tmp/files/
 lrwxrwxrwx 1 Aaron Arron family_dog.jpg -> /home/Aaron/Pictures.. #only shows some part if long
 L for link, - regular file, c character device, s socket file, p pipe, b block device
 Alternative
