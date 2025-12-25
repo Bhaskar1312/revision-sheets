@@ -44,9 +44,19 @@ Hard link instead of creating a copy -> A hard link is an additional directory e
 ln path_to_target_file path_to_link_file
 Once everyone deletes, the links =0, then data itself will get marked as unused for deletion
 You can only hard-link to files, not directories. create files on the same file system.
+name1 -> inode <- name2 (hardlink) #on same fs, only files
+symbolic links
+ls -il hosts hardhosts #-i show inode
+echo hello >> hosts 
+# both files have same content
+name3 -- > name2  < -- name4 
+rm hardhosts #when link cnt reaches 0, file is deleted
+143612 lrwxrwxrwx 1 root root 5 Dec 24 19:26 symhello -> hello
+143614 lrwxrwxrwx 1 root root 5 Dec 24 19:27 symhello2 -> hello
+/bin points to /usr/bin using symbolic links 
 # useradd -a -G family aaron
 
-Soft links
+Soft links/symbolic links #need to contain absolute file name
 # ln -s path_to_target_file path_to_soft_link_file
 ls -l
 ls -ld # to see properties, not contents of directory
@@ -109,6 +119,20 @@ chmod u+s,g+s,o+t datadir/ #setuid, setgid, and sticky bit
 Find files with sgid bit set(2), if suid then 4
  find . -perm /2000 
 
+find / -user linda
+sudo mkdir -p /root/linda; sudo find / -user "linda" -exec cp {} /root/linda/ \;
+find / -perm /4000 #setuid is dangerous
+find / -type f -size +100M
+# -exec expects semicolon which needs to be escaped
+find /etc -exec grep -l student {} \; -exec cp {} find /contents/ \;2>/dev/null
+find /etc/ -name '*' -type f | xargs grep "127.0.0.1"
+find /etc -name '*ini' -printf '%s, %p\n' | sort -rn #size, name of the file
+find / -name 'student' -type f ! -path '*/proc/*' ! -path '*/tmp/*'
+
+locate is much faster but works on a db that needs to be defined using `updatedb` and updated periodically
+
+which #path of executable in $PATH variable
+
 chmod 6664 both
 
 Set sticky bit
@@ -159,11 +183,11 @@ Egrep
 
 Tar tape archive
 tar.gz compressed archive
---list --file 
+--list or -t --file 
 (hyphen optional in shorthand)
 	tar -tf tar.gz
 	file1 file2
---create 
+--create or -c 
 	tar -cf archive.tar file1
 Give relative path if giving folders, otherwise it will extract to that exact folder not relative
 --append
@@ -172,6 +196,18 @@ Give relative path if giving folders, otherwise it will extract to that exact fo
 	tar xf archive.tar
 --directory
 	tar xf archive.tar -C /tmp/
+
+tar -cvf my_archive.tar /home /etc # f filename
+tar -xvf my_archive_folder #extracts to cwd,  use -C to switch output path 
+tar -tvf #will show the contents(relative path, can extract to any folder)
+~$ tar tvf /tmp/archive.tar -C /root # -C needed only in system-V style 
+drwxr-xr-x bhaskar/bhaskar   0 2025-12-24 22:00 home/bhaskar/Downloads/
+
+extensions are optional
+file file_archive # shows type 
+use compression gzip -z, bzip2 -j or xz -J for tar
+time taken is longest for xz and best compression
+
 
 tar cfP logs.tar /var/log/
 tar cfzP logs.tar.gz /var/log/
@@ -947,6 +983,15 @@ sudo mkfs.ext4 -N 500000 /dev/sdb2 #if we run of inodes on ext4, we cant create 
 sudo tune2fs -l /dev/sdb2 
 
 mount
+/ -> /dev/sda1
+/mnt -> /dev/sdb1 (removable drive)
+
+lsblk #list block devices
+mount #list all current mounts(admin mounts too)
+umount #unmount device
+df -h #presents mounted devices, including available disk space
+findmnt #shows all mounts
+
 ls /mnt/
 sudo mount /dev/vdb1 /mnt/
 sudo touch /mnt/testfile
@@ -962,7 +1007,7 @@ sudo systemctl daemon-reload # reload important changes
 Man fstab
 
 sudo systemctl reboot
-lsblk
+
 UUID=ec--20 /boot ext4 defaults 0 1
 /dev/disk/by-uuid/ec--20 /boot ext4 defaults 0 1
 #as linux orders vda vdb based on order of connecting to motherboard
