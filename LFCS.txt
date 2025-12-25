@@ -425,13 +425,18 @@ sudo lsof /var/log/auth.log (you dont get error without sudo which is misleading
 write with sudo
 :w !sudo tee %
 
-su --login # password of root
+su --login # password of root, and opens root shell
+use su without args to open subshell, not all envs are set 
+su - # opens login shell sets envs 
+su - bhaskar # for root, no passwd is needed
 sudo --login # password of current user
+sudo -i # to open root shell # not recommended
+sudo su - # same as sudo -i 
 sudo less /var/log/auth.log # login details
 
 sudo member of wheel(redhat) and sudo(ubuntu) groups 
 sudo ls /root #home dir of root, prompted for user password if part of sudo group
-Alternatively `su -` can be used to open sheel as another user 
+Alternatively `su -` can be used to open shell as another user 
 without args, prompted for root password, if no password is set, u cant login as root
 when used with username as arg, a user shell is opened
 
@@ -715,7 +720,14 @@ sudo gpasswd -a trinity sudo #add trinity to sudo group
 sudo gpasswd -d trinity sudo
 /etc/sudoers
 sudo visudo  
-sudo visudo /etc/sudoers
+sudo visudo # /etc/sudoers
+# or add drop-in files for /etc/sudoers.d/
+%wheel ALL=(ALL) NOPASSWD:ALL #without password for sudo users in centos
+# add the following in sudoers config to cache with sudo credentials for 4 hrs
+linda ALL=/usr/bin/passwd, !/usr/bin/passwd root, /usr/bin/useradd, /usr/sbin/usermod
+# add above drop-in @includedir /etc/sudoers.d
+Defaults timestamp_type=global,timestamp_timeout=240
+
 %sudo ALL=(ALL:ALL) ALL
 host = (run_as_users:run_as_groups) command_list
 trinity ALL=ALL ALL
@@ -944,6 +956,8 @@ sudo vi /etc/systemd/timesyncd.conf
 NTP=0.us.pool.ntp.org 1.us.pool.ntp.org
 sudo systemctl restart systemd-timesyncd
 timedatectl show-timesync
+
+sudo apt install openssh-server #ubuntu 
 
 sudo vi /etc/ssh/sshd_config
 Port 22
