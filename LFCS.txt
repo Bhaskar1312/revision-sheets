@@ -170,6 +170,32 @@ Find
 	sdiff f1 f2 
 	
 	vim
+	i - insert, o - open a new line, a-append
+	:wq! 
+	shift + zz 
+	u - undo the last line
+	ctrl+r - redo 
+	dd - delete the current line
+	:%s/old/new/g replaces all occurences of old with new
+	/text search for text 
+	gg move cursor to the top of the document
+	shift+g end of the doc
+	w go to next word
+	b go to previous word
+	^ move to the start of the current line
+	$ end of the curr line
+	dw delete the current word
+	O open line above cursor position 
+	o open line after cursor position
+	:se number show line number 
+	:se nonumber dont show line no
+	r replace current character
+	v visual mode
+	d delete current selection
+	y copy(yank) the current selection
+	3dd delete 3 lines
+
+	vimtutor 	export EDITOR=$(which vim)
 	/find\c # case insensitive search
 	:line_no
 Command mode
@@ -177,7 +203,24 @@ Command mode
 	p #paste
 	dd #cut the line
 
+less - previously you can go up, in more, you can't go up after space and going down
+less -f /var/log/messages - Centos
+
+head -3 /etc/passwd | tail -1 #3rd line
+tail -f /var/log/syslog - ubuntu
+
+cat -A file # shows all nonprintable chars like $, ^I for tab, useful in figuring out mistakes in config files
+cat -b # line numbers
+cat -n # line numbers without empty lines
+cat -s # repeated empty lines suppression
+
 	grep -nri -v -o 
+	-v invert match 
+	-l filenames, not lines matched
+	-A5 matched line and 5 after lines 
+	-B5 matched line and 5 before lines
+	-C5 5 matched, 5 before and 5 after 
+	
 Egrep 
 	egrep -r '/dev/[a-z]*[0-9]?' /etc/
 
