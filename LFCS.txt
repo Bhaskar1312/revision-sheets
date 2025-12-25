@@ -161,7 +161,12 @@ Find
 
 	tac file_name #to view in reverse order of lines
 	sed -i "50,100s/enabled/disabled/gi" file #lines 50-100
-	cut -d ',' -f 2 names.txt 
+	sed -n 5p /etc/passwd #print 5th line
+	sed -i 's/old/new/g' myfile
+	sed -i -e '2d' myfile #delete 2nd line
+	for i in *conf; do sed -i 's/old/new/g' $i; done
+
+	cut -d ',' -f 2 names.txt #-d delimiter, 2nd field
 	sort countries | uniq
 	diff f1 f2
 	diff -I f1 f2 #ignore case
@@ -169,6 +174,9 @@ Find
 	diff -y f1 f2 # side by side
 	sdiff f1 f2 
 	
+	sort # alphabetical order
+	sort -n # numeric order
+
 	vim
 	i - insert, o - open a new line, a-append
 	:wq! 
@@ -220,9 +228,28 @@ cat -s # repeated empty lines suppression
 	-A5 matched line and 5 after lines 
 	-B5 matched line and 5 before lines
 	-C5 5 matched, 5 before and 5 after 
-	
+	use regex in single quotes
+	man 7 regex
+	grep -E # extended regular expression
+	grep '^lea\b' myfile #lines starting with lea, with a word boundary after 
+	grep 'bon\{3\}' # n occurs 3 times
+	grep -E 'b?o+n*$' # b - 0 or 1, o 1 or more, n 0 or more, $ - end of line, + is extended
+	grep -E '(svm|vmx)' /proc/cpuinfo # to do virtualization, svm or vmx is needed
+	grep '\b....\b' # word 4 letters
+
 Egrep 
 	egrep -r '/dev/[a-z]*[0-9]?' /etc/
+
+tr # translation
+tr [:lower:] [:upper:] #works with accents too. german
+tr [a-z] [A-Z]
+tr [a-m] [n-z]
+
+awk '{ print $0 }' /etc/passwd
+awk 'length($0)>40' /etc/passwd
+awk -F : '{ print $4 }' /etc/passwd
+awk -F : '/user/{ print $4 }' /etc/passwd
+ps aux | awk '{ print $1 }' 
 
 Tar tape archive
 tar.gz compressed archive
