@@ -5,6 +5,9 @@ press g to to the top in vim, shift+g to go to end
 man -k (or apropos) to search mandb(runs as cron everyday)
 # ctrl+A in command line to start of line, ctrl+e to end of the line
 #ctrl+u wipe the entire command line
+#ctrl+l clear the screen 
+#ctrl + d exit 
+#ctrl + c interrupt 
 
 man 1 printf 
 apropos director (for directory/ies - search in short descriptions) - it also list sections to be used for man pages
@@ -307,12 +310,35 @@ sudo dd if=/dev/vda of=diskimage.raw bs=1M status=progress
 if=input file, of=output file, bs=block size 
 
 input-o/p redirection
+stdin(0) 
+sort < /etc/services 
 sort file > sorted_file
 sort -f #for ignore case
 uniq -i # for ignore case
+stdout(1) redirect 
 use 1> to redirect successful output redirection, error redirection 2>/dev/null or 2>&1
 < for input redirection
 use >> to append
+stderr(2)
+grep -R root /proc 2>/dev/null
+both stdout and stderr
+grep -R root /etc &>~/myfile
+
+kernel 
+provided by glibc
+shell - user interface
+systemd - services talk thru systemd 
+
+tee command - o/p from 1 cmd to i/p of another cmd
+ps aux | tee psfile | grep ssh 
+
+history
+history -c # clear curr history
+history -w # to write curr history
+history -d # delete a specific line from history
+ctrl+r for reverse-i search
+!nn = to repeat specific line from history
+!h = command that starts with h
 
 heredoc here string
 sort <<EOF
@@ -693,11 +719,31 @@ env
 HISTSIZE=1000
 echo $HOME
 cat .bashrc #every user
-Sudo vim /etc/environment # env vars system wide
+sudo vim /etc/environment # env vars system wide
 sudo vi /etc/profile.d/lastlogin.sh (doesn't need shebang, gets executed for any user that logs in to the system)
 sudo vi /etc/skel/README #the files in the /etc/skel directory get copied into the every new user's home
 
-The /etc/environment file can be used to set the globally available environment variables in a Linux-based system.
+The /etc/environment file can be used to set the globally available environment variables in a Linux-based system.empty by default on Redhat
+/etc/profile #executed while users login
+/etc/profile.d snap-in directory
+sudo vi /etc/profile.d/history.sh 
+HIST_SIZE=100
+#logout and login again, or source /etc/profile.d/history.sh
+~/.bash_profile user specific version
+~/.bash_logout processed when user logs out 
+/etc/bashrc is processed everytime a subshell is started
+~/.bashrc user specific 
+functions and aliases go in /etc/bashrc 
+
+
+VAR1=val #only current shell
+export VAR2=val # use export to export it to all subshells
+echo echo hello world > /usr/local/bin/hello.sh 
+chmod +x hello.sh
+hello.sh # executes from $PATH 
+alias #list all aliases
+alias ll='ls -l'
+unalias ll
 sudo su - bob (login again)
 
 sudo vi /etc/security/limits.conf
