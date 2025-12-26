@@ -1088,6 +1088,18 @@ windows - ntfs, ubuntu - ext4
 lsblk #list block devices, partitions(TYPE part)
 sda # s comes from sata device, if nvme then n
 sudo fdisk --list /dev/sda #fdisk is preinstalled partioning utility, show partitions on this device
+#fdisk to create partitions on mbr device - 4 primary partitions and 15 total of primary and extended
+
+in gpt, 128 partitions and required on disks > 2TB
+gdisk 
+after creating partition, sudo mount /dev/sdc /mnt gives error, as filesystem is not created yet
+to use partition, a filesystem must be created on top on it
+Swapfs is swap file system. 
+initramfs is fs written to init ram fs, which is used while booting
+generic fs are xfs and ext4 
+mkfs.ext4 and mkfs.ext4 
+vfat, ntfs-ng windows fs
+dont create persitent mounts on /mnt 
 
 sudo cfdisk /dev/sdb
 gpt new or mbr masterbootrecord
@@ -1164,16 +1176,27 @@ mount
 
 lsblk #list block devices
 mount #list all current mounts(admin mounts too)
-umount #unmount device
+mount /dev/sdb1 /mnt 
+umount #unmount device_path/target_dir
+umount /mnt 
 df -h #presents mounted devices, including available disk space
 findmnt #shows all mounts
 
 ls /mnt/
-sudo mount /dev/vdb1 /mnt/
+sudo mount /dev/vdb1 /mnt/ #not persistent
 sudo touch /mnt/testfile
 sudo umount /mnt/
+if while umount, device is keeping busy, use lsof to find out which processes are keeping device busy
+lsof /mnt 
 
-#what should be mounted automatically when system boots up
+lsblk
+fdisk /dev/sdd #default, put +1G, w 
+mkfs.ext4 /dev/sdd1 
+mount /dev/sdd1 /mnt 
+mount # verify last line 
+
+
+#what should be mounted automatically when system boots up, and use mount -a # to mount them now after editing fstab
 sudo vi /etc/fstab
 /dev/vda2 /boot ext4 defaults 0 1
 /dev/vdb3 none swap defaults 0 0
