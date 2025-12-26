@@ -389,6 +389,7 @@ sudo shutdown -r +1 'Scheduled restart shutdown wall message wall message'
 
 systemctl get-default
 graphical.target
+systemctl list-dependencies rescue.target # emergency.target
 
 sudo systemctl set-default multi-user.default
 sudo systemctl isolate graphical.target
@@ -403,6 +404,20 @@ status code, 0 if successful
 
 cat /etc/cron.monthly/0anacron
 
+systemctl -t help # list unit-types
+systemctl list-unit-files  
+systemctl cat ssh.service #current config
+systemctl show <service-name> # configurable params
+systemctl edit ssh.service
+[service]
+Restart=on-failure
+systemctl reload daemon-reload # after modifying the service, necessary esp in older versions
+sudo killall apache2
+
+wsl doesn't use systemd, it uses service command instead 
+service start myservice
+service status myservice 
+
 cat sshd.service
 ExecStart, ExecReload
 sudo systemctl edit --full ssh.service
@@ -415,7 +430,7 @@ sudo systemctl start/stop/restart/reload/status/reload_or_restart ssh.service
 reload-or-restart login
 sudo systemctl disable ssh.service
 systemctl is-enabled ssh.service
-sudo systemctl enable ssh.service
+sudo systemctl enable ssh.service # automatically started on reboot
 sudo systemctl start ssh.service
 sudo systemctl enable --now ssh.service (enable + start)
 sudo systemctl disable --now ssh.service
