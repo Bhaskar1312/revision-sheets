@@ -865,6 +865,15 @@ create home dir on login
 sudo login john
 
 192.168.1.101/24 - first 24 bits are prefix
+[fe80::0]:80 port 80
+::1/128 localhost ipv6
+:: unspecified address
+::/0 default route
+2000::/3 global unicast address
+fd00::/8 unique local address(private address) like 192.168.
+fe80::/64 link-local address
+ff00::/8 multicast address
+default subnet mask of ipv6 is /64
 
 timezone>> sudo ln -s  /usr/share/zoneinfo/Australia/Melbourne /etc/localtime
 date
@@ -874,14 +883,39 @@ ip link
 1. lo - loopback interface(connect to itself, internal)
 2. enp0s3 (interface representing real device, ethernet card), we should be looking for 2nd interface
 
-ip address or ip addr or ip a 
+ip address or ip addr or ip a or ip addr show
 ip -c a #color important bits
 sudo ip link set dev enp0s8 up #make the down link to up
 sudo ip addr add 10.0.0.40/24 dev enp0s8 #dev is for device
 sudo ip addr add fe80::5054:ff:fe1f:8050/64 dev enp0s8
 sudo ip addr delete fe80::5054:ff:fe1f:8050/64 dev enp0s8
 sudo ip link set dev enp0s8 down
+sudo ip link set dev enp0s8 up
+ip route show
+ip route add default via 10.0.0.1
 #ip addr command changes are temporary, lost on reboot
+biosdevname uses device names, that reveal info about physical location and `systemd-udevd`
+generates the network device names
+
+hostname resolution
+local /etc/hosts is the primary solution
+DNS names are configured in /etc/resolv.conf 
+order of hostname resolution mechanisms in /etc/nsswitch.
+hosts: files dns myhostname
+
+ping -c google.com
+ss - info about local ports that are open 
+sudo ss -tunap
+dig - dns testing
+dig bhaskar-bantupalli.online
+nmap - network analysis; dont use on hosts you dont own
+sudo nmap -sn 192.168.29.0/24
+sudo nmap ubuntu # see open ports on host ubunutu
+netstat - deprecated, use ss 
+nslookup deprecated, use dig
+
+sudo nmtui #centos
+
 
 sudo netplan get #dhcp4 - 4 refers to ipv4
 ls /etc/netplan/*.yaml
