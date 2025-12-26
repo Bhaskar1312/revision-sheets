@@ -117,14 +117,31 @@ chmod 2664 file_name #set sgid and not execute permission
 chmod 2674 file_name #set sgid and execute permission
 -rw-rwsr-- 1 Jeremy Jeremy 0 May 8 01:22 file_name
 
-chmod u+s,g+s,o+t datadir/ #setuid, setgid, and sticky bit
+read - files(read contents), dir(ls list contents)
+write f(modify contents), dir(add and remove files)
+execute f(run file as executable), dir(change in dir, cd)
 
+chmod u+s,g+s,o+t datadir/ #setuid, setgid, and sticky bit
+# setgid useful when user creates a file, group gets right permissions too
+# users can only delete their own files - sticky bit set on directory
 Find files with sgid bit set(2), if suid then 4
  find . -perm /2000 
+ sudo chmod 3770 /data/sales #setgid, sticky bit
+
+umask is a shell setting that will be subtracted from the default permissions
+default perms are 777 on dir, 666 on files
+by defualt it is present in user directories
+umask 022 = files(default 644)
+umask 027 = dir(default 750)
+
+grep -R umask /etc
+/etc/bashrc 
+~/.bashrc 
+
 
 find / -user linda
 sudo mkdir -p /root/linda; sudo find / -user "linda" -exec cp {} /root/linda/ \;
-find / -perm /4000 #setuid is dangerous
+find / -perm /4000 #setuid is dangerous, backdoor created by hackers
 find / -type f -size +100M
 # -exec expects semicolon which needs to be escaped
 find /etc -exec grep -l student {} \; -exec cp {} find /contents/ \;2>/dev/null
