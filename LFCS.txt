@@ -677,16 +677,28 @@ virsh start ubuntu1
 sudo apt install libosinfo-bin
 osinfo-query os
 
+
+root exists in unrestricted kernel space, while other users, service/system users in userspace 
+
 passwd --help
 sudo passwd <account-name>
 
-sudo adduser john
+adduser(only in ubuntu)
+useradd -m # on ubuntu, to ensure that user will get a home directory 
+# when users are created, default settings from /etc/login.defs are applied 
+sudo useradd -D # to see defaults
+getent passwd username # see properties from /etc/passwd, can be used for ldap too
+passwords are stored in /etc/shadow 
+use `vipw` to edit /etc/passwd and /etc/shadow, `vigr` for /etc/group
+
+sudo adduser john # fill password and the details 
 sudo adduser --shell /bin/othershell --home /home/otherdirectory/ john
 sudo adduser --uid 1100 smith
 ls -a /etc/skel
 sudo passwd john 
 sudo deluser john
 sudo deluser --remove-home john
+sudo userdel -rf john
 cat /etc/passwd
 ls -ln /home/ #see user no and group no
 sudo adduser --system --no-create-home sysacc # create sys acc
@@ -697,12 +709,20 @@ sudo usermod --lock jane #locks acc, cant login -L
 sudo usermod --unlock jane -U
 sudo usermod -e '2025-12-31' jane #--expiredate
 sudo usermod -e '' jane #remove expirationdate
+chage -l linda # to list current settings
 sudo chage --lastday 0 jane #sudo chage -d 0 jane immediately set passwd as expired
 sudo chage -d -1 jane #unexpire passwd
 sudo chage --maxdays 30 jane #expire in 30 days
 sudo chage --maxdays -1 jane #never expire
 
+passwd -S # 
+change # change password in centos??
+echo password | passwd --stdin username #change password without interactive on redhat
+echo "username:password" | sudo chpasswd # change password on ubuntu
+man 5 shadow 
+
 sudo groupadd developers
+grep developers /etc/group
 sudo gpasswd --add john developers (#add john to developers)
 sudo gpasswd -a john developers
 groups john
@@ -713,6 +733,15 @@ sudo groupdel programmers
 sudo usermod --gid john john
 
 echo "jane:1234" | sudo chpasswd #set the password for jane to 1234.
+
+session management
+who # who is logged in
+w # who is logged in
+loginctl # allows for current session management
+loginctl list-sessions
+loginctl show-session <id>
+loginctl show-user <username>
+loginctl terminate-session <id>
 
 printenv
 env
