@@ -1109,6 +1109,22 @@ Sudo ln -s /etc/nginx/sites-available/lb.conf /etc/nginx/sites-enabled/lb.conf
 Sudo nginx -t
 Sudo systemctl reload nginx.service
 
+date 
+date +%d-%m-%Y
+sudo tar cvf /tmp/backup-$(date +%d-%m-%Y).tar /etc #useful in scheduled backups
+sudo hwclock #manipulate hardware time to system time
+sudo hwclock --systohc
+timedatectl #generic utility to manage time related properties
+
+chrony and systemd-timesyncd get time from internet 
+
+on centos, 
+sudo chronyc sources #chrony blocks systemd-timesyncd
+sudo chronyc tracking
+
+sudo apt install ntpdate
+sudo ntpdate pool.ntp.org
+
 NTP
 Ubuntu = systemd-timesyncd
 timedatectl list-timezones
