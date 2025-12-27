@@ -560,6 +560,31 @@ add: deb <url> <focal/..> main; and run sudo apt update
 deb http://us.archive.ubuntu.com/ubuntu/ focal main
 components: main restricted universe multiverse
 
+ldd $(which passwd) #shared object dependencies
+
+yum in old redhat versions, now dnf/yum both point to same binary
+/etc/yum.repos.d 
+dnf install
+dnf search
+dnf remove
+dnf groups list
+dnf groups install 
+yum module install container-tools #to install different versions of same tool
+yum search */seinfo
+yum provides */
+yum history
+yum list installed
+
+apt is newer replacement for apt-cache and apt-get 
+apt repositories defined in /etc/apt/sources.list
+apt-cache search filename # to search for packages containing a specific name
+apt upgrade #upgrade packages 
+
+rpm -qf /my/file # package file is from
+rpm -ql package-name #queries db to list package contents
+rpm -qpc mypackage.rpm #list config files in downloaded package 
+rpm -qp --scripts mypakcage.rpm # shows scripts present in a package 
+
 sudo ./autogen.sh
 sudo ./configure
 sudo make
