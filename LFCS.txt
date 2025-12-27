@@ -523,7 +523,7 @@ sudo mkdir /var/log/journal/ (existence of dir, tells to save journal logs)
 last (to see who logged into the system, newest at top)
 lastlog 
 
-
+crond daemon
 Cat /etc/crontab #system wide cron table
 backup using cron, anacron, at
 crontab -l (list for current user, use sudo for root user)
@@ -549,6 +549,10 @@ at 'now + 30 minutes'
 atq (at queue)
 at -c 1 (cat command)
 atrm <JOBIDfrom atq> (remove at job)
+
+systemd-timers
+systemctl list-units  -t timer
+
 
 sudo apt update (updates local db of packages)
 sudo apt upgrade 
