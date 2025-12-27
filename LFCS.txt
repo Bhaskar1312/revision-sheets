@@ -1124,6 +1124,26 @@ sudo systemctl restart systemd-timesyncd
 timedatectl show-timesync
 
 sudo apt install openssh-server #ubuntu 
+sudo systemctl status sshd
+sudo systemctl enable --now sshd
+Port: 
+PermitRootLogin: consider disabling rootLogin 
+AllowedUsers: specifies a list of users that are allowed to login 
+PasswordAuthentication: allows or disallows password based logins
+Key based login
+ssh-keygen 
+ssh-copy-id sshserver 
+use ssh-agent to run the SSH agent, which can cache the passphrase for the session duration
+use ssh-add /bin/bash to add the current shell to the agent; you will enter the passphrase once
+
+
+in redhat 
+sudo firewall-cmd --add-service ssh --permaent; firewall-cmd --reload 
+sudo firwall-cmd --add-port 2022/tcp --permenant; firewall-cmd --reload 
+
+in ubuntu
+sudo ufw allow OpenSSH 
+sudo ufw allow 2022/tcp 
 
 sudo vi /etc/ssh/sshd_config
 Port 22
