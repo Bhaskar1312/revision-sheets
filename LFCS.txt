@@ -445,7 +445,7 @@ Ls /lib/systemd/system/ #already existing service
 Sudo cp /lib/systemd/system/ssh.service /etc/systemd/system/myapp.service
 
 KillMode=process or controlgroup(kill child processes too)
-Journalctl -f
+journalctl -f
 Man systemd.exec
 
 
@@ -506,6 +506,14 @@ sudo ls /root #home dir of root, prompted for user password if part of sudo grou
 Alternatively `su -` can be used to open shell as another user 
 without args, prompted for root password, if no password is set, u cant login as root
 when used with username as arg, a user shell is opened
+
+
+rsyslog and systemd-journald logging
+Storage=auto in /etc/systemd/journald.conf 
+create /var/log/journal to save journal persistently
+cat /etc/systemd/journald.conf 
+cat /etc/rsyslog.conf
+logger HELLO #writes to rsyslog default /var/log/messages(centos),syslog(ubuntu), can be seen in journalctl -f too
 
 grep -r /var/log ssh
 rsyslog
@@ -628,7 +636,7 @@ systemctl list-dependencies
 Sudo pkill atd
 Systemctl status atd.service
 Sudo systemctl start atd.service
-Journalctl -u atd.service
+journalctl -u atd.service
 
 kernel runtime params in use
 sudo sysctl -a
