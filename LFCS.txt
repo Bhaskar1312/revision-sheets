@@ -254,7 +254,7 @@ cat -s # repeated empty lines suppression
 	grep '^lea\b' myfile #lines starting with lea, with a word boundary after 
 	grep 'bon\{3\}' # n occurs 3 times
 	grep -E 'b?o+n*$' # b - 0 or 1, o 1 or more, n 0 or more, $ - end of line, + is extended
-	grep -E '(svm|vmx)' /proc/cpuinfo # to do virtualization, svm or vmx is needed
+	grep -E '(svm|vmx)' /proc/cpuinfo # to do virtualization, svm on amd or vmx on intel is needed
 	grep '\b....\b' # word 4 letters
 
 Egrep 
@@ -722,6 +722,10 @@ Man docker-run
 /restart policy
 --restart always
 
+optons passed to podman command need to be specified before the name of the image
+anything specified after the name will be interpreted as the command that runs inside the container
+podman needs Fully qual name of image docker.io/library/mariadb
+
 QEMU-KVM
 sudo apt install virt-manager
 virsh define testmachine.xml
@@ -852,13 +856,13 @@ alias #list all aliases
 alias ll='ls -l'
 unalias ll
 sudo su - bob (login again)
-
-sudo vi /etc/security/limits.conf
+ 
+sudo vi /etc/security/limits.conf or /etc/security/limits.d/*.conf
 <domain> <type><item> <value>
 trinity hard nproc 30
 @group soft/- fsize 4096
 fsize 1024 means 1024 kB
-man limits.conf
+man 5 limits.conf
 
 sudo -iu trinity
 # -I real login -u user to login as
@@ -867,6 +871,44 @@ ulimit -u 5000 #lower limit to 5000 proc
 can raise limits only once when there are soft/hard limits.once raised cant be raised again
 groups
 
+service limits
+/etc/systemd/system/blah.service.d/10-cpu-limits.conf 
+[Service]
+LimitCPU=60 #60s
+systemctl daemon-reload
+systemctl restart blah
+man 5 sysyemd.exec
+
+cgroup limits
+cpu memory blkio
+
+ipcs 
+ipcs -p 
+lsipc 
+
+term-1
+mkfifo myfifo
+cat myfifo
+
+term-2
+cat > myfifo
+hello world
+ctrl+c 
+term -1
+ls -l (first char is p, pipe)
+unlink myfifo
+
+dbus-send 
+busctl list 
+
+OOM 
+/proc/sysrq-trigger #magic sysrq trigger for testing 
+to enable, write 1 > /proc/sys/kernel/sysrq 
+echo h > /proc/sysrq-trigger 
+dmesg # to see help output 
+echo f >  /proc/sysrq-trigger # trigger OOM killer 
+journalctl | grep -A10 "Out of memory"
+man proc 
 
 aaron family sudo
 sudo gpasswd -a trinity sudo #add trinity to sudo group
@@ -1003,6 +1045,8 @@ sudo vi /etc/hosts
 ping dbserver
 
 man netplan
+netplan apply 
+networkctl status
 
 ls /usr/share/doc/netplan/examples
 cat /usr/share/doc/netplan/examples/dhcp.yaml or static.yaml
@@ -1045,6 +1089,12 @@ Sudo ufw enable
 add one rule to allow ssh traffic, otherwise it blocks all traffic
 sudo ufw allow 22 # allow both tcp and udp
 sudo ufw allow 22/tcp
+ufw allow ssh
+ufw reject out ssh
+ufw delete reject out ssh
+ufw reset 
+ufw app info OpenSSH
+ufw logging on 
 sudo ufw enable 
 sudo ufw status verbose
 ss -tn #active tcp connections
@@ -1215,7 +1265,7 @@ ssh-keygen
 ssh-copy-id jeremy@10.0.0.173
 ssh-keygen -R 10.0.0.173
 
-windows - ntfs, ubuntu - ext4
+windows - ntfs, ubuntu - ext4, userspace - fuse
 lsblk #list block devices, partitions(TYPE part)
 sda # s comes from sata device, if nvme then n
 sudo fdisk --list /dev/sda #fdisk is preinstalled partioning utility, show partitions on this device
@@ -1248,8 +1298,10 @@ sudo dd if=/dev/zero of=/swap bs=1M count=128 status=progress
 #regular users shouldn't be given access to this swap file as potentially gives them access to memory contents other people might be using
 sudo chmod 600 /swap
 sudo mkswap /swap # to format it as swap
-sudo swapon --verbose /swap
+free -m #free and swap memory
+sudo swapon --verbose /swap #swapon is like mounting swap file
 sudo swapon --show
+#later create swap partition using fdisk /dev/vdb and 82 for swap
 
 fdisk /dev/vdb
 Command (m for help): n
@@ -1298,6 +1350,7 @@ sudo xfs_admin -l /dev/sdb1
 sudo xfs_admin -L "newFSLabel" /dev/sdb1
 
 sudo mkfs.ext4 /dev/sdb2
+tune2fs
 sudo mkfs.ext4 -N 500000 /dev/sdb2 #if we run of inodes on ext4, we cant create new files/dir
 sudo tune2fs -l /dev/sdb2 
 
@@ -1333,15 +1386,24 @@ sudo vi /etc/fstab
 /dev/vdb3 none swap defaults 0 0
 partition_or_storage dir_to_mount_our_filesystem filesystem_type mount_options dump=0-backup disabled,1=enabled error_detected=0=never_scanned_for_errors,1=scanned_first_forerrors,2=after1gotscanned
 the last field in the /etc/fstab entry (the pass number) should be 1 for the root filesystem or 2 for other filesystems you want checked. 
+findmnt --verify # too see mounting is good or not or mount -a
 sudo systemctl daemon-reload # reload important changes
 Man fstab
+
+systemd mounts are created in /run/systemd/generator
+custom mounts can be created in /etc/systemd/system
+[Install]
+WantedBy=multi-user.target
+systemctl list-unit-types -t mount 
+systemctl enable --now tmp.mount
+
 
 sudo systemctl reboot
 
 UUID=ec--20 /boot ext4 defaults 0 1
 /dev/disk/by-uuid/ec--20 /boot ext4 defaults 0 1
 #as linux orders vda vdb based on order of connecting to motherboard
-sudo blkid /dev/vdb1 #check uuid of block device
+sudo blkid /dev/vdb1 #check uuid of block device, can be done in fdisk command too
 
 findmnt # to see mounts, fstype, mountoptions, only shows what is mounted
 findmnt -t xfs,ext4
@@ -1425,13 +1487,22 @@ sudo lvdisplay
   VG Name                volume1
 sudo mkfs.ext4 /dev/my_volume/partition1
 sudo mkfs.xfs /dev/volume1/smalldata
-sudo lvresize --resizefs --size 3G my_volume/partition1 #Use --resizefs when: You want to resize both the logical volume and the filesystem at the same time, otherwise only lv is resized, not fs
-# also some fs can't be shrieked
+sudo lvresize --resizefs --size 3G my_volume/partition1 #Use --resizefs/-r when: You want to resize both the logical volume and the filesystem at the same time, otherwise only lv is resized, not fs
+# also some fs can't be shrinked. xfs doesn't support shrinking
+use lvextend -r -l +50%FREE /dev/vgdata/lvdata 
 man lvm
 sudo lvremove volume1/smalldata # press y to confirm
 
 
 monitoring cpu top, process htop
+sudo apt install iotop
+sudo iotop
+make sure to set kernel.task_delayacct = 1
+cd /proc/sys/kernel 
+echo 1 > task_delayacct
+vmstat #overview of io activity
+vmstat 2 10 # 2s interval 10 times
+
 sudo apt install sysstat
 iostat, pidstat
 iostat -d #show only storage evice utilization, not process utilization, hence inflated for smaller transfers block size large and all
