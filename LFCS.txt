@@ -1578,3 +1578,55 @@ sudo apt install iptables-persistent
 openssl x509 -in file* -noout -text
 
 docker run -d -p 8080:80 --restart=on-failure:3 --name mycontainer httpd
+
+/etc/systemd/journald.conf
+#Storage=auto
+mkdir -p /var/log/journal 
+systemctl start systemd-journal-flush
+
+on ubuntu, no password for root 
+cd /usr/lib64/security 
+pam_securetty.so 
+vi /etc/pam.d/login
+auth required pam_securetty.so 
+vim /etc/securetty 
+tty3
+
+ add new disk 10GB
+ GPT partition 2GB 
+ UUID /files automount systemd  and not /etc/fstab 
+ gdisk /dev/sdc 
+ +2G 
+ w 
+ mkfs.xfs /dev/sdc1
+ blkid 
+ UUID=xy...
+ cd /run/systemd/generator/
+ boot.mount (uuid) 
+ cp /run/systemd/generator/boot.mount /etc/systemd/system/files.mount 
+ mkdir /files 
+ vim files.mount 
+ What=/dev/disk/by-uuid/xy..
+ where=/files 
+ Type=xfs 
+ [Install]
+ WantedBy=multi-user.target
+ systemctl enable --now files.mount 
+ mount | grep files 
+ systemctl status files.mount
+
+  
+ /swapfile activated before booting 
+ dd if=/dev/zero of=/swapfile bs=1M count=1024 
+ chmod +600 /swapfile 
+ mkswap /swapfile 
+ vim /etc/fstab
+ /swapfile none swap defaults 0 0 
+ swapon -a or findmnt --verify
+ free -m 
+ 
+ sysctl -w vm.swappiness = 70
+ vim /etc/sysctl.d/other.conf 
+ vm.swappiness = 70
+ sysctl -p 
+ reboot 
