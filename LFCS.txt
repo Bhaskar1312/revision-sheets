@@ -1572,6 +1572,7 @@ Run the command below to get the PID of the process with high kB_read/s:
 
 sudo iptables -t nat -A PREROUTING -p tcp -s 10.5.5.0/24 --dport 81 -j DNAT --to-destination 192.168.5.2:80
 sudo iptables -t nat -A POSTROUTING -s 10.5.5.0/24 -j MASQUERADE
+sudo iptables -t nat -L -n -v
 sudo apt install iptables-persistent
 
 
