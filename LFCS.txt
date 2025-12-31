@@ -1251,6 +1251,7 @@ KbdInteractiveAuthentication no
 X11Forwarding yes
 Match user aaron
   PasswordAuthentication yes
+sudo sshd -t
 
 
 sudo systemtctl reload ssh.service
