@@ -1578,6 +1578,9 @@ sudo apt install iptables-persistent
 
 
 openssl x509 -in file* -noout -text
+sudo openssl x509 -in first.crt -text | grep -i kodekloud -C2 # or -noout -subject
+sudo openssl x509 -in third.crt -noout -modulus | openssl md5
+sudo openssl rsa -in first.key -noout -modulus | openssl md5
 
 docker run -d -p 8080:80 --restart=on-failure:3 --name mycontainer httpd
 
