@@ -1489,6 +1489,7 @@ sudo lvdisplay
 sudo mkfs.ext4 /dev/my_volume/partition1
 sudo mkfs.xfs /dev/volume1/smalldata
 sudo lvresize --resizefs --size 3G my_volume/partition1 #Use --resizefs/-r when: You want to resize both the logical volume and the filesystem at the same time, otherwise only lv is resized, not fs
+sudo  lvresize /dev/VG1/LV1 -l +100%FREE --resizefs
 # also some fs can't be shrinked. xfs doesn't support shrinking
 use lvextend -r -l +50%FREE /dev/vgdata/lvdata 
 man lvm
@@ -1634,6 +1635,7 @@ tty3
  vim /etc/sysctl.d/other.conf 
  vm.swappiness = 70
  sysctl -p 
+ sysctl --system
  reboot 
 
  On node01two processes are overusing our storage device. One is executing a lot of I/O operations per second (small data transfers, but a very large number of such transfers). Otherwise said, the process has a high tps/IOPS. The other process is reading very large volumes of data.
