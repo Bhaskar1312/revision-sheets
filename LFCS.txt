@@ -840,6 +840,7 @@ The /etc/environment file can be used to set the globally available environment 
 sudo vi /etc/profile.d/history.sh 
 HIST_SIZE=100
 #logout and login again, or source /etc/profile.d/history.sh
+or . script.sh # from dir containing script to load the script in the same shell
 ~/.bash_profile user specific version
 ~/.bash_logout processed when user logs out 
 /etc/bashrc is processed everytime a subshell is started
@@ -1655,3 +1656,35 @@ Find the actual partition used by running the pvs command and store the actual d
 Run the command below to get the PID of the process with high kB_read/s:
 
    sudo pidstat -d 1
+
+read DIR #reads to a var DIR 
+${1#} prints the string length of $1
+${1#string} removes the shortest match of string from the front end of $1 
+${1##string} removes the longest match of string from the front end of $1 
+${1%string} removes the shortest match of string from the back end of $1 
+${1%%string} removes the longest match of string from the back end of $1 
+
+use /usr/bin/blah for testing 
+#!/bin/bash
+filename=${1##*/}
+echo 'filename=${1##*/}'
+echo "filename is $filename"
+dirname=${1%/*}
+echo 'dirname=${1%*/}'
+echo "dirname is $dirname"
+
+if ... then ... fi 
+while ... do ... done #while true stops with ctrl+c
+until ... do ... done 
+case ... in ...esac 
+for ... in ... do ... done 
+
+if [ -z $1 ]
+# if test -z $1 
+then echo provide an arg please
+		 exit 6
+fi 
+echo the argument sis $1 
+
+after running the script, see exit code in $? 
+echo $?	
